@@ -1,0 +1,44 @@
+﻿<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Thêm mới thành viên</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" role="form" novalidate name="frmAddAppRole" ng-submit="addAppRole()">
+                    <div class="form-group" ng-class="{ 'has-error' : frmAddAppRole.name.$invalid && !frmAddAppRole.name.$pristine }">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
+                            Tên quyền <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="text" name="name" class="form-control col-md-7 col-xs-12" required ng-maxlength="50" ng-model="role.Name">
+                            <span ng-show="frmAddAppRole.name.$error.required" class="has-error">Vui lòng nhập tên quyền.</span>
+                            <span ng-show="frmAddAppRole.name.$error.maxlength" class="has-error">Tên quyền chỉ được 50 ký tự.</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : frmAddAppRole.description.$invalid && !frmAddAppRole.description.$pristine }">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                            Mô tả <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea type="text" class="form-control col-md-7 col-xs-12" name="description" ng-maxlength="100" required ng-model="role.Description"></textarea>
+                            <span ng-show="frmAddAppRole.description.$error.required" class="has-error">Vui lòng nhập mô tả.</span>
+                            <span ng-show="frmAddAppRole.description.$error.maxlength" class="has-error">Mô tả chỉ được 250 ký tự.</span>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button ui-sref="app_roles" class="btn btn-default" type="button">Quay lại</button>
+                            <button class="btn btn-primary" type="reset">Clear</button>
+                            <button type="submit" ng-disabled="frmAddAppRole.$invalid" class="btn btn-success">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

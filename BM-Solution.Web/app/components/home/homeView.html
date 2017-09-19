@@ -1,0 +1,188 @@
+﻿<div class="">
+    <div class="row tile_count">
+        <div class="col-md-3 col-sm-4 col-xs-4 tile_stats_count">
+            <span class="count_top"><i class="fa fa-user"></i> Tổng thành viên</span>
+            <div class="count">50</div>
+            <span class="count_bottom">Thành viên.</span>
+        </div>
+        <div class="col-md-3 col-sm-4 col-xs-8 tile_stats_count">
+            <span class="count_top"><i class="fa fa-file-text"></i> Tổng dự án</span>
+            <div class="count">70</div>
+            <span class="count_bottom">Dự án.</span>
+        </div>
+        <div class="col-md-2 col-sm-4 col-xs-4 tile_stats_count">
+            <span class="count_top"><i class="fa fa-file-text"></i> Số dự án tham gia</span>
+            <div class="count">7</div>
+            <span class="count_bottom">Dự án.</span>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-8 tile_stats_count">
+            <span class="count_top"><i class="fa fa-money"></i> Tổng tiền</span>
+            <div class="count green">200.000.000.000</div>
+            <span class="count_bottom">VND.</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="page-title">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3>Dự án</h3>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="col-md-6 col-sm-6 col-xs-12 form-group top_search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="filter" placeholder="Từ khóa...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" ng-click="search()" type="button">Tìm kiếm</button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                                <button class="btn btn-danger" type="button" ng-click="deleteMultiple()" id="btnDelete" disabled>Xóa</button>
+                                <button class="btn btn-success" type="button" ui-sref="duan_add">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr>
+                                    <th><input name="all" type="checkbox" ng-click="selectAll()" /></th>
+                                    <th>Dự án</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Lợi nhuận dự tính</th>
+                                    <th>Tiền chi dự tính</th>
+                                    <th>Tiền thu dự tính</th>
+                                    <th>Tiền chi thực tế</th>
+                                    <th>Tiền thu thực tế</th>
+                                    <th>Lợi nhuận thực tế</th>
+                                    <th>Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in data">
+                                    <td><input type="checkbox" ng-model="item.checked" name="all" /></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.Id}}</a></td>
+                                    <td>{{item.NgayTao | date : 'dd/MM/yyyy'}}</td>
+                                    <td>{{item.LoiNhuanDuTinh | number}}</td>
+                                    <td>{{item.TienChiDuTinh | number}}</td>
+                                    <td>{{item.TienThuDuTinh | number}}</td>
+                                    <td>{{item.TienChiThucTe | number}}</td>
+                                    <td>{{item.TienThuThucTe | number}}</td>
+                                    <td>{{item.LoiNhuanThucTe | number}}</td>
+                                    <td>
+                                        <span class="badge bg-green">
+                                            Đang hoạt động
+                                        </span>
+                                    </td>
+                                </tr>
+                                <!--<tr>
+                                    <td class="a-center ">
+                                        <input type="checkbox" class="flat" name="table_records">
+                                    </td>
+                                    <td>2</td>
+                                    <td>BizV</td>
+                                    <td>15/09/2017</td>
+                                    <td>100.000.000</td>
+                                    <td>15/09/2017</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>
+                                        <span class="badge bg-primary">
+                                            Đã có tiền
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a ui-sref="duan_edit({id:'1'})">
+                                            <span class="badge bg-purple">
+                                                Chi tiết
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="a-center ">
+                                        <input type="checkbox" class="flat" name="table_records">
+                                    </td>
+                                    <td>3</td>
+                                    <td>BizV</td>
+                                    <td>15/09/2017</td>
+                                    <td>100.000.000</td>
+                                    <td>15/09/2017</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>
+                                        <span class="badge bg-orange">
+                                            Đã có lợi nhuận
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a ui-sref="duan_edit({id:'1'})">
+                                            <span class="badge bg-purple">
+                                                Chi tiết
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="a-center ">
+                                        <input type="checkbox" class="flat" name="table_records">
+                                    </td>
+                                    <td>4</td>
+                                    <td>BizV</td>
+                                    <td>15/09/2017</td>
+                                    <td>100.000.000</td>
+                                    <td>15/09/2017</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>100.000.000</td>
+                                    <td>
+                                        <a>
+                                            <span class="badge bg-red">
+                                                Kết thúc
+                                            </span>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a ui-sref="duan_edit({id:'1'})">
+                                            <span class="badge bg-purple">
+                                                Chi tiết
+                                            </span>
+                                        </a>
+                                    </td>
+                                </tr>-->
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="10"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <div ng-if="loading">
+                            <div class="col-xs-4"></div>
+                            <div class="col-xs-4">
+                                <i class="fa fa-refresh fa-4x fa-spin"></i> <label class="label label-primary">Đang tải...</label>
+                            </div>
+                            <div class="col-xs-4"></div>
+                        </div>
+                        <div>
+                            <pager-directive page="{{page}}" custom-path="{{customPath}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page)"></pager-directive>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
