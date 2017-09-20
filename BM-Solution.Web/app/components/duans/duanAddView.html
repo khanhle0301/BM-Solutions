@@ -7,7 +7,7 @@
             </div>
             <div class="x_content">
                 <br />
-                <form data-parsley-validate class="form-horizontal form-label-left" role="form" novalidate name="frmAdd" ng-submit="addDuAn()">
+                <form class="form-horizontal form-label-left" role="form" novalidate name="frmAdd" ng-submit="addDuAn()">
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmAdd.id.$invalid && !frmAdd.id.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -33,24 +33,30 @@
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
-                        <div class="form-group">
+                        <div class="form-group" ng-class="{ 'has-error' : frmAdd.ngaytao.$invalid && !frmAdd.ngaytao.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
                                 Ngày tạo <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="text" ng-model="duan.NgayTao" class="form-control col-md-7 col-xs-12 has-feedback-left" name="single_cal1" placeholder="Ngày tạo" aria-describedby="inputSuccess2Status">
-                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <input name="ngaytao" type="text" required class="form-control" ng-click="open1()" uib-datepicker-popup="dd/MM/yyyy" ng-model="ngayTao" is-open="popup1.opened"
+                                       placeholder="dd/MM/yyyy" datepicker-options="dateOptions" close-text="Close"
+                                       ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d)|([2-9]\d{3})$/" />
+                                <span ng-show="frmAdd.ngaytao.$error.required" class="has-error">Vui lòng chọn ngày.</span>
+                                <span ng-show="frmAdd.ngaytao.$error.pattern" class="has-error">Định dạng ngày không đúng.</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
-                        <div class="form-group">
+                        <div class="form-group" ng-class="{ 'has-error' : frmAdd.thoigian.$invalid && !frmAdd.thoigian.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
                                 Thời gian dự tính <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="text" ng-model="duan.ThoiGianDuTinh" class="form-control col-md-7 col-xs-12 has-feedback-left" name="single_cal1" placeholder="Ngày dự tính" aria-describedby="inputSuccess2Status">
-                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <input name="thoigian" type="text" required class="form-control" ng-click="open2()" uib-datepicker-popup="dd/MM/yyyy" ng-model="thoiGian" is-open="popup2.opened"
+                                       placeholder="dd/MM/yyyy" datepicker-options="dateOptions" close-text="Close"
+                                       ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d)|([2-9]\d{3})$/" />
+                                <span ng-show="frmAdd.thoigian.$error.required" class="has-error">Vui lòng chọn ngày.</span>
+                                <span ng-show="frmAdd.thoigian.$error.pattern" class="has-error">Định dạng ngày không đúng.</span>
                             </div>
                         </div>
                     </div>
@@ -109,23 +115,28 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-12 col-xs-12">
-                            Người tham gia
+                            Thành viên
                         </label>
                         <div class="col-md-10 col-sm-12 col-xs-12">
-                            <tags-input ng-model="tags"
-                                        placeholder="Thêm user"
+                            <tags-input ng-model="duan.AppUsers"
+                                        placeholder="Thêm thành viên"
                                         display-property="UserName"
                                         replace-spaces-with-dashes="false"
-                                        add-from-autocomplete-only="true">
-                                <auto-complete source="loadTags($query)"></auto-complete>
+                                        add-from-autocomplete-only="true"
+                                        template="tag-template">
+                                <auto-complete source="loadUsers($query)"
+                                               min-length="0"
+                                               load-on-focus="true"
+                                               load-on-empty="true"
+                                               max-results-to-show="32"
+                                               template="autocomplete-template"></auto-complete>
                             </tags-input>
                         </div>
                     </div>
                     <div class="ln_solid"></div>
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <a href="/#/" class="btn btn-default" type="button">Quay lại</a>
-                            <button class="btn btn-primary">Clear</button>
+                            <a href="/#/" class="btn btn-default">Quay lại</a>
                             <button type="submit" ng-disabled="frmAdd.$invalid" class="btn btn-success">Lưu</button>
                         </div>
                     </div>
@@ -133,4 +144,26 @@
             </div>
         </div>
     </div>
+    <script type="text/ng-template" id="tag-template">
+        <div class="tag-template">
+            <div class="left-panel">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="right-panel">
+                <span>{{$getDisplayText()}}</span>
+                <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="autocomplete-template">
+        <div class="autocomplete-template">
+            <div class="left-panel">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="right-panel">
+                <span ng-bind-html="$highlight($getDisplayText())"></span>
+            </div>
+        </div>
+    </script>
 </div>

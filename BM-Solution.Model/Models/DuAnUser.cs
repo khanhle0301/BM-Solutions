@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BM_Solution.Model.Models
 {
-    [Table("Permissions")]
-    public class Permission
+    [Table("DuAnUsers")]
+    public class DuAnUser
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,10 +16,6 @@ namespace BM_Solution.Model.Models
         [StringLength(50)]
         [Column(TypeName = "varchar")]
         public string DuaAnId { get; set; }
-
-        public bool CanRead { set; get; }
-
-        public bool CanUpdate { set; get; }
 
         [ForeignKey("UserId")]
         public AppUser AppUser { get; set; }

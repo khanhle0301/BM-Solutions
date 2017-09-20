@@ -3,6 +3,7 @@ using BM_Solution.Data.Repositories;
 using BM_Solution.Model.Models;
 using BM_Solutions.Common.Exceptions;
 using System.Collections.Generic;
+using System;
 
 namespace BM_Solutions.Service
 {
@@ -10,7 +11,7 @@ namespace BM_Solutions.Service
     {
         DuAn Add(DuAn duAn);
 
-        void Update(DuAn duAn);
+        DuAn Update(DuAn duAn);
 
         DuAn Delete(string id);
 
@@ -69,11 +70,15 @@ namespace BM_Solutions.Service
             _unitOfWork.Commit();
         }
 
-        public void Update(DuAn duAn)
+        public DuAn Update(DuAn duAn)
         {
-            if (_duAnRepository.CheckContains(x => x.Id == duAn.Id && x.Id != duAn.Id))
-                throw new NameDuplicatedException("Mã dự án đã tồn tại");
-            _duAnRepository.Update(duAn);
+            var duAnEdit = _duAnRepository.GetSingleByCondition(x => x.Id == duAn.Id);
+            if (duAnEdit == null)
+                throw new Exception("Dự án không tồn tại");
+            duAnEdit.Ten = duAn.Ten;
+            duAnEdit.NoiDung = duAn.NoiDung;
+            duAnEdit.GhiChu = duAn.GhiChu;
+            return duAnEdit;
         }
     }
 }

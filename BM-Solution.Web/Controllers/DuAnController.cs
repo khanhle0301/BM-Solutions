@@ -13,6 +13,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BM_Solution.Web.Providers;
 
 namespace BM_Solution.Web.Controllers
 {
@@ -21,10 +22,13 @@ namespace BM_Solution.Web.Controllers
     public class DuAnController : ApiControllerBase
     {
         private readonly IDuAnService _duAnService;
+        private readonly IDuAnUserService _duAnUserService;
 
-        public DuAnController(IErrorService errorService, IDuAnService duAnService) : base(errorService)
+        public DuAnController(IErrorService errorService, IDuAnService duAnService,
+            IDuAnUserService duAnUserService) : base(errorService)
         {
             _duAnService = duAnService;
+            _duAnUserService = duAnUserService;
         }
 
         [Route("getlistpaging")]
@@ -37,11 +41,11 @@ namespace BM_Solution.Web.Controllers
 
                 var totalRow = query.Count();
 
-                var model = query.OrderBy(x => x.Id).Skip(page * pageSize).Take(pageSize);
+                var model = query.OrderBy(x => x.TrangThai).Skip(page * pageSize).Take(pageSize);
 
-                IEnumerable<DuAnListViewModel> modelVm = Mapper.Map<IEnumerable<DuAn>, IEnumerable<DuAnListViewModel>>(model);
+                IEnumerable<DuAnViewModel> modelVm = Mapper.Map<IEnumerable<DuAn>, IEnumerable<DuAnViewModel>>(model);
 
-                PaginationSet<DuAnListViewModel> pagedSet = new PaginationSet<DuAnListViewModel>()
+                PaginationSet<DuAnViewModel> pagedSet = new PaginationSet<DuAnViewModel>()
                 {
                     Items = modelVm,
                     Page = page,
@@ -83,12 +87,21 @@ namespace BM_Solution.Web.Controllers
             {
                 return request.CreateErrorResponse(HttpStatusCode.NoContent, "Không tìm thấy dự án");
             }
+            var appUsers = _duAnUserService.GetUserByDuAnId(id);
             DuAnViewModel modelVm = Mapper.Map<DuAn, DuAnViewModel>(duAn);
+            List<User> listAppUsers = new List<User>();
+            foreach (var item in appUsers)
+            {
+                var user = new User { UserName = item };
+                listAppUsers.Add(user);
+            }
+            modelVm.AppUsers = listAppUsers;
             return request.CreateResponse(HttpStatusCode.OK, modelVm);
         }
 
         [HttpPost]
         [Route("add")]
+        [Permission(Role = "Admin")]
         public HttpResponseMessage Create(HttpRequestMessage request, DuAnViewModel duAnViewModel)
         {
             if (ModelState.IsValid)
@@ -98,6 +111,15 @@ namespace BM_Solution.Web.Controllers
                 try
                 {
                     _duAnService.Add(newDuAn);
+                    foreach (var item in duAnViewModel.AppUsers)
+                    {
+                        var duAnUser = new DuAnUser
+                        {
+                            UserId = AppUserManager.FindByName(item.UserName).Id,
+                            DuaAnId = duAnViewModel.Id
+                        };
+                        _duAnUserService.Add(duAnUser);
+                    }
                     _duAnService.Save();
                     return request.CreateResponse(HttpStatusCode.OK, duAnViewModel);
                 }
@@ -105,33 +127,44 @@ namespace BM_Solution.Web.Controllers
                 {
                     return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 }
-
             }
             return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
         }
 
         [HttpPut]
         [Route("update")]
-        public HttpResponseMessage Update(HttpRequestMessage request, ApplicationRoleViewModel applicationRoleViewModel)
+        public HttpResponseMessage Update(HttpRequestMessage request, DuAnViewModel duAnViewModel)
         {
             if (ModelState.IsValid)
             {
-                var appRole = AppRoleManager.FindById(applicationRoleViewModel.Id);
+                var newDuAn = new DuAn();
+                newDuAn.UpdateDuAn(duAnViewModel);
                 try
                 {
-                    appRole.UpdateApplicationRole(applicationRoleViewModel, "update");
-                    AppRoleManager.Update(appRole);
-                    return request.CreateResponse(HttpStatusCode.OK, appRole);
+                    _duAnUserService.DeleteAll(duAnViewModel.Id);
+                    _duAnService.Update(newDuAn);
+                    foreach (var item in duAnViewModel.AppUsers)
+                    {
+                        var duAnUser = new DuAnUser
+                        {
+                            UserId = AppUserManager.FindByName(item.UserName).Id,
+                            DuaAnId = duAnViewModel.Id
+                        };
+                        _duAnUserService.Add(duAnUser);
+                    }
+                    _duAnService.Save();
+                    return request.CreateResponse(HttpStatusCode.OK, duAnViewModel);
                 }
-                catch (NameDuplicatedException dex)
+                catch (Exception ex)
                 {
-                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, dex.Message);
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 }
             }
             return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
         }
 
         [HttpDelete]
+        [Permission(Role = "Admin")]
         [Route("delete")]
         public HttpResponseMessage Delete(HttpRequestMessage request, string id)
         {

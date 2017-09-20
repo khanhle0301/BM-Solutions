@@ -62,12 +62,18 @@
     <Compile Include="Models\DuAn.cs" />
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\ChiTietThuChi.cs" />
-    <Compile Include="Models\Permission.cs" />
+    <Compile Include="Models\DuAnUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BM-Solutions.Common\BM-Solutions.Common.csproj">
+      <Project>{5A25CFF2-A265-4469-AD57-CBEADA94A6CE}</Project>
+      <Name>BM-Solutions.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

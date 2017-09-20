@@ -1,5 +1,4 @@
-﻿using BM_Solution.Web.Models.System;
-using BM_Solutions.Common.Enums;
+﻿using BM_Solutions.Common.Enums;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;
@@ -12,8 +11,7 @@ namespace BM_Solution.Web.Providers
 {
     public class PermissionAttribute : AuthorizeAttribute
     {
-        public string Function;
-        public string Action;
+        public string Role;
 
         public override void OnAuthorization(HttpActionContext actionContext)
         {
@@ -31,23 +29,7 @@ namespace BM_Solution.Web.Providers
                 {
                     if (!roles.Contains(RoleEnum.Admin.ToString()))
                     {
-                        var permissions = JsonConvert.DeserializeObject<List<PermissionViewModel>>(principal.FindFirst("permissions").Value);
-                        if (!permissions.Exists(x => x.FunctionId == Function && x.CanCreate) && Action == ActionEnum.Create.ToString())
-                        {
-                            actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
-                        }
-                        else if (!permissions.Exists(x => x.FunctionId == Function && x.CanRead) && Action == ActionEnum.Read.ToString())
-                        {
-                            actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
-                        }
-                        else if (!permissions.Exists(x => x.FunctionId == Function && x.CanDelete) && Action == ActionEnum.Delete.ToString())
-                        {
-                            actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
-                        }
-                        else if (!permissions.Exists(x => x.FunctionId == Function && x.CanUpdate) && Action == ActionEnum.Update.ToString())
-                        {
-                            actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
-                        }
+                        actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden);
                     }
                 }
                 else

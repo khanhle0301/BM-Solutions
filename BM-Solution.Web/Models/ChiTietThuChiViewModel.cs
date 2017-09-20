@@ -1,14 +1,12 @@
-﻿using System;
+﻿using BM_Solution.Model.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BM_Solution.Model.Models
+namespace BM_Solution.Web.Models
 {
-    [Table("ChiTietThuChis")]
-    public class ChiTietThuChi
+    public class ChiTietThuChiViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [StringLength(128)]
@@ -27,7 +25,7 @@ namespace BM_Solution.Model.Models
         [ForeignKey("UserId")]
         public AppUser AppUser { get; set; }
 
-        [ForeignKey("DuAnId")]
+        [ForeignKey("DuaAnId")]
         public DuAn DuAn { get; set; }
 
         public bool IsDelete { get; set; }

@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChiTietThuChiService.cs" />
     <Compile Include="DuAnService.cs" />
     <Compile Include="ErrorService.cs" />
-    <Compile Include="PermissionService.cs" />
+    <Compile Include="DuAnUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

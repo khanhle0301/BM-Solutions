@@ -4,6 +4,7 @@ using BM_Solution.Web.Infrastructure.Core;
 using BM_Solution.Web.Models.System;
 using BM_Solutions.Service;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -16,13 +17,14 @@ namespace BM_Solution.Web.Controllers
     [RoutePrefix("api/appUser")]
     public class AppUserController : ApiControllerBase
     {
-        public AppUserController(IErrorService errorService)
+        private readonly IDuAnUserService _duAnUserService;
+        public AppUserController(IErrorService errorService, IDuAnUserService duAnUserService)
             : base(errorService)
         {
+            _duAnUserService = duAnUserService;
         }
 
         [Route("getlistpaging")]
-        [Permission(Action = "Read", Function = "USER")]
         [HttpGet]
         public HttpResponseMessage GetListPaging(HttpRequestMessage request)
         {
@@ -41,7 +43,6 @@ namespace BM_Solution.Web.Controllers
 
         [Route("detail/{id}")]
         [HttpGet]
-        [Permission(Action = "Read", Function = "USER")]
         public async Task<HttpResponseMessage> Details(HttpRequestMessage request, string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -64,7 +65,6 @@ namespace BM_Solution.Web.Controllers
 
         [HttpPost]
         [Route("add")]
-        [Permission(Action = "Create", Function = "USER")]
         public async Task<HttpResponseMessage> Create(HttpRequestMessage request, AppUserViewModel appUserViewModel)
         {
             if (string.IsNullOrEmpty(appUserViewModel.Id))
@@ -83,6 +83,31 @@ namespace BM_Solution.Web.Controllers
                 applicationUserViewModel.Roles = roles;
                 return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
             }
+        }
+
+
+        [Route("getListString")]
+        [HttpGet]
+        public HttpResponseMessage GetUser(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = AppUserManager.Users.Select(x => x.UserName);
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
+                return response;
+            });
+        }
+
+        [Route("getListStringByDuAnId")]
+        [HttpGet]
+        public HttpResponseMessage GetUserByDuAnId(HttpRequestMessage request, string duAnId)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _duAnUserService.GetUserByDuAnId(duAnId);
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
+                return response;
+            });
         }
     }
 }

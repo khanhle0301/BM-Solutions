@@ -21,8 +21,8 @@ namespace BM_Solution.Web.Infrastructure.Extensions
         {
             duAn.Id = duAnViewModel.Id;
             duAn.Ten = duAnViewModel.Ten;
-            duAn.NgayTao = DateTime.Parse(duAnViewModel.NgayTao);
-            duAn.ThoiGianDuTinh = DateTime.Parse(duAnViewModel.ThoiGianDuTinh);
+            duAn.NgayTao = duAnViewModel.NgayTao;
+            duAn.ThoiGianDuTinh = duAnViewModel.ThoiGianDuTinh;
             duAn.LoiNhuanDuTinh = duAnViewModel.LoiNhuanDuTinh;
             duAn.TienChiDuTinh = duAnViewModel.TienChiDuTinh;
             duAn.TienChiThucTe = duAnViewModel.TienChiThucTe;

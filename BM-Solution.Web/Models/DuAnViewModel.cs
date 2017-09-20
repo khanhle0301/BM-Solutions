@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using BM_Solutions.Common.Enums;
 
 namespace BM_Solution.Web.Models
 {
@@ -13,22 +14,22 @@ namespace BM_Solution.Web.Models
         public string Ten { set; get; }
 
         [Required]
-        public string NgayTao { set; get; }
+        public DateTime NgayTao { set; get; }
 
         [Required]
-        public string ThoiGianDuTinh { set; get; }
+        public DateTime ThoiGianDuTinh { set; get; }
 
-        public Decimal? LoiNhuanDuTinh { set; get; }
+        public long LoiNhuanDuTinh { set; get; }
 
-        public Decimal? TienChiDuTinh { set; get; }
+        public long TienChiDuTinh { set; get; }
 
-        public Decimal? TienChiThucTe { set; get; }
+        public long TienChiThucTe { set; get; }
 
-        public Decimal? TienThuDuTinh { set; get; }
+        public long TienThuDuTinh { set; get; }
 
-        public Decimal? TienThuThucTe { set; get; }
+        public long TienThuThucTe { set; get; }
 
-        public Decimal? LoiNhuanThucTe { set; get; }
+        public long LoiNhuanThucTe { set; get; }
 
         [MaxLength(500)]
         public string NoiDung { set; get; }
@@ -36,9 +37,14 @@ namespace BM_Solution.Web.Models
         [MaxLength(100)]
         public string GhiChu { set; get; }
 
-        public int TrangThai { set; get; }
+        public StatusEnum TrangThai { set; get; }
         public bool IsDelete { get; set; }
 
-        public ICollection<string> AppUser { get; set; }
+        public List<User> AppUsers { get; set; }
+    }
+
+    public class User
+    {
+        public string UserName { get; set; }
     }
 }

@@ -13,9 +13,9 @@ namespace BM_Solution.Web.Mappings
             {
                 cfg.CreateMap<AppRole, ApplicationRoleViewModel>();
                 cfg.CreateMap<AppUser, AppUserViewModel>();
-                cfg.CreateMap<Permission, PermissionViewModel>();
+                cfg.CreateMap<DuAnUser, PermissionViewModel>();
                 cfg.CreateMap<DuAn, DuAnViewModel>();
-                cfg.CreateMap<DuAn, DuAnListViewModel>();
+                cfg.CreateMap<ChiTietThuChi, ChiTietThuChiViewModel>();
             });
         }
     }

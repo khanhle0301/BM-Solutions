@@ -264,6 +264,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AppRoleController.cs" />
     <Compile Include="Controllers\AppUserController.cs" />
+    <Compile Include="Controllers\ChiTietThuChiController.cs" />
     <Compile Include="Controllers\DuAnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -275,7 +276,7 @@
     <Compile Include="Infrastructure\Core\ServiceFactory.cs" />
     <Compile Include="Infrastructure\Extensions\EntityExtensions.cs" />
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
-    <Compile Include="Models\DuAnListViewModel.cs" />
+    <Compile Include="Models\ChiTietThuChiViewModel.cs" />
     <Compile Include="Models\DuAnViewModel.cs" />
     <Compile Include="Models\System\ApplicationGroupViewModel.cs" />
     <Compile Include="Models\System\ApplicationRoleViewModel.cs" />
@@ -360,6 +361,7 @@
     <Content Include="Assets\images\visa.png" />
     <Content Include="Assets\js\custom.js" />
     <Content Include="Assets\js\custom.min.js" />
+    <Content Include="Assets\libs\angular-animate\angular-animate.js" />
     <Content Include="Assets\libs\angular-loading-bar\build\loading-bar.css" />
     <Content Include="Assets\libs\angular-loading-bar\build\loading-bar.js" />
     <Content Include="Assets\libs\angular-loading-bar\build\loading-bar.min.css" />
@@ -545,6 +547,8 @@
     <Content Include="Assets\libs\jquery\src\var\support.js" />
     <Content Include="Assets\libs\jquery\src\var\toString.js" />
     <Content Include="Assets\libs\jquery\src\wrap.js" />
+    <Content Include="Assets\libs\ng-tags-input\ng-tags-input.min.css" />
+    <Content Include="Assets\libs\ng-tags-input\ng-tags-input.min.js" />
     <Content Include="Assets\libs\ngBootbox\dist\ngBootbox.js" />
     <Content Include="Assets\libs\ngBootbox\dist\ngBootbox.min.js" />
     <Content Include="Assets\libs\ngBootbox\examples\example-1\app.js" />
@@ -661,6 +665,7 @@
     <Content Include="Assets\libs\toastr\toastr.js" />
     <Content Include="Assets\libs\toastr\toastr.min.css" />
     <Content Include="Assets\libs\toastr\toastr.min.js" />
+    <Content Include="Assets\libs\ui-bootstrap-tpls\ui-bootstrap-tpls-2.5.0.js" />
     <Content Include="Assets\vendors\animate.css\animate.css" />
     <Content Include="Assets\vendors\animate.css\animate.min.css" />
     <Content Include="Assets\vendors\animate.css\gulpfile.js" />

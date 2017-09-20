@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BM_Solutions.Common.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,20 +17,20 @@ namespace BM_Solution.Model.Models
         [MaxLength(100)]
         public string Ten { set; get; }
 
-        public DateTime? NgayTao { set; get; }
-        public DateTime? ThoiGianDuTinh { set; get; }
+        public DateTime NgayTao { set; get; }
+        public DateTime ThoiGianDuTinh { set; get; }
 
-        public Decimal? LoiNhuanDuTinh { set; get; }
+        public long LoiNhuanDuTinh { set; get; }
 
-        public Decimal? TienChiDuTinh { set; get; }
+        public long TienChiDuTinh { set; get; }
 
-        public Decimal? TienChiThucTe { set; get; }
+        public long TienChiThucTe { set; get; }
 
-        public Decimal? TienThuDuTinh { set; get; }
+        public long TienThuDuTinh { set; get; }
 
-        public Decimal? TienThuThucTe { set; get; }
+        public long TienThuThucTe { set; get; }
 
-        public Decimal? LoiNhuanThucTe { set; get; }
+        public long LoiNhuanThucTe { set; get; }
 
         [MaxLength(500)]
         public string NoiDung { set; get; }
@@ -37,7 +38,7 @@ namespace BM_Solution.Model.Models
         [MaxLength(100)]
         public string GhiChu { set; get; }
 
-        public int TrangThai { set; get; }
+        public StatusEnum TrangThai { set; get; }
         public bool IsDelete { get; set; }
     }
 }

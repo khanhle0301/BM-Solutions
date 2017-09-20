@@ -16,6 +16,9 @@
         $scope.deleteMultiple = deleteMultiple;
         $scope.filter = '';
 
+        var roles = authData.authenticationData.roles;
+        $scope.isSys = roles.includes('Admin');
+
         function deleteMultiple() {
             var listId = [];
             $.each($scope.selected, function (i, item) {

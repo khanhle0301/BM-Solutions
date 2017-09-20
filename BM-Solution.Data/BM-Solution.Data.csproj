@@ -80,12 +80,28 @@
     <Compile Include="Migrations\201709191303164_Edit_Permission.Designer.cs">
       <DependentUpon>201709191303164_Edit_Permission.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709201242499_EditDuAn.cs" />
+    <Compile Include="Migrations\201709201242499_EditDuAn.Designer.cs">
+      <DependentUpon>201709201242499_EditDuAn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709201327532_AddDuAnUser.cs" />
+    <Compile Include="Migrations\201709201327532_AddDuAnUser.Designer.cs">
+      <DependentUpon>201709201327532_AddDuAnUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709201903101_EditChiTiet.cs" />
+    <Compile Include="Migrations\201709201903101_EditChiTiet.Designer.cs">
+      <DependentUpon>201709201903101_EditChiTiet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709201926031_EditChiTiet_No2.cs" />
+    <Compile Include="Migrations\201709201926031_EditChiTiet_No2.Designer.cs">
+      <DependentUpon>201709201926031_EditChiTiet_No2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ChiTietThuChiRepository.cs" />
     <Compile Include="Repositories\DuAnRepository.cs" />
     <Compile Include="Repositories\ErrorRepository.cs" />
-    <Compile Include="Repositories\PermissionRepository.cs" />
+    <Compile Include="Repositories\DuAnUserRepository.cs" />
     <Compile Include="BmSolutionsDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +126,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709191303164_Edit_Permission.resx">
       <DependentUpon>201709191303164_Edit_Permission.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709201242499_EditDuAn.resx">
+      <DependentUpon>201709201242499_EditDuAn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709201327532_AddDuAnUser.resx">
+      <DependentUpon>201709201327532_AddDuAnUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709201903101_EditChiTiet.resx">
+      <DependentUpon>201709201903101_EditChiTiet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709201926031_EditChiTiet_No2.resx">
+      <DependentUpon>201709201926031_EditChiTiet_No2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
