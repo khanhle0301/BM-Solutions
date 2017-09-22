@@ -2222,9 +2222,6 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Assets\libs\ngBootbox\typings\angularjs\angular.d.ts" />
-    <TypeScriptCompile Include="Assets\libs\ngBootbox\typings\jquery\jquery.d.ts" />
-    <TypeScriptCompile Include="Assets\libs\ngBootbox\typings\tsd.d.ts" />
     <TypeScriptCompile Include="Assets\vendors\moment\moment.d.ts" />
   </ItemGroup>
   <ItemGroup>

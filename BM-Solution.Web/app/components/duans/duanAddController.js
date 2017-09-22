@@ -31,7 +31,8 @@
         };
 
         $scope.duan = {
-            IsDelete: false
+            IsDelete: false,
+            AppUsers: []
         }
 
         $scope.addDuAn = addDuAn;

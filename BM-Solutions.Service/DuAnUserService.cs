@@ -2,18 +2,19 @@
 using BM_Solution.Data.Repositories;
 using BM_Solution.Model.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System;
 
 namespace BM_Solutions.Service
 {
     public interface IDuAnUserService
     {
         List<string> GetUserByDuAnId(string duAnId);
-        List<DuAnUser> GetDuAnByUserId(string userId);
+
+        List<string> GetDuAnByUserId(string userId);
+
         void Add(DuAnUser duAnUser);
 
         void DeleteAll(string duAnId);
+
         void SaveChange();
     }
 
@@ -48,7 +49,7 @@ namespace BM_Solutions.Service
             _unitOfWork.Commit();
         }
 
-        List<DuAnUser> IDuAnUserService.GetDuAnByUserId(string userId)
+        public List<string> GetDuAnByUserId(string userId)
         {
             return _permissionRepository.GetDuAnByUserId(userId);
         }

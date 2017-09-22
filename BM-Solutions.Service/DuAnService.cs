@@ -17,8 +17,6 @@ namespace BM_Solutions.Service
 
         IEnumerable<DuAn> GetAll();
 
-        IEnumerable<DuAn> GetAll(string userId, string keyword, string role);
-
         DuAn GetById(string id);
 
         void UpdateProfit(ChiTietThuChi chiTietThuChi);
@@ -56,18 +54,7 @@ namespace BM_Solutions.Service
 
         public IEnumerable<DuAn> GetAll()
         {
-            return _duAnRepository.GetMulti(x => x.IsDelete == false);
-        }
-
-        public IEnumerable<DuAn> GetAll(string userId, string keyword, string role)
-        {
-            if (!role.Contains("Admin"))
-            {
-                if (!string.IsNullOrEmpty(keyword))
-                    return _duAnRepository.GetMulti(x => x.IsDelete == false && x.Ten.Contains(keyword));
-            }
-
-            return GetAll();
+            return _duAnRepository.GetAll();
         }
 
         public DuAn GetById(string id)

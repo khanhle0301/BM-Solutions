@@ -3,24 +3,69 @@
 
     app.controller('appUserAddController', appUserAddController);
 
-    appUserAddController.$inject = ['$scope', 'apiService', 'notificationService', '$location', 'commonService'];
+    appUserAddController.$inject = ['$scope', 'apiService', 'notificationService', '$location', 'commonService', '$filter'];
 
-    function appUserAddController($scope, apiService, notificationService, $location, commonService) {
+    function appUserAddController($scope, apiService, notificationService, $location, commonService, $filter) {
+        $scope.user = {
+            UserName: 'abc12321',
+            Password: '123123aA!',
+            Email:"abcdasdasd@gmail.com",
+            DuAns: [],
+            Roles:[]
+        }
 
-        $scope.tags = [
-            { id: 1, name: 'Dự án 1' },
-            { id: 2, name: 'Dự án 2' },
-            { id: 3, name: 'Dự án 3' }
-        ];
+        $scope.addUser = addUser;
 
-        var s = [
-            { id: 4, name: 'Dự án 4' },
-            { id: 5, name: 'Dự án 5' },
-            { id: 6, name: 'Dự án 6' }
-        ];
+        function addUser() {
+            apiService.post('api/appUser/add', $scope.user, addSuccessed, addFailed);
+        }
 
-        $scope.loadTags = function (query) {
-            return s;
+        function addSuccessed() {
+            notificationService.displaySuccess($scope.user.FullName + ' đã được thêm mới.');
+            $location.url('/');
+        }
+
+        function addFailed(response) {
+            if (response.status == "403") {
+                notificationService.displayError(response.statusText);
+                $location.url('/');
+            } else {
+                notificationService.displayError(response.data.Message);
+            }
+        }
+
+        function loadDuan() {
+            apiService.get('api/duan/getListString', null, function (result) {
+                $scope.listDuan = result.data;
+            }, function () {
+                console.log('Cannot get list du an');
+            });
+        }
+
+        $scope.loadDuans = function ($query) {
+            var duans = $scope.listDuan;
+            return duans.filter(function (duan) {
+                return duan.toLowerCase().indexOf($query.toLowerCase()) != -1;
+            });
         };
+
+        loadDuan();
+
+        function loadRole() {
+            apiService.get('api/appRole/getliststring', null, function (result) {
+                $scope.listRole = result.data;
+            }, function () {
+                console.log('Cannot get list');
+            });
+        }
+
+        $scope.loadRoles = function ($query) {
+            var roles = $scope.listRole;
+            return roles.filter(function (role) {
+                return role.toLowerCase().indexOf($query.toLowerCase()) != -1;
+            });
+        };
+
+        loadRole();
     }
 })(angular.module('bm-solutions.app_users'));

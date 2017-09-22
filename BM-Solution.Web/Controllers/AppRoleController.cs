@@ -68,6 +68,19 @@ namespace BM_Solution.Web.Controllers
             });
         }
 
+        [Route("getliststring")]
+        [HttpGet]
+        public HttpResponseMessage GetListString(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = AppRoleManager.Roles.Select(x => x.Name);
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
+
+                return response;
+            });
+        }
+
         [Route("detail/{id}")]
         [HttpGet]
         public HttpResponseMessage Details(HttpRequestMessage request, string id)

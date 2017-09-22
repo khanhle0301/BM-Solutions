@@ -9,14 +9,14 @@
                     <div class="col-md-8">
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group top_search">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Từ khóa...">
+                                <input type="text" class="form-control" ng-model="filter" placeholder="Từ khóa...">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">Tìm kiếm</button>
+                                    <button class="btn btn-default" ng-click="search()" type="button">Tìm kiếm</button>
                                 </span>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                            <button class="btn btn-danger" type="button">Xóa</button>
+                            <button class="btn btn-danger" type="button" ng-click="deleteMultiple()" id="btnDelete" disabled>Xóa</button>
                             <button class="btn btn-success" type="button" ui-sref="add_app_user">Thêm</button>
                         </div>
                     </div>
@@ -27,10 +27,7 @@
                 <table class="table table-striped jambo_table bulk_action">
                     <thead>
                         <tr>
-                            <th>
-                                <input type="checkbox" id="check-all" class="flat">
-                            </th>
-                            <th>STT</th>
+                            <th><input name="all" type="checkbox" ng-click="selectAll()" /></th>
                             <th>Tên thành viên</th>
                             <th>Tài khoản</th>
                             <th>Email</th>
@@ -38,40 +35,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="a-center ">
-                                <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td>1</td>
-                            <td>Nguyễn Văn A</td>
-                            <td>nguyenvana</td>
-                            <td>nguyenvana@gmail.com</td>
+                        <tr ng-repeat="item in data">
+                            <td><input type="checkbox" ng-model="item.checked" name="all" /></td>
+                            <td>{{item.FullName}}</td>
+                            <td>{{item.UserName}}</td>
+                            <td>{{item.Email}}</td>
                             <td>
-                                <a ui-sref="edit_app_user({id:'1'})">
-                                    <span class="badge bg-purple">
-                                        Chi tiết
-                                    </span>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="a-center ">
-                                <input type="checkbox" class="flat" name="table_records">
-                            </td>
-                            <td>2</td>
-                            <td>Nguyễn Văn A</td>
-                            <td>nguyenvana</td>
-                            <td>nguyenvana@gmail.com</td>
-                            <td>
-                                <a ui-sref="edit_app_user({id:'2'})">
-                                    <span class="badge bg-purple">
-                                        Chi tiết
-                                    </span>
-                                </a>
+                                <a ui-sref="edit_app_user({id:item.Id})" title="Sửa"><span class="badge bg-blue">Sửa</span></a>
+                                <a href="javascript:void(0);" title="Xóa" ng-click="deleteItem(item.Id)"><span class="badge bg-red">Xóa</span></a>
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                        </tr>
+                    </tfoot>
                 </table>
+                <div ng-if="loading">
+                    <div class="col-xs-4"></div>
+                    <div class="col-xs-4">
+                        <i class="fa fa-refresh fa-4x fa-spin"></i> <label class="label label-primary">Đang tải...</label>
+                    </div>
+                    <div class="col-xs-4"></div>
+                </div>
+                <div>
+                    <pager-directive page="{{page}}" custom-path="{{customPath}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page)"></pager-directive>
+                </div>
             </div>
         </div>
     </div>

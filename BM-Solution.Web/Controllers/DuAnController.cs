@@ -66,17 +66,27 @@ namespace BM_Solution.Web.Controllers
             });
         }
 
+        [Route("getListString")]
+        [HttpGet]
+        public HttpResponseMessage GetListString(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _duAnService.GetAll().Select(x => x.Id);
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
+                return response;
+            });
+        }
+
         [Route("getlistall")]
         [HttpGet]
         public HttpResponseMessage GetAll(HttpRequestMessage request)
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = AppRoleManager.Roles.ToList();
-                IEnumerable<ApplicationRoleViewModel> modelVm = Mapper.Map<IEnumerable<AppRole>, IEnumerable<ApplicationRoleViewModel>>(model);
-
+                var model = _duAnService.GetAll();
+                IEnumerable<DuAnViewModel> modelVm = Mapper.Map<IEnumerable<DuAn>, IEnumerable<DuAnViewModel>>(model);
                 var response = request.CreateResponse(HttpStatusCode.OK, modelVm);
-
                 return response;
             });
         }

@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
 using BM_Solution.Model.Models;
 using BM_Solution.Web.Infrastructure.Core;
+using BM_Solution.Web.Infrastructure.Extensions;
 using BM_Solution.Web.Models.System;
 using BM_Solutions.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
-using BM_Solution.Web.Providers;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace BM_Solution.Web.Controllers
 {
@@ -18,6 +19,7 @@ namespace BM_Solution.Web.Controllers
     public class AppUserController : ApiControllerBase
     {
         private readonly IDuAnUserService _duAnUserService;
+
         public AppUserController(IErrorService errorService, IDuAnUserService duAnUserService)
             : base(errorService)
         {
@@ -26,7 +28,38 @@ namespace BM_Solution.Web.Controllers
 
         [Route("getlistpaging")]
         [HttpGet]
-        public HttpResponseMessage GetListPaging(HttpRequestMessage request)
+        public HttpResponseMessage GetListPaging(HttpRequestMessage request, int page, int pageSize, string filter = null)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response = null;
+                var query = AppUserManager.Users;
+                if (!string.IsNullOrEmpty(filter))
+                    query = query.Where(x => x.UserName.Contains(filter) || x.FullName.Contains(filter));
+                var totalRow = query.Count();
+
+                var model = query.OrderBy(x => x.UserName).Skip(page * pageSize).Take(pageSize);
+
+                IEnumerable<AppUserViewModel> modelVm =
+                    Mapper.Map<IEnumerable<AppUser>, IEnumerable<AppUserViewModel>>(model);
+
+                PaginationSet<AppUserViewModel> pagedSet = new PaginationSet<AppUserViewModel>()
+                {
+                    Items = modelVm,
+                    Page = page,
+                    TotalCount = totalRow,
+                    TotalPages = (int)Math.Ceiling((decimal)totalRow / pageSize)
+                };
+
+                response = request.CreateResponse(HttpStatusCode.OK, pagedSet);
+
+                return response;
+            });
+        }
+
+        [Route("getlistall")]
+        [HttpGet]
+        public HttpResponseMessage GetAll(HttpRequestMessage request)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -34,7 +67,6 @@ namespace BM_Solution.Web.Controllers
                 var model = AppUserManager.Users;
                 IEnumerable<AppUserViewModel> modelVm =
                     Mapper.Map<IEnumerable<AppUser>, IEnumerable<AppUserViewModel>>(model);
-
                 response = request.CreateResponse(HttpStatusCode.OK, model);
 
                 return response;
@@ -57,9 +89,17 @@ namespace BM_Solution.Web.Controllers
             else
             {
                 var roles = await AppUserManager.GetRolesAsync(user.Id);
-                var applicationUserViewModel = Mapper.Map<AppUser, AppUserViewModel>(user);
-                applicationUserViewModel.Roles = roles;
-                return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
+                var modelVm = Mapper.Map<AppUser, AppUserViewModel>(user);
+                modelVm.Roles = (List<RoleVm>)roles;
+                var duAns = _duAnUserService.GetDuAnByUserId(id);
+                List<DuAnVm> listDuAns = new List<DuAnVm>();
+                foreach (var item in duAns)
+                {
+                    var duAnVm = new DuAnVm { Id = item };
+                    listDuAns.Add(duAnVm);
+                }
+                modelVm.DuAns = listDuAns;
+                return request.CreateResponse(HttpStatusCode.OK, modelVm);
             }
         }
 
@@ -67,24 +107,43 @@ namespace BM_Solution.Web.Controllers
         [Route("add")]
         public async Task<HttpResponseMessage> Create(HttpRequestMessage request, AppUserViewModel appUserViewModel)
         {
-            if (string.IsNullOrEmpty(appUserViewModel.Id))
+            if (ModelState.IsValid)
             {
-                return request.CreateErrorResponse(HttpStatusCode.BadRequest, nameof(appUserViewModel.Id) + " không có giá trị.");
-            }
-            var user = await AppUserManager.FindByIdAsync(appUserViewModel.Id);
-            if (user == null)
-            {
-                return request.CreateErrorResponse(HttpStatusCode.NoContent, "Không có dữ liệu");
+                var newAppUser = new AppUser();
+                newAppUser.UpdateAppUser(appUserViewModel);
+                try
+                {
+                    var result = await AppUserManager.CreateAsync(newAppUser, appUserViewModel.Password);
+                    if (result.Succeeded)
+                    {
+                        List<string> roles = new List<string>();
+                        appUserViewModel.Roles.ForEach(a => roles.Add(a.Name));
+                        await AppUserManager.AddToRolesAsync(newAppUser.Id, roles.ToArray());
+                        foreach (var item in appUserViewModel.DuAns)
+                        {
+                            var duAnUser = new DuAnUser
+                            {
+                                UserId = newAppUser.Id,
+                                DuaAnId = item.Id
+                            };
+                            _duAnUserService.Add(duAnUser);
+                        }
+                        _duAnUserService.SaveChange();
+                        return request.CreateResponse(HttpStatusCode.OK, appUserViewModel);
+                    }
+                    else
+                        return request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join(",", result.Errors));
+                }
+                catch (Exception ex)
+                {
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                }
             }
             else
             {
-                var roles = await AppUserManager.GetRolesAsync(user.Id);
-                var applicationUserViewModel = Mapper.Map<AppUser, AppUserViewModel>(user);
-                applicationUserViewModel.Roles = roles;
-                return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
             }
         }
-
 
         [Route("getListString")]
         [HttpGet]

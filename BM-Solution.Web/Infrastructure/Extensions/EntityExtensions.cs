@@ -17,6 +17,17 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             appRole.Description = appRoleViewModel.Description;
         }
 
+        public static void UpdateAppUser(this AppUser appUser, AppUserViewModel appUserViewModel, string action = "add")
+        {
+            if (action == "update")
+                appUser.Id = appUserViewModel.Id;
+            else
+                appUser.Id = Guid.NewGuid().ToString();
+            appUser.FullName = appUserViewModel.FullName;
+            appUser.Email = appUserViewModel.Email;
+            appUser.UserName = appUserViewModel.UserName;
+        }
+
         public static void UpdateDuAn(this DuAn duAn, DuAnViewModel duAnViewModel)
         {
             duAn.Id = duAnViewModel.Id;
