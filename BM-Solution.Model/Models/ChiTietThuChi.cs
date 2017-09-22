@@ -20,9 +20,9 @@ namespace BM_Solution.Model.Models
 
         public DateTime NgayTao { set; get; }
 
-        public Decimal TienChi { set; get; }
+        public long TienChi { set; get; }
 
-        public Decimal TienThu { set; get; }
+        public long TienThu { set; get; }
 
         [ForeignKey("UserId")]
         public AppUser AppUser { get; set; }

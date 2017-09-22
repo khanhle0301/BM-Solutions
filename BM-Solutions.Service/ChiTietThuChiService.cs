@@ -1,6 +1,7 @@
 ﻿using BM_Solution.Data.Infrastructure;
 using BM_Solution.Data.Repositories;
 using BM_Solution.Model.Models;
+using System;
 using System.Collections.Generic;
 
 namespace BM_Solutions.Service
@@ -14,6 +15,8 @@ namespace BM_Solutions.Service
         IEnumerable<ChiTietThuChi> GetAll();
 
         IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId);
+
+        IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, string startDate, string endDate);
 
         void Save();
     }
@@ -47,6 +50,11 @@ namespace BM_Solutions.Service
         public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId)
         {
             return _chiTietThuChiRepository.GetMulti(x => x.DuAnId == duaAnId && x.IsDelete == false, new string[] { "AppUser" });
+        }
+
+        public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, string startDate, string endDate)
+        {
+            return _chiTietThuChiRepository.GetByDuAnId(duaAnId, startDate, endDate);
         }
 
         public void Save()

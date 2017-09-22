@@ -96,6 +96,10 @@
     <Compile Include="Migrations\201709201926031_EditChiTiet_No2.Designer.cs">
       <DependentUpon>201709201926031_EditChiTiet_No2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709211253298_EditThuChi.cs" />
+    <Compile Include="Migrations\201709211253298_EditThuChi.Designer.cs">
+      <DependentUpon>201709211253298_EditThuChi.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ChiTietThuChiRepository.cs" />
@@ -112,6 +116,10 @@
     <ProjectReference Include="..\BM-Solution.Model\BM-Solution.Model.csproj">
       <Project>{39da973b-b6be-4a77-aac5-3824e7d9c1a5}</Project>
       <Name>BM-Solution.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BM-Solutions.Common\BM-Solutions.Common.csproj">
+      <Project>{5A25CFF2-A265-4469-AD57-CBEADA94A6CE}</Project>
+      <Name>BM-Solutions.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709201926031_EditChiTiet_No2.resx">
       <DependentUpon>201709201926031_EditChiTiet_No2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709211253298_EditThuChi.resx">
+      <DependentUpon>201709211253298_EditThuChi.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

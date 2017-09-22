@@ -2,25 +2,14 @@
     app.controller('duanEditController', duanEditController);
 
     duanEditController.$inject = ['apiService', '$scope', 'notificationService', '$state', '$location',
-        'commonService', '$stateParams', 'authData'];
+        'commonService', '$stateParams', 'authData', '$ngBootbox'];
 
     function duanEditController(apiService, $scope, notificationService, $state, $location,
-        commonService, $stateParams, authData) {
-        $scope.open1 = function () {
-            $scope.popup1.opened = true;
-        };
+        commonService, $stateParams, authData, $ngBootbox) {
 
-        $scope.popup1 = {
-            opened: false
-        };
-
-        $scope.open2 = function () {
-            $scope.popup2.opened = true;
-        };
-
-        $scope.popup2 = {
-            opened: false
-        };
+        $scope.openModel = function () {
+            $('#myModal').modal('show');
+        }
 
         var roles = authData.authenticationData.roles;
         $scope.isSys = roles.includes('Admin');
@@ -56,14 +45,14 @@
 
         function search(page) {
             page = page || 0;
-
-            $scope.loading = true;
+            var obj = JSON.parse(angular.toJson($scope.date));
             var config = {
                 params: {
                     duAnId: $stateParams.id,
                     page: page,
                     pageSize: 10,
-                    filter: $scope.filter
+                    startDate: obj.startDate.substring(0, 10),
+                    endDate: obj.endDate.substring(0, 10)
                 }
             }
 
@@ -79,6 +68,13 @@
             $scope.pagesCount = result.data.TotalPages;
             $scope.totalCount = result.data.TotalCount;
             $scope.loading = false;
+            var tongthu = 0, tongchi = 0;
+            for (var i = 0; i < $scope.data.length; i++) {
+                tongthu += ($scope.data[i].TienThu);
+                tongchi += ($scope.data[i].TienChi);
+            }
+            $scope.TongThu = tongthu;
+            $scope.TongChi = tongchi;
         }
         function dataLoadFailed(response) {
             notificationService.displayError(response.data.Message);
@@ -123,6 +119,71 @@
         function editFailed(response) {
             notificationService.displayError(response.data.Message);
         }
+
+
+        $scope.today = function () {
+            $scope.ngaytaoct = new Date();
+        };
+        $scope.today();
+
+        $scope.openchitiet = function () {
+            $scope.popupchitiet.opened = true;
+        };
+
+        $scope.popupchitiet = {
+            opened: false
+        };
+
+        $scope.chitiet = {
+            IsDelete: false,
+            DuAnId: $stateParams.id
+        };
+
+        $scope.addChiTiet = addChiTiet;
+
+        function addChiTiet() {
+            $scope.chitiet.NgayTao = $scope.ngaytaoct;
+            apiService.post('api/chitietthuchi/add', $scope.chitiet, addChiTietSuccessed, addChiTietFailed);
+        }
+
+        function addChiTietSuccessed() {
+            notificationService.displaySuccess('Thêm giao dịch thành công');
+            loadUser();
+            loadDetail();
+            $scope.search();
+            $('#myModal').modal('hide');
+        }
+
+        function addChiTietFailed(response) {
+            notificationService.displayError(response.data.Message);
+        }
+
+        //
+        $scope.date = {
+            startDate: moment().subtract(1, "days"),
+            endDate: moment()
+        };
+
+        $scope.ketthuc = ketthuc;
+
+        function ketthuc() {
+            $ngBootbox.confirm('Bạn có chắc muốn kết thúc dự án?')
+                .then(function () {
+                    var config = {
+                        params: {
+                            id: $stateParams.id
+                        }
+                    }
+                    apiService.del('/api/duan/ketthuc', config, function () {
+                            notificationService.displaySuccess('Dự án đã kết thúc.');
+                            loadDetail();
+                        },
+                        function () {
+                            notificationService.displayError('Kết thúc thất bại.');
+                        });
+                });
+        }
+
 
         loadUser();
         loadDetail();

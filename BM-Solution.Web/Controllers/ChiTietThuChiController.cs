@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BM_Solutions.Common.ViewModel;
 
 namespace BM_Solution.Web.Controllers
 {
@@ -20,39 +21,51 @@ namespace BM_Solution.Web.Controllers
     public class ChiTietThuChiController : ApiControllerBase
     {
         private readonly IChiTietThuChiService _chiTietThuChiService;
+        private readonly IDuAnService _duAnService;
 
         public ChiTietThuChiController(IErrorService errorService,
-            IChiTietThuChiService chiTietThuChiService) : base(errorService)
+            IChiTietThuChiService chiTietThuChiService, IDuAnService duAnService)
+            : base(errorService)
         {
             _chiTietThuChiService = chiTietThuChiService;
+            _duAnService = duAnService;
         }
 
         [Route("getbyduanid")]
         [HttpGet]
-        public HttpResponseMessage GetByDuAnId(HttpRequestMessage request, string duAnId, int page, int pageSize, string filter = null)
+        public HttpResponseMessage GetByDuAnId(HttpRequestMessage request, string duAnId, string startDate,
+            string endDate, int page, int pageSize)
         {
-            return CreateHttpResponse(request, () =>
+            try
             {
-                var query = _chiTietThuChiService.GetByDuAnId(duAnId);
-
-                var totalRow = query.Count();
-
-                var model = query.OrderByDescending(x => x.NgayTao).Skip(page * pageSize).Take(pageSize);
-
-                IEnumerable<ChiTietThuChiViewModel> modelVm = Mapper.Map<IEnumerable<ChiTietThuChi>, IEnumerable<ChiTietThuChiViewModel>>(model);
-
-                PaginationSet<ChiTietThuChiViewModel> pagedSet = new PaginationSet<ChiTietThuChiViewModel>()
+                return CreateHttpResponse(request, () =>
                 {
-                    Items = modelVm,
-                    Page = page,
-                    TotalCount = totalRow,
-                    TotalPages = (int)Math.Ceiling((decimal)totalRow / pageSize)
-                };
+                    var query = _chiTietThuChiService.GetByDuAnId(duAnId, startDate, endDate);
 
-                var response = request.CreateResponse(HttpStatusCode.OK, pagedSet);
+                    var totalRow = query.Count();
 
-                return response;
-            });
+                    var model = query.OrderByDescending(x => x.NgayTao).Skip(page * pageSize).Take(pageSize);
+
+                    IEnumerable<ChiTietThuChiViewModel> modelVm = Mapper.Map<IEnumerable<ChiTietThuChi>, IEnumerable<ChiTietThuChiViewModel>>(model);
+
+                    PaginationSet<ChiTietThuChiViewModel> pagedSet = new PaginationSet<ChiTietThuChiViewModel>()
+                    {
+                        Items = modelVm,
+                        Page = page,
+                        TotalCount = totalRow,
+                        TotalPages = (int)Math.Ceiling((decimal)totalRow / pageSize)
+                    };
+
+                    var response = request.CreateResponse(HttpStatusCode.OK, pagedSet);
+
+                    return response;
+
+                });
+            }
+            catch (Exception ex)
+            {
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
         }
 
         [Route("getlistall")]
@@ -72,20 +85,19 @@ namespace BM_Solution.Web.Controllers
 
         [HttpPost]
         [Route("add")]
-        public HttpResponseMessage Create(HttpRequestMessage request, ApplicationRoleViewModel applicationRoleViewModel)
+        public HttpResponseMessage Create(HttpRequestMessage request, ChiTietThuChiViewModel chiTietThuChiViewModel)
         {
             if (ModelState.IsValid)
             {
-                var newAppRole = new AppRole();
-                newAppRole.UpdateApplicationRole(applicationRoleViewModel);
-                if (AppRoleManager.Roles.Any(x => x.Name.Contains(newAppRole.Name)))
-                {
-                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, "Tên quyền " + newAppRole.Name + " đã tồn tại!");
-                }
+                var newChiTietThuChi = new ChiTietThuChi();
+                newChiTietThuChi.UpdateApplicationChiTietThuChi(chiTietThuChiViewModel);
+                newChiTietThuChi.UserId = User.Identity.GetUserId();
                 try
                 {
-                    AppRoleManager.Create(newAppRole);
-                    return request.CreateResponse(HttpStatusCode.OK, applicationRoleViewModel);
+                    _chiTietThuChiService.Add(newChiTietThuChi);
+                    _duAnService.UpdateProfit(newChiTietThuChi);
+                    _chiTietThuChiService.Save();
+                    return request.CreateResponse(HttpStatusCode.OK, chiTietThuChiViewModel);
                 }
                 catch (Exception ex)
                 {

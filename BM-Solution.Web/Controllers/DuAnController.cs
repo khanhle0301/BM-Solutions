@@ -12,7 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 using BM_Solution.Web.Providers;
 
 namespace BM_Solution.Web.Controllers
@@ -37,7 +39,12 @@ namespace BM_Solution.Web.Controllers
         {
             return CreateHttpResponse(request, () =>
             {
-                var query = _duAnService.GetAll(filter);
+                var roles = ((ClaimsIdentity)User.Identity).Claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value);
+                var userId = User.Identity.GetUserId();
+
+                var query = _duAnService.GetByUserId(userId, filter, roles);
 
                 var totalRow = query.Count();
 
@@ -171,6 +178,44 @@ namespace BM_Solution.Web.Controllers
             var appRole = AppRoleManager.FindById(id);
             AppRoleManager.Delete(appRole);
             return request.CreateResponse(HttpStatusCode.OK, id);
+        }
+
+
+        [HttpDelete]
+        [Route("ketthuc")]
+        public HttpResponseMessage KetThuc(HttpRequestMessage request, string id)
+        {
+            _duAnService.KetThucDuAn(id);
+            _duAnService.Save();
+            return request.CreateResponse(HttpStatusCode.OK, id);
+        }
+
+        [Route("deletemulti")]
+        [Permission(Role = "Admin")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedList)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response = null;
+                if (!ModelState.IsValid)
+                {
+                    response = request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+                }
+                else
+                {
+                    var listId = new JavaScriptSerializer().Deserialize<List<string>>(checkedList);
+                    foreach (var item in listId)
+                    {
+                        _duAnService.Delete(item);
+                    }
+                    _duAnService.Save();
+
+                    response = request.CreateResponse(HttpStatusCode.OK, listId.Count);
+                }
+
+                return response;
+            });
         }
     }
 }

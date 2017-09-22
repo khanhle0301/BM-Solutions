@@ -24,17 +24,21 @@
             $.each($scope.selected, function (i, item) {
                 listId.push(item.Id);
             });
-            var config = {
-                params: {
-                    checkedList: JSON.stringify(listId)
-                }
-            }
-            apiService.del('/api/duan/deletemulti', config, function (result) {
-                notificationService.displaySuccess('Xóa thành công ' + result.data + ' bản ghi.');
-                search();
-            }, function (error) {
-                notificationService.displayError('Xóa không thành công');
-            });
+
+            $ngBootbox.confirm('Bạn có chắc muốn xóa?')
+                .then(function () {
+                    var config = {
+                        params: {
+                            checkedList: JSON.stringify(listId)
+                        }
+                    }
+                    apiService.del('/api/duan/deletemulti', config, function (result) {
+                        notificationService.displaySuccess('Xóa thành công ' + result.data + ' bản ghi.');
+                        search();
+                    }, function (error) {
+                        notificationService.displayError('Xóa không thành công');
+                    });
+                });
         }
 
         $scope.isAll = false;

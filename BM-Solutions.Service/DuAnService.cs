@@ -4,6 +4,7 @@ using BM_Solution.Model.Models;
 using BM_Solutions.Common.Exceptions;
 using System.Collections.Generic;
 using System;
+using BM_Solutions.Common.Enums;
 
 namespace BM_Solutions.Service
 {
@@ -12,14 +13,19 @@ namespace BM_Solutions.Service
         DuAn Add(DuAn duAn);
 
         DuAn Update(DuAn duAn);
-
-        DuAn Delete(string id);
+        void Delete(string id);
 
         IEnumerable<DuAn> GetAll();
 
-        IEnumerable<DuAn> GetAll(string keyword);
+        IEnumerable<DuAn> GetAll(string userId, string keyword, string role);
 
         DuAn GetById(string id);
+
+        void UpdateProfit(ChiTietThuChi chiTietThuChi);
+
+        void KetThucDuAn(string id);
+
+        IEnumerable<DuAn> GetByUserId(string userId, string keyword, IEnumerable<string> role);
 
         void Save();
     }
@@ -42,10 +48,10 @@ namespace BM_Solutions.Service
             return _duAnRepository.Add(duAn);
         }
 
-        public DuAn Delete(string id)
+        public void Delete(string id)
         {
             var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == id);
-            return _duAnRepository.Delete(duAn);
+            duAn.IsDelete = true;
         }
 
         public IEnumerable<DuAn> GetAll()
@@ -53,16 +59,31 @@ namespace BM_Solutions.Service
             return _duAnRepository.GetMulti(x => x.IsDelete == false);
         }
 
-        public IEnumerable<DuAn> GetAll(string keyword)
+        public IEnumerable<DuAn> GetAll(string userId, string keyword, string role)
         {
-            if (!string.IsNullOrEmpty(keyword))
-                return _duAnRepository.GetMulti(x => x.IsDelete == false && x.Ten.Contains(keyword));
+            if (!role.Contains("Admin"))
+            {
+                if (!string.IsNullOrEmpty(keyword))
+                    return _duAnRepository.GetMulti(x => x.IsDelete == false && x.Ten.Contains(keyword));
+            }
+
             return GetAll();
         }
 
         public DuAn GetById(string id)
         {
             return _duAnRepository.GetSingleByCondition(x => x.Id == id);
+        }
+
+        public IEnumerable<DuAn> GetByUserId(string userId, string keyword, IEnumerable<string> role)
+        {
+            return _duAnRepository.GetByUserId(userId, keyword, role);
+        }
+
+        public void KetThucDuAn(string id)
+        {
+            var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == id);
+            duAn.TrangThai = StatusEnum.DaKetThuc;
         }
 
         public void Save()
@@ -79,6 +100,40 @@ namespace BM_Solutions.Service
             duAnEdit.NoiDung = duAn.NoiDung;
             duAnEdit.GhiChu = duAn.GhiChu;
             return duAnEdit;
+        }
+
+        public void UpdateProfit(ChiTietThuChi chiTietThuChi)
+        {
+            var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == chiTietThuChi.DuAnId);
+            duAn.TienChiThucTe += chiTietThuChi.TienChi;
+            duAn.TienThuThucTe += chiTietThuChi.TienThu;
+            var loiNhuan = duAn.TienThuThucTe - duAn.TienChiThucTe;
+            if (loiNhuan <= 0)
+            {
+                if (duAn.TienThuThucTe > 0)
+                {
+                    duAn.TrangThai = StatusEnum.DaCoTien;
+                    duAn.LoiNhuanThucTe = 0;
+                }
+                else
+                {
+                    duAn.TrangThai = StatusEnum.DangHoatDong;
+                    duAn.LoiNhuanThucTe = 0;
+                }
+            }
+            else
+            {
+                if (loiNhuan > duAn.LoiNhuanDuTinh)
+                {
+                    duAn.TrangThai = StatusEnum.CoTheKetThuc;
+                    duAn.LoiNhuanThucTe = loiNhuan;
+                }
+                else
+                {
+                    duAn.TrangThai = StatusEnum.DaCoLoiNhuan;
+                    duAn.LoiNhuanThucTe = loiNhuan;
+                }
+            }
         }
     }
 }

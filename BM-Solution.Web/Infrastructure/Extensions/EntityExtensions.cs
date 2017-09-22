@@ -33,7 +33,17 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             duAn.GhiChu = duAnViewModel.GhiChu;
             duAn.TrangThai = duAnViewModel.TrangThai;
             duAn.IsDelete = duAnViewModel.IsDelete;
+        }
 
+        public static void UpdateApplicationChiTietThuChi(this ChiTietThuChi chiTietThuChi, ChiTietThuChiViewModel chiTietThuChiViewModel)
+        {
+            chiTietThuChi.Id = chiTietThuChiViewModel.Id;
+            chiTietThuChi.NgayTao = chiTietThuChiViewModel.NgayTao;
+            chiTietThuChi.TienChi = chiTietThuChiViewModel.TienChi;
+            chiTietThuChi.TienThu = chiTietThuChiViewModel.TienThu;
+            chiTietThuChi.UserId = chiTietThuChiViewModel.UserId;
+            chiTietThuChi.DuAnId = chiTietThuChiViewModel.DuAnId;
+            chiTietThuChi.IsDelete = chiTietThuChiViewModel.IsDelete;
         }
     }
 }

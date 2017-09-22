@@ -92,7 +92,7 @@
                                 Tiền chi thực tế <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="text" id="first-name" required="required" disabled="disabled" class="form-control col-md-7 col-xs-12">
+                                <input type="text" id="first-name" ng-model="duan.TienChiThucTe" required="required" disabled="disabled" class="form-control col-md-7 col-xs-12">
                             </div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                                 Tiền thu dự tính <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="number" min="0" name="tienthudutinh" required ng-model="duan.TienThuDuTinh" disabled="disabled" class="form-control col-md-7 col-xs-12">
+                                <input type="number" min="0" name="tienthudutinh" ng-model="duan.TienThuDuTinh" required ng-model="duan.TienThuDuTinh" disabled="disabled" class="form-control col-md-7 col-xs-12">
                                 <span ng-show="frmEdit.tienthudutinh.$error.required" class="has-error">Vui lòng nhập tiền thu dự tính.</span>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                                 Tiền thu thực tế <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" disabled="disabled">
+                                <input type="text" id="first-name" ng-model="duan.TienThuThucTe" required="required" class="form-control col-md-7 col-xs-12" disabled="disabled">
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                                 Lợi nhuận thực tế <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12" disabled="disabled">
+                                <input type="text" id="first-name" ng-model="duan.LoiNhuanThucTe" required="required" class="form-control col-md-7 col-xs-12" disabled="disabled">
                             </div>
                         </div>
                     </div>
@@ -137,13 +137,13 @@
                                 Trạng thái <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <button ng-if="duan.TrangThai==3"
-                                        class="btn btn-round btn-danger">
+                                <button ng-click="ketthuc()" ng-if="duan.TrangThai==3"
+                                       type="button" class="btn btn-round btn-danger">
                                     Có thể kết thúc
                                 </button>
                                 <label ng-if="duan.TrangThai!=3">
-                                    <span ng-class="{'badge bg-green':duan.TrangThai==0,'badge bg-gray':duan.TrangThai==1,
-                                              'badge bg-blue':duan.TrangThai==2,'badge bg-red':duan.TrangThai==3,'badge':duan.TrangThai==4}">
+                                    <span ng-class="{'badge bg-green':duan.TrangThai==0,'badge bg-purple':duan.TrangThai==1,
+                                              'badge bg-blue':duan.TrangThai==2,'badge bg-red':duan.TrangThai==3,'badge bg-gray':duan.TrangThai==4}">
                                         {{duan.TrangThai | statusFilter}}
                                     </span>
                                 </label>
@@ -234,18 +234,17 @@
                             <fieldset>
                                 <div class="control-group">
                                     <div class="controls">
-                                        <div class="input-prepend input-group">
-                                            <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                            <input type="text" name="reservation" id="reservation" class="form-control" value="01/01/2017 - 01/01/2017"/>
-                                        </div>
+                                        <input date-range-picker id="daterange4" options="{locale: {format: 'DD-MM-YYYY'}}"
+                                            readonly   name="daterange4" class="form-control date-picker" type="text"
+                                               ng-model="date" clearable="true" required />
                                     </div>
                                 </div>
                             </fieldset>
                         </div>
                         <div class="col-md-7 col-sm-6 col-xs-12 form-group">
-                            <button class="btn btn-success" type="button">Tìm</button>
-                            <button class="btn btn-danger" type="button">Xóa</button>
-                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Thêm</button>
+                            <button class="btn btn-success" ng-click="search()" type="button">Tìm</button>
+                            <button class="btn btn-danger" type="button" ng-if="isSys">Xóa</button>
+                            <button class="btn btn-primary" type="button" ng-if="duan.TrangThai!=4" ng-click="openModel()">Thêm</button>
                         </div>
                     </div>
                 </div>
@@ -256,9 +255,7 @@
                     <table class="table table-striped jambo_table bulk_action">
                         <thead>
                             <tr>
-                                <th>
-                                    <input type="checkbox" id="check-all" class="flat">
-                                </th>
+                                <th ng-if="isSys"><input name="all" type="checkbox" ng-click="selectAll()" /></th>
                                 <th>Thời gian</th>
                                 <th>Dự án</th>
                                 <th>Thành viên</th>
@@ -268,22 +265,48 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in data">
-                                <td class="a-center ">
-                                    <input type="checkbox" class="flat" name="table_records">
-                                </td>
+                                <td ng-if="isSys"><input type="checkbox" ng-model="item.checked" name="all" /></td>
                                 <td>{{item.NgayTao | date : 'dd/MM/yyyy'}}</td>
                                 <td>{{item.DuAnId}}</td>
                                 <td>{{item.AppUser.UserName}}</td>
                                 <td>{{item.TienChi | number}}</td>
                                 <td>{{item.TienThu | number}}</td>
                             </tr>
+                            <tr ng-if="isSys">
+                                <td>Tổng: </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{TongChi | number}}</td>
+                                <td>{{TongThu | number}}</td>
+                            </tr>
+                            <tr ng-if="!isSys">
+                                <td>Tổng: </td>
+                                <td></td>
+                                <td></td>
+                                <td>{{TongChi | number}}</td>
+                                <td>{{TongThu | number}}</td>
+                            </tr>
                         </tbody>
+                        <tfoot>
+                            <tr ng-if="isSys">
+                                <td colspan="6"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                            </tr>
+                            <tr ng-if="!isSys">
+                                <td colspan="5"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                            </tr>
+                        </tfoot>
                     </table>
+                    <div>
+                        <pager-directive page="{{page}}" custom-path="{{customPath}}" pages-count="{{pagesCount}}" total-count="{{totalCount}}" search-func="search(page)"></pager-directive>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" data-keyboard="false" data-backdrop="static">
@@ -296,26 +319,30 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal form-label-left input_mask" novalidate
-                      *ngIf="quantityEntity">
+                <form id="addChitiet" class="form-horizontal form-label-left input_mask" role="form" novalidate name="frmAddChiTiet" ng-submit="addChiTiet()">
                     <div class="form-group row">
-                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.ngaytaochitiet.$invalid && !frmAddChiTiet.ngaytaochitiet.$pristine }">
                             <label>Thời gian</label>
                             <div class="col-md-11 xdisplay_inputx form-group has-feedback">
-                                <input value="01/01/2017" type="text" class="form-control has-feedback-left" id="single_cal1" name="single_cal1" placeholder="First Name" aria-describedby="inputSuccess2Status">
-                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                <input name="ngaytaochitiet" type="text" required class="form-control" ng-click="openchitiet()" uib-datepicker-popup="dd/MM/yyyy" ng-model="ngaytaoct" is-open="popupchitiet.opened"
+                                       placeholder="dd/MM/yyyy" datepicker-options="dateOptions" close-text="Close"
+                                       ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d)|([2-9]\d{3})$/" />
+                                <!--<span ng-show="frmAddChiTiet.ngaytaochitiet.$error.required" class="has-error">Vui lòng chọn ngày.</span>
+                                <span ng-show="frmAddChiTiet.ngaytaochitiet.$error.pattern" class="has-error">Định dạng ngày không đúng.</span>-->
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.tienchichitiet.$invalid && !frmAddChiTiet.tienchichitiet.$pristine }">
                             <label>Tiền chi</label>
-                            <input type="number" min="0" class="form-control">
+                            <input type="number" name="tienchichitiet" min="0" ng-model="chitiet.TienChi" required class="form-control">
+                            <span ng-show="frmAddChiTiet.tienchichitiet.$invalid" class="has-error">Phải nhập tiền chi</span>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.tienthuchitiet.$invalid && !frmAddChiTiet.tienthuchitiet.$pristine }">
+                            <label>Tiền Thu</label>
+                            <input type="number" name="tienthuchitiet" min="0" ng-model="chitiet.TienThu" required class="form-control">
+                            <span ng-show="frmAddChiTiet.tienthuchitiet.$invalid" class="has-error">Phải nhập tiền thu</span>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
-                            <label>Tiền chi</label>
-                            <input type="number" min="0" class="form-control">
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs-12">
-                            <button type="submit" class="btn btn-primary mt-24">Thêm</button>
+                            <button type="submit" ng-disabled="frmAddChiTiet.$invalid" class="btn btn-primary mt-24">Thêm</button>
                         </div>
                     </div>
                 </form>
