@@ -19,12 +19,14 @@
             }, function (error) {
                 console.log(error.status);
                 if (error.status === 401) {
-                    notificationService.displayError('Authenticate is required.');
+                    notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
+                }
+                else if (error.status === 403) {
+                    notificationService.displayError('Bạn bị chặn truy cập.');
                 }
                 else if (failure != null) {
                     failure(error);
                 }
-
             });
         }
         function post(url, data, success, failure) {
@@ -34,12 +36,14 @@
             }, function (error) {
                 console.log(error.status);
                 if (error.status === 401) {
-                    notificationService.displayError('Authenticate is required.');
+                    notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
+                }
+                else if (error.status === 403) {
+                    notificationService.displayError('Bạn bị chặn truy cập.');
                 }
                 else if (failure != null) {
                     failure(error);
                 }
-
             });
         }
         function put(url, data, success, failure) {
@@ -49,12 +53,14 @@
             }, function (error) {
                 console.log(error.status);
                 if (error.status === 401) {
-                    notificationService.displayError('Authenticate is required.');
+                    notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
+                }
+                else if (error.status === 403) {
+                    notificationService.displayError('Bạn bị chặn truy cập.');
                 }
                 else if (failure != null) {
                     failure(error);
                 }
-
             });
         }
         function get(url, params, success, failure) {
@@ -62,7 +68,16 @@
             $http.get(url, params).then(function (result) {
                 success(result);
             }, function (error) {
-                failure(error);
+                console.log(error.status);
+                if (error.status === 401) {
+                    notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
+                }
+                else if (error.status === 403) {
+                    notificationService.displayError('Bạn bị chặn truy cập.');
+                }
+                else if (failure != null) {
+                    failure(error);
+                }
             });
         }
     }

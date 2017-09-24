@@ -2,22 +2,22 @@
     <div class="row tile_count">
         <div class="col-md-3 col-sm-4 col-xs-4 tile_stats_count">
             <span class="count_top"><i class="fa fa-user"></i> Tổng thành viên</span>
-            <div class="count">50</div>
+            <div class="count">{{total.User}}</div>
             <span class="count_bottom">Thành viên.</span>
         </div>
         <div class="col-md-3 col-sm-4 col-xs-8 tile_stats_count">
             <span class="count_top"><i class="fa fa-file-text"></i> Tổng dự án</span>
-            <div class="count">70</div>
+            <div class="count">{{total.DuAn}}</div>
             <span class="count_bottom">Dự án.</span>
         </div>
         <div class="col-md-2 col-sm-4 col-xs-4 tile_stats_count">
             <span class="count_top"><i class="fa fa-file-text"></i> Số dự án tham gia</span>
-            <div class="count">7</div>
+            <div class="count">{{total.DuAnThamGia}}</div>
             <span class="count_bottom">Dự án.</span>
         </div>
         <div class="col-md-4 col-sm-4 col-xs-8 tile_stats_count">
             <span class="count_top"><i class="fa fa-money"></i> Tổng tiền</span>
-            <div class="count green">200.000.000</div>
+            <div class="count green">{{total.TongTien | number}}</div>
             <span class="count_bottom">VND.</span>
         </div>
     </div>
@@ -67,13 +67,13 @@
                                 <tr ng-repeat="item in data">
                                     <td ng-if="isSys"><input type="checkbox" ng-model="item.checked" name="all" /></td>
                                     <td><a ui-sref="duan_edit({id:item.Id})">{{item.Id}}</a></td>
-                                    <td>{{item.NgayTao | date : 'dd/MM/yyyy'}}</td>
-                                    <td>{{item.LoiNhuanDuTinh | number}}</td>
-                                    <td>{{item.TienChiDuTinh | number}}</td>
-                                    <td>{{item.TienThuDuTinh | number}}</td>
-                                    <td>{{item.TienChiThucTe | number}}</td>
-                                    <td>{{item.TienThuThucTe | number}}</td>
-                                    <td>{{item.LoiNhuanThucTe | number}}</td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.NgayTao | date : 'dd/MM/yyyy'}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.LoiNhuanDuTinh | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienChiDuTinh | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienThuDuTinh | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienChiThucTe | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienThuThucTe | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.LoiNhuanThucTe | number}}</a></td>
                                     <td>
                                         <span ng-class="{'badge bg-green':item.TrangThai==0,'badge bg-purple':item.TrangThai==1,
                                               'badge bg-blue':item.TrangThai==2,'badge bg-red':item.TrangThai==3,'badge bg-gray':item.TrangThai==4}">

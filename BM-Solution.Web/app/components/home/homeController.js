@@ -2,29 +2,31 @@
     app.controller('homeController', homeController);
 
     homeController.$inject = ['$state', 'authData', '$scope', 'authenticationService', 'apiService'
-        , 'notificationService', '$stateParams', '$ngBootbox', '$filter'];
+        , 'notificationService', '$stateParams', '$ngBootbox', '$filter', '$location'];
 
     function homeController($state, authData, $scope, authenticationService, apiService,
-        notificationService, $stateParams, $ngBootbox, $filter) {
+        notificationService, $stateParams, $ngBootbox, $filter, $location) {
+        // định nghĩa các scope
         $scope.loading = true;
         $scope.data = [];
         $scope.page = 0;
-        $scope.pageCount = 0;
+        $scope.pagesCount = 0;
         $scope.search = search;
         $scope.deleteItem = deleteItem;
         $scope.selectAll = selectAll;
         $scope.deleteMultiple = deleteMultiple;
         $scope.filter = '';
 
+        // cờ admin
         var roles = authData.authenticationData.roles;
         $scope.isSys = roles.includes('Admin');
 
+        // xóa multiple
         function deleteMultiple() {
             var listId = [];
             $.each($scope.selected, function (i, item) {
                 listId.push(item.Id);
             });
-
             $ngBootbox.confirm('Bạn có chắc muốn xóa?')
                 .then(function () {
                     var config = {
@@ -41,6 +43,7 @@
                 });
         }
 
+        // event checkbox
         $scope.isAll = false;
         function selectAll() {
             if ($scope.isAll === false) {
@@ -56,6 +59,7 @@
             }
         }
 
+        // event checkbox
         $scope.$watch("data", function (n, o) {
             var checked = $filter("filter")(n, { checked: true });
             if (checked.length) {
@@ -66,6 +70,7 @@
             }
         }, true);
 
+        // xóa 1 item
         function deleteItem(id) {
             $ngBootbox.confirm('Bạn có chắc muốn xóa?')
                 .then(function () {
@@ -76,16 +81,17 @@
                     }
                     apiService.del('/api/duan/delete', config, function () {
                         notificationService.displaySuccess('Đã xóa thành công.');
-                        search();
+                        $location.url('/');
                     },
                         function () {
                             notificationService.displayError('Xóa không thành công.');
                         });
                 });
         }
+
+        // tìm kiếm
         function search(page) {
             page = page || 0;
-
             $scope.loading = true;
             var config = {
                 params: {
@@ -94,10 +100,10 @@
                     filter: $scope.filter
                 }
             }
-
             apiService.get('/api/duan/getlistpaging', config, dataLoadCompleted, dataLoadFailed);
         }
 
+        // load dữ liệu thành công
         function dataLoadCompleted(result) {
             if (result.data.TotalCount == 0) {
                 notificationService.displayWarning('Không có bản ghi nào được tìm thấy.');
@@ -108,10 +114,26 @@
             $scope.totalCount = result.data.TotalCount;
             $scope.loading = false;
         }
+
+        // load dữ liệu thất bại
         function dataLoadFailed(response) {
             notificationService.displayError(response.data.Message);
         }
 
+        // load total
+        $scope.total = [];
+        function loadTotal() {
+            apiService.get('/api/duan/gettotal', null,
+                function (result) {
+                    $scope.total = result.data;
+                },
+                function (result) {
+                    notificationService.displayError(result.data);
+                });
+        }
+
+        // load
         $scope.search();
+        loadTotal();
     }
 })(angular.module('bm-solutions'));

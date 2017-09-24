@@ -37,9 +37,9 @@
                     <tbody>
                         <tr ng-repeat="item in data">
                             <td><input type="checkbox" ng-model="item.checked" name="all" /></td>
-                            <td>{{item.FullName}}</td>
-                            <td>{{item.UserName}}</td>
-                            <td>{{item.Email}}</td>
+                            <td><a ui-sref="edit_app_user({id:item.Id})">{{item.FullName}}</a></td>
+                            <td><a ui-sref="edit_app_user({id:item.Id})">{{item.UserName}}</a></td>
+                            <td><a ui-sref="edit_app_user({id:item.Id})">{{item.Email}}</a></td>
                             <td>
                                 <a ui-sref="edit_app_user({id:item.Id})" title="Sửa"><span class="badge bg-blue">Sửa</span></a>
                                 <a href="javascript:void(0);" title="Xóa" ng-click="deleteItem(item.Id)"><span class="badge bg-red">Xóa</span></a>

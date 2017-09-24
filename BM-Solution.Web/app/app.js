@@ -5,7 +5,6 @@
             ['bm-solutions.duans',
                 'bm-solutions.app_users',
                 'bm-solutions.lichsus',
-                'bm-solutions.app_roles',
                 'bm-solutions.common'])
         .config(config)
         .config(configAuthentication);
@@ -46,13 +45,13 @@
                     return $q.reject(rejection);
                 },
                 response: function (response) {
-                    if (response.status == "401") {
+                    if (response.status == "401" || response.status == "403") {
                         $location.path('/login');
                     }
                     return response;
                 },
                 responseError: function (rejection) {
-                    if (rejection.status == "401") {
+                    if (rejection.status == "401" || rejection.status == "403") {
                         $location.path('/login');
                     }
                     return $q.reject(rejection);

@@ -13,35 +13,35 @@ namespace BM_Solutions.Service
 
         void Add(DuAnUser duAnUser);
 
-        void DeleteAll(string duAnId);
+        void DeleteAll(string duAnId, string userId);
 
         void SaveChange();
     }
 
     public class DuAnUserService : IDuAnUserService
     {
-        private readonly IPermissionRepository _permissionRepository;
+        private readonly IDuAnUserRepository _duAnUserRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DuAnUserService(IPermissionRepository permissionRepository, IUnitOfWork unitOfWork)
+        public DuAnUserService(IDuAnUserRepository duAnUserRepository, IUnitOfWork unitOfWork)
         {
-            _permissionRepository = permissionRepository;
+            _duAnUserRepository = duAnUserRepository;
             _unitOfWork = unitOfWork;
         }
 
         public void Add(DuAnUser duAnUser)
         {
-            _permissionRepository.Add(duAnUser);
+            _duAnUserRepository.Add(duAnUser);
         }
 
-        public void DeleteAll(string duAnId)
+        public void DeleteAll(string duAnId, string userId)
         {
-            _permissionRepository.DeleteMulti(x => x.DuaAnId == duAnId);
+            _duAnUserRepository.DeleteMulti(x => x.DuaAnId == duAnId && x.UserId == userId);
         }
 
         public List<string> GetUserByDuAnId(string duAnId)
         {
-            return _permissionRepository.GetUserByDuAnId(duAnId);
+            return _duAnUserRepository.GetUserByDuAnId(duAnId);
         }
 
         public void SaveChange()
@@ -51,7 +51,7 @@ namespace BM_Solutions.Service
 
         public List<string> GetDuAnByUserId(string userId)
         {
-            return _permissionRepository.GetDuAnByUserId(userId);
+            return _duAnUserRepository.GetDuAnByUserId(userId);
         }
     }
 }

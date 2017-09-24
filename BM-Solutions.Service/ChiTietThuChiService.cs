@@ -10,7 +10,7 @@ namespace BM_Solutions.Service
     {
         ChiTietThuChi Add(ChiTietThuChi chiTietThuChi);
 
-        ChiTietThuChi Delete(int id);
+        void Delete(int id);
 
         IEnumerable<ChiTietThuChi> GetAll();
 
@@ -18,6 +18,9 @@ namespace BM_Solutions.Service
 
         IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, string startDate, string endDate);
 
+        IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, string startDate, string endDate);
+
+        IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role);
         void Save();
     }
 
@@ -37,9 +40,15 @@ namespace BM_Solutions.Service
             return _chiTietThuChiRepository.Add(chiTietThuChi);
         }
 
-        public ChiTietThuChi Delete(int id)
+        public void Delete(int id)
         {
-            return _chiTietThuChiRepository.Delete(id);
+            var chiTiet = _chiTietThuChiRepository.GetSingleById(id);
+            chiTiet.IsDelete = true;
+        }
+
+        public IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role)
+        {
+            return _chiTietThuChiRepository.DuAnThamGia(userId, role);
         }
 
         public IEnumerable<ChiTietThuChi> GetAll()
@@ -55,6 +64,11 @@ namespace BM_Solutions.Service
         public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, string startDate, string endDate)
         {
             return _chiTietThuChiRepository.GetByDuAnId(duaAnId, startDate, endDate);
+        }
+
+        public IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, string startDate, string endDate)
+        {
+            return _chiTietThuChiRepository.NhatKyGiaoDich(role, userId, startDate, endDate);
         }
 
         public void Save()

@@ -8,18 +8,22 @@
             <div class="x_content">
                 <br />
                 <form class="form-horizontal form-label-left" role="form" novalidate name="frmAdd" ng-submit="addDuAn()">
+                    <!--mã-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmAdd.id.$invalid && !frmAdd.id.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
                                 Mã dự án <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="text" name="id" class="form-control col-md-7 col-xs-12" required ng-maxlength="50" ng-model="duan.Id">
+                                <input type="text" name="id" class="form-control col-md-7 col-xs-12" required ng-maxlength="50"
+                                       ng-pattern="/^[A-Za-z0-9]*$/" ng-model="duan.Id">
                                 <span ng-show="frmAdd.id.$error.required" class="has-error">Vui lòng nhập mã dự án.</span>
                                 <span ng-show="frmAdd.id.$error.maxlength" class="has-error">Mã dự án chỉ được 50 ký tự.</span>
+                                <span ng-show="frmAdd.id.$error.pattern" class="has-error">Mã dự án viết liền không dấu.</span>
                             </div>
                         </div>
                     </div>
+                    <!--tên-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmAdd.ten.$invalid && !frmAdd.ten.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -32,13 +36,14 @@
                             </div>
                         </div>
                     </div>
+                    <!--ngày tạo-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmAdd.ngaytao.$invalid && !frmAdd.ngaytao.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
                                 Ngày tạo <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input name="ngaytao" type="text" required class="form-control" ng-click="open1()" uib-datepicker-popup="dd/MM/yyyy" ng-model="ngayTao" is-open="popup1.opened"
+                                <input readonly name="ngaytao" type="text" required class="form-control" ng-click="open1()" uib-datepicker-popup="dd/MM/yyyy" ng-model="ngayTao" is-open="popup1.opened"
                                        placeholder="dd/MM/yyyy" datepicker-options="dateOptions" close-text="Close"
                                        ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d)|([2-9]\d{3})$/" />
                                 <span ng-show="frmAdd.ngaytao.$error.required" class="has-error">Vui lòng chọn ngày.</span>
@@ -46,13 +51,14 @@
                             </div>
                         </div>
                     </div>
+                    <!--thời gian dự tinh-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmAdd.thoigian.$invalid && !frmAdd.thoigian.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
                                 Thời gian dự tính <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input name="thoigian" type="text" required class="form-control" ng-click="open2()" uib-datepicker-popup="dd/MM/yyyy" ng-model="thoiGian" is-open="popup2.opened"
+                                <input readonly name="thoigian" type="text" required class="form-control" ng-click="open2()" uib-datepicker-popup="dd/MM/yyyy" ng-model="thoiGian" is-open="popup2.opened"
                                        placeholder="dd/MM/yyyy" datepicker-options="dateOptions" close-text="Close"
                                        ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d)|([2-9]\d{3})$/" />
                                 <span ng-show="frmAdd.thoigian.$error.required" class="has-error">Vui lòng chọn ngày.</span>
@@ -60,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--lợi nhuận dự tính-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmAdd.loinhuandutinh.$invalid && !frmAdd.loinhuandutinh.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -72,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--tiền chi dự tính-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmAdd.tienchidutinh.$invalid && !frmAdd.tienchidutinh.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -84,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--tiền thu dự tính-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmAdd.tienthudutinh.$invalid && !frmAdd.tienthudutinh.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -96,23 +102,25 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--ghi chú-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
-                                Ghi chú <span class="required">*</span>
+                                Ghi chú
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
                                 <textarea type="text" name="ghichu" ng-model="duan.GhiChu" class="form-control col-md-7 col-xs-12"></textarea>
                             </div>
                         </div>
                     </div>
+                    <!--nội dung-->
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-12 col-xs-12">Nội dung</label>
                         <div class="col-md-10 col-sm-12 col-xs-12">
                             <textarea name="noidung" ui-tinymce="tinymceOptions" ng-model="duan.NoiDung" class="form-control"></textarea>
                         </div>
                     </div>
+                    <!--thành viên tham gia-->
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-12 col-xs-12">
                             Thành viên
@@ -134,6 +142,7 @@
                         </div>
                     </div>
                     <div class="ln_solid"></div>
+                    <!--button-->
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <a href="/#/" class="btn btn-default">Quay lại</a>
@@ -144,6 +153,7 @@
             </div>
         </div>
     </div>
+    <!--template-->
     <script type="text/ng-template" id="tag-template">
         <div class="tag-template">
             <div class="left-panel">
@@ -155,7 +165,7 @@
             </div>
         </div>
     </script>
-
+    <!--auto template-->
     <script type="text/ng-template" id="autocomplete-template">
         <div class="autocomplete-template">
             <div class="left-panel">

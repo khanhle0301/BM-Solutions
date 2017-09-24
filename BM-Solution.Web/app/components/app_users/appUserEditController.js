@@ -3,24 +3,66 @@
 
     app.controller('appUserEditController', appUserEditController);
 
-    appUserEditController.$inject = ['$scope', 'apiService', 'notificationService', '$location', '$stateParams'];
+    appUserEditController.$inject = ['$scope', 'apiService', 'notificationService', '$location',
+        '$filter', '$stateParams'];
 
-    function appUserEditController($scope, apiService, notificationService, $location, $stateParams) {
-
-        $scope.tags = [
-            { id: 1, name: 'Dự án 1' },
-            { id: 2, name: 'Dự án 2' },
-            { id: 3, name: 'Dự án 3' }
-        ];
-
-        var s = [
-            { id: 4, name: 'Dự án 4' },
-            { id: 5, name: 'Dự án 5' },
-            { id: 6, name: 'Dự án 6' }
-        ];
-
-        $scope.loadTags = function (query) {
-            return s;
+    function appUserEditController($scope, apiService, notificationService,
+        $location, $filter, $stateParams) {
+        $scope.user = {}
+        $scope.editUser = editUser;
+        function editUser() {
+            apiService.put('api/appUser/update', $scope.user, editSuccessed, editFailed);
+        }
+        function editSuccessed() {
+            notificationService.displaySuccess($scope.user.FullName + ' đã được cập nhật.');
+            $location.url('app_users');
+        }
+        function editFailed(response) {
+            if (response.status == "403") {
+                notificationService.displayError("Bạn không có quyền");
+                $location.url('/');
+            } else {
+                notificationService.displayError(response.data.Message);
+            }
+        }
+        function loadDuan() {
+            apiService.get('api/duan/getListString', null, function (result) {
+                $scope.listDuan = result.data;
+            }, function () {
+                console.log('Cannot get list du an');
+            });
+        }
+        $scope.loadDuans = function ($query) {
+            var duans = $scope.listDuan;
+            return duans.filter(function (duan) {
+                return duan.toLowerCase().indexOf($query.toLowerCase()) != -1;
+            });
         };
+        loadDuan();
+        function loadRole() {
+            apiService.get('api/appRole/getliststring', null, function (result) {
+                $scope.listRole = result.data;
+            }, function () {
+                console.log('Cannot get list');
+            });
+        }
+        $scope.loadRoles = function ($query) {
+            var roles = $scope.listRole;
+            return roles.filter(function (role) {
+                return role.toLowerCase().indexOf($query.toLowerCase()) != -1;
+            });
+        };
+        function loadDetail() {
+            apiService.get('/api/appUser/detail/' + $stateParams.id, null,
+                function (result) {
+                    $scope.user = result.data;
+                },
+                function (result) {
+                    notificationService.displayError(result.data);
+                });
+        }
+
+        loadDetail();
+        loadRole();
     }
 })(angular.module('bm-solutions.app_users'));

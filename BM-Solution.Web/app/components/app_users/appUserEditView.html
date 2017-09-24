@@ -7,82 +7,77 @@
             </div>
             <div class="x_content">
                 <br />
-                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                    <div class="form-group">
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" role="form" novalidate name="frmEdit" ng-submit="editUser()">
+                    <div class="form-group" ng-class="{ 'has-error' : frmEdit.fullname.$invalid && !frmEdit.fullname.$pristine }">
                         <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
                             Họ tên
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input disabled="disabled" id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                            <input disabled type="text" name="fullname" class="form-control col-md-7 col-xs-12" required ng-maxlength="50" ng-model="user.FullName">
+                            <span ng-show="frmEdit.fullname.$error.required" class="has-error">Vui lòng nhập họ tên.</span>
+                            <span ng-show="frmEdit.fullname.$error.maxlength" class="has-error">Họ tên chỉ được 50 ký tự.</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{ 'has-error' : frmEdit.username.$invalid && !frmEdit.username.$pristine }">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
                             Tài khoản <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input disabled="disabled" type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
+                            <input disabled type="text" name="username" class="form-control col-md-7 col-xs-12" ng-pattern="/^[A-Za-z0-9]*$/" required ng-maxlength="50"
+                                   ng-model="user.UserName">
+                            <span ng-show="frmEdit.username.$error.required" class="has-error">Vui lòng nhập tài khoản.</span>
+                            <span ng-show="frmEdit.username.$error.maxlength" class="has-error">Tài khoản chỉ được 50 ký tự.</span>
+                            <span ng-show="frmEdit.username.$error.pattern" class="has-error">Tài khoản viết liền không dấu.</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-class="{ 'has-error' : frmEdit.email.$invalid && !frmEdit.email.$pristine }">
                         <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
                             Email
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input disabled="disabled" id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+                            <input disabled type="email" name="email" class="form-control col-md-7 col-xs-12" required ng-maxlength="50" ng-model="user.Email">
+                            <span ng-show="frmEdit.email.$error.required" class="has-error">Phải nhập email.</span>
+                            <span ng-show="frmEdit.email.$error.maxlength" class="has-error">Email chỉ được 256 ký tự.</span>
+                            <span ng-show="frmEdit.email.$error.email" class="has-error">Định dạnh email không đúng.</span>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
-                            Nhóm
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <select class="form-control">
-                                <option>Chọn nhóm</option>
-                                <option>Admin</option>
-                                <option>User</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
-                            Quyền
-                        </label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" class="flat"> Thêm dự án
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" class="flat" checked="checked"> Sửa dự án
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" class="flat"> Xóa dự án
-                                </label>
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" class="flat" checked="checked"> Xem dự án
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Dựa án</label>
+                    <div class="form-group" ng-class="{ 'has-error' : frmEdit.group.$invalid && !frmEdit.group.$pristine }">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Thuộc nhóm</label>
                         <div class="col-md-9 col-sm-9 col-xs-12">
-                            <tags-input ng-model="tags"
-                                        placeholder="Thêm dự án"
-                                        display-property="name"
+                            <tags-input ng-model="user.Roles"
+                                        placeholder="Chọn nhóm"
+                                        display-property="Name"
+                                        max-tags="1"
+                                        name="group"
                                         replace-spaces-with-dashes="false"
-                                        add-from-autocomplete-only="true">
-                                <auto-complete source="loadTags($query)"></auto-complete>
+                                        add-from-autocomplete-only="true"
+                                        template="tag-template-role">
+                                <auto-complete source="loadRoles($query)"
+                                               min-length="0"
+                                               load-on-focus="true"
+                                               load-on-empty="true"
+                                               max-results-to-show="32"
+                                               template="autocomplete-template-role"></auto-complete>
+                            </tags-input>
+                            <span ng-show="frmEdit.group.$invalid" class="has-error">Chỉ được chọn một nhóm.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Thuộc dự án</label>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <tags-input ng-model="user.DuAns"
+                                        placeholder="Thêm dự án"
+                                        display-property="Id"
+                                        replace-spaces-with-dashes="false"
+                                        add-from-autocomplete-only="true"
+                                        template="tag-template">
+                                <auto-complete source="loadDuans($query)"
+                                               min-length="0"
+                                               load-on-focus="true"
+                                               load-on-empty="true"
+                                               max-results-to-show="32"
+                                               template="autocomplete-template"></auto-complete>
                             </tags-input>
                         </div>
                     </div>
@@ -90,12 +85,56 @@
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <button ui-sref="app_users" class="btn btn-default" type="button">Quay lại</button>
-                            <button class="btn btn-primary" type="button">Sửa</button>
-                            <button type="submit" class="btn btn-success">Lưu</button>
+                            <button type="submit" ng-disabled="frmEdit.$invalid" class="btn btn-success">Lưu</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <script type="text/ng-template" id="tag-template">
+        <div class="tag-template">
+            <div class="left-panel">
+                <i class="fa fa-file-text"></i>
+            </div>
+            <div class="right-panel">
+                <span>{{$getDisplayText()}}</span>
+                <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="autocomplete-template">
+        <div class="autocomplete-template">
+            <div class="left-panel">
+                <i class="fa fa-file-text"></i>
+            </div>
+            <div class="right-panel">
+                <span ng-bind-html="$highlight($getDisplayText())"></span>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="tag-template-role">
+        <div class="tag-template">
+            <div class="left-panel">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="right-panel">
+                <span>{{$getDisplayText()}}</span>
+                <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="autocomplete-template-role">
+        <div class="autocomplete-template">
+            <div class="left-panel">
+                <i class="fa fa-file-user"></i>
+            </div>
+            <div class="right-panel">
+                <span ng-bind-html="$highlight($getDisplayText())"></span>
+            </div>
+        </div>
+    </script>
 </div>

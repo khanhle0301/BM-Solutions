@@ -1,19 +1,18 @@
 ﻿using BM_Solution.Data.Infrastructure;
 using BM_Solution.Model.Models;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System;
 
 namespace BM_Solution.Data.Repositories
 {
-    public interface IPermissionRepository : IRepository<DuAnUser>
+    public interface IDuAnUserRepository : IRepository<DuAnUser>
     {
         List<string> GetUserByDuAnId(string duAnId);
+
         List<string> GetDuAnByUserId(string userId);
     }
 
-    public class DuAnUserRepository : RepositoryBase<DuAnUser>, IPermissionRepository
+    public class DuAnUserRepository : RepositoryBase<DuAnUser>, IDuAnUserRepository
     {
         public DuAnUserRepository(IDbFactory dbFactory) : base(dbFactory)
         {

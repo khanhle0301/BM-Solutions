@@ -100,10 +100,15 @@
     <Compile Include="Migrations\201709211253298_EditThuChi.Designer.cs">
       <DependentUpon>201709211253298_EditThuChi.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709230717344_SystemLogs.cs" />
+    <Compile Include="Migrations\201709230717344_SystemLogs.Designer.cs">
+      <DependentUpon>201709230717344_SystemLogs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ChiTietThuChiRepository.cs" />
     <Compile Include="Repositories\DuAnRepository.cs" />
+    <Compile Include="Repositories\SystemLogRepository.cs" />
     <Compile Include="Repositories\ErrorRepository.cs" />
     <Compile Include="Repositories\DuAnUserRepository.cs" />
     <Compile Include="BmSolutionsDbContext.cs" />
@@ -149,6 +154,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709211253298_EditThuChi.resx">
       <DependentUpon>201709211253298_EditThuChi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709230717344_SystemLogs.resx">
+      <DependentUpon>201709230717344_SystemLogs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,12 +1,14 @@
-﻿using System;
+﻿using BM_Solutions.Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using BM_Solutions.Common.Enums;
 
 namespace BM_Solution.Web.Models
 {
     public class DuAnViewModel
     {
+        [Required]
+        [MaxLength(50)]
         public string Id { set; get; }
 
         [Required]

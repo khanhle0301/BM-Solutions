@@ -18,8 +18,8 @@ namespace BM_Solutions.Service
 
         public ErrorService(IErrorRepository errorRepository, IUnitOfWork unitOfWork)
         {
-            this._errorRepository = errorRepository;
-            this._unitOfWork = unitOfWork;
+            _errorRepository = errorRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public Error Create(Error error)

@@ -4,53 +4,43 @@
     duanAddController.$inject = ['apiService', '$scope', 'notificationService', '$state', '$location', 'commonService', '$http', '$filter'];
 
     function duanAddController(apiService, $scope, notificationService, $state, $location, commonService, $http, $filter) {
-        $scope.today = function () {
+        // khởi tạo scope
+        $scope.init = function () {
+            // ngày tạo
             $scope.ngayTao = new Date();
+            // thời gian dự tính
             $scope.thoiGian = new Date();
+            // set opened popup
+            $scope.popup1 = {
+                opened: false
+            };
+            // set opened popup
+            $scope.popup2 = {
+                opened: false
+            };
+            // cấu hình tinymce
+            $scope.tinymceOptions = {
+                language: 'vi_VN'
+            };
+            // khởi tạo model dự án
+            $scope.duan = {
+                IsDelete: false,
+                AppUsers: []
+            }
         };
-        $scope.today();
+        $scope.init();
 
+        // mở popup date
         $scope.open1 = function () {
             $scope.popup1.opened = true;
         };
 
-        $scope.popup1 = {
-            opened: false
-        };
-
+        // mở popup date
         $scope.open2 = function () {
             $scope.popup2.opened = true;
         };
 
-        $scope.popup2 = {
-            opened: false
-        };
-
-        $scope.tinymceOptions = {
-            language: 'vi_VN'
-        };
-
-        $scope.duan = {
-            IsDelete: false,
-            AppUsers: []
-        }
-
-        $scope.addDuAn = addDuAn;
-
-        function addSuccessed() {
-            notificationService.displaySuccess($scope.duan.Ten + ' đã được thêm mới.');
-            $location.url('/');
-        }
-
-        function addFailed(response) {
-            if (response.status == "403") {
-                notificationService.displayError(response.statusText);
-                $location.url('/');
-            } else {
-                notificationService.displayError(response.data.Message);
-            }
-        }
-
+        // load danh sách người dùng
         function loadUser() {
             apiService.get('api/appUser/getListString', null, function (result) {
                 $scope.listUser = result.data;
@@ -59,6 +49,7 @@
             });
         }
 
+        // sự kiện chọn user
         $scope.loadUsers = function ($query) {
             var users = $scope.listUser;
             return users.filter(function (user) {
@@ -66,12 +57,34 @@
             });
         };
 
+        // thêm mới dự án
+        $scope.addDuAn = addDuAn;
+        // thêm mới dự án
         function addDuAn() {
+            // gán lại ngày tạo
             $scope.duan.NgayTao = $scope.ngayTao;
+            // gán lại thời gian dự tính
             $scope.duan.ThoiGianDuTinh = $scope.thoiGian;
             apiService.post('api/duan/add', $scope.duan, addSuccessed, addFailed);
         }
 
+        // thêm thành công
+        function addSuccessed() {
+            notificationService.displaySuccess($scope.duan.Id + ' đã được thêm mới.');
+            $location.url('/');
+        }
+
+        // thêm thất bại
+        function addFailed(response) {
+            if (response.status == "403") {
+                notificationService.displayError("Bạn không có quền thêm mới dự án");
+                $location.url('/');
+            } else {
+                notificationService.displayError(response.data.Message);
+            }
+        }
+
+        // load user
         loadUser();
     }
 })(angular.module('bm-solutions.duans'));

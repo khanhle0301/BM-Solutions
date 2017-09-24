@@ -12,6 +12,9 @@ namespace BM_Solution.Data
         }
 
         public DbSet<Error> Errors { set; get; }
+
+        public DbSet<SystemLog> SystemLogs { set; get; }
+
         public DbSet<DuAn> DuAns { set; get; }
         public DbSet<ChiTietThuChi> ChiTietThuChi { set; get; }
         public DbSet<DuAnUser> DuAnUsers { set; get; }

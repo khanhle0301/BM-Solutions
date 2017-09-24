@@ -3,8 +3,7 @@ using BM_Solution.Model.Models;
 using BM_Solution.Web.Infrastructure.Core;
 using BM_Solution.Web.Infrastructure.Extensions;
 using BM_Solution.Web.Models;
-using BM_Solution.Web.Models.System;
-using BM_Solutions.Common.Exceptions;
+using BM_Solution.Web.Providers;
 using BM_Solutions.Service;
 using Microsoft.AspNet.Identity;
 using System;
@@ -15,7 +14,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Script.Serialization;
-using BM_Solution.Web.Providers;
 
 namespace BM_Solution.Web.Controllers
 {
@@ -23,14 +21,20 @@ namespace BM_Solution.Web.Controllers
     [Authorize]
     public class DuAnController : ApiControllerBase
     {
+        private readonly ISystemLogService _systemLogService;
         private readonly IDuAnService _duAnService;
         private readonly IDuAnUserService _duAnUserService;
+        private readonly IChiTietThuChiService _chiTietThuChiService;
 
         public DuAnController(IErrorService errorService, IDuAnService duAnService,
-            IDuAnUserService duAnUserService) : base(errorService)
+            IDuAnUserService duAnUserService, IChiTietThuChiService chiTietThuChiService,
+            ISystemLogService systemLogService)
+            : base(errorService)
         {
             _duAnService = duAnService;
             _duAnUserService = duAnUserService;
+            _chiTietThuChiService = chiTietThuChiService;
+            _systemLogService = systemLogService;
         }
 
         [Route("getlistpaging")]
@@ -39,19 +43,22 @@ namespace BM_Solution.Web.Controllers
         {
             return CreateHttpResponse(request, () =>
             {
+                // lấy danh sách role
                 var roles = ((ClaimsIdentity)User.Identity).Claims
                     .Where(c => c.Type == ClaimTypes.Role)
                     .Select(c => c.Value);
+                // lấy id user login
                 var userId = User.Identity.GetUserId();
-
+                // get dự án theo user
                 var query = _duAnService.GetByUserId(userId, filter, roles);
-
-                var totalRow = query.Count();
-
-                var model = query.OrderBy(x => x.TrangThai).Skip(page * pageSize).Take(pageSize);
-
+                var duAns = query as DuAn[] ?? query.ToArray();
+                // tổng dự án
+                var totalRow = duAns.Count();
+                // lấy theo phân trang
+                var model = duAns.OrderBy(x => x.TrangThai).Skip(page * pageSize).Take(pageSize);
+                // map qua view model
                 IEnumerable<DuAnViewModel> modelVm = Mapper.Map<IEnumerable<DuAn>, IEnumerable<DuAnViewModel>>(model);
-
+                // PaginationSet
                 PaginationSet<DuAnViewModel> pagedSet = new PaginationSet<DuAnViewModel>()
                 {
                     Items = modelVm,
@@ -59,10 +66,8 @@ namespace BM_Solution.Web.Controllers
                     TotalCount = totalRow,
                     TotalPages = (int)Math.Ceiling((decimal)totalRow / pageSize)
                 };
-
-                var response = request.CreateResponse(HttpStatusCode.OK, pagedSet);
-
-                return response;
+                // response trả về
+                return request.CreateResponse(HttpStatusCode.OK, pagedSet);
             });
         }
 
@@ -70,11 +75,11 @@ namespace BM_Solution.Web.Controllers
         [HttpGet]
         public HttpResponseMessage GetListString(HttpRequestMessage request)
         {
+            // lấy mã danh sách dự án
             return CreateHttpResponse(request, () =>
             {
                 var model = _duAnService.GetAll().Select(x => x.Id);
-                var response = request.CreateResponse(HttpStatusCode.OK, model);
-                return response;
+                return request.CreateResponse(HttpStatusCode.OK, model);
             });
         }
 
@@ -82,12 +87,12 @@ namespace BM_Solution.Web.Controllers
         [HttpGet]
         public HttpResponseMessage GetAll(HttpRequestMessage request)
         {
+            // lấy tất cả dự án
             return CreateHttpResponse(request, () =>
             {
                 var model = _duAnService.GetAll();
                 IEnumerable<DuAnViewModel> modelVm = Mapper.Map<IEnumerable<DuAn>, IEnumerable<DuAnViewModel>>(model);
-                var response = request.CreateResponse(HttpStatusCode.OK, modelVm);
-                return response;
+                return request.CreateResponse(HttpStatusCode.OK, modelVm);
             });
         }
 
@@ -95,24 +100,32 @@ namespace BM_Solution.Web.Controllers
         [HttpGet]
         public HttpResponseMessage Details(HttpRequestMessage request, string id)
         {
+            // không có id dự án
             if (string.IsNullOrEmpty(id))
             {
                 return request.CreateErrorResponse(HttpStatusCode.BadRequest, nameof(id) + " không có giá trị.");
             }
+            // get dự án theo id
             DuAn duAn = _duAnService.GetById(id);
+            // k có dự án
             if (duAn == null)
             {
                 return request.CreateErrorResponse(HttpStatusCode.NoContent, "Không tìm thấy dự án");
             }
+            // get user nằm trong dự án theo id dự án
             var appUsers = _duAnUserService.GetUserByDuAnId(id);
+            // map qua view model
             DuAnViewModel modelVm = Mapper.Map<DuAn, DuAnViewModel>(duAn);
+            // danh sách user
             List<User> listAppUsers = new List<User>();
             foreach (var item in appUsers)
             {
                 var user = new User { UserName = item };
                 listAppUsers.Add(user);
             }
+            // add user vào view model
             modelVm.AppUsers = listAppUsers;
+            // response trả về
             return request.CreateResponse(HttpStatusCode.OK, modelVm);
         }
 
@@ -121,30 +134,49 @@ namespace BM_Solution.Web.Controllers
         [Permission(Role = "Admin")]
         public HttpResponseMessage Create(HttpRequestMessage request, DuAnViewModel duAnViewModel)
         {
+            // kiểm tra validate dữ liệu
             if (ModelState.IsValid)
             {
+                // tạo mới dự án
                 var newDuAn = new DuAn();
                 newDuAn.UpdateDuAn(duAnViewModel);
                 try
                 {
+                    // add dự án
                     _duAnService.Add(newDuAn);
+                    // lặp qua danh sách user
                     foreach (var item in duAnViewModel.AppUsers)
                     {
+                        // tạo mới dự án user
                         var duAnUser = new DuAnUser
                         {
                             UserId = AppUserManager.FindByName(item.UserName).Id,
                             DuaAnId = duAnViewModel.Id
                         };
+                        // add dự án user
                         _duAnUserService.Add(duAnUser);
                     }
+                    // ghi lại nhật ký hệ thống
+                    _systemLogService.Create(new SystemLog
+                    {
+                        Id = 0,
+                        User = User.Identity.Name,
+                        IsDelete = false,
+                        NgayTao = DateTime.Now,
+                        NoiDung = "Thêm dự án: " + newDuAn.Id
+                    });
+                    // lưu vào db
                     _duAnService.Save();
+                    // trả về response
                     return request.CreateResponse(HttpStatusCode.OK, duAnViewModel);
                 }
+                // Exception
                 catch (Exception ex)
                 {
                     return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 }
             }
+            // lỗi validate dữ liệu
             return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
         }
 
@@ -152,31 +184,57 @@ namespace BM_Solution.Web.Controllers
         [Route("update")]
         public HttpResponseMessage Update(HttpRequestMessage request, DuAnViewModel duAnViewModel)
         {
+            // kiểm tra validate dữ liệu
             if (ModelState.IsValid)
             {
+                // tạo mới dự án
                 var newDuAn = new DuAn();
                 newDuAn.UpdateDuAn(duAnViewModel);
                 try
                 {
-                    _duAnUserService.DeleteAll(duAnViewModel.Id);
+                    // lấy dánh sách user nằm trong dự án
+                    var appUsers = _duAnUserService.GetUserByDuAnId(newDuAn.Id);
+                    // lặp qa danh sách
+                    foreach (var user in appUsers)
+                    {
+                        // xóa tất cả user nằm trong dự án
+                        _duAnUserService.DeleteAll(newDuAn.Id, AppUserManager.FindByName(user).Id);
+                    }
+                    // cập nhật lại dự ắn
                     _duAnService.Update(newDuAn);
+                    // lặp qua danh sách user
                     foreach (var item in duAnViewModel.AppUsers)
                     {
+                        // tạo mới dự án user
                         var duAnUser = new DuAnUser
                         {
                             UserId = AppUserManager.FindByName(item.UserName).Id,
-                            DuaAnId = duAnViewModel.Id
+                            DuaAnId = newDuAn.Id
                         };
+                        // add dự án user
                         _duAnUserService.Add(duAnUser);
                     }
+                    // lưu lại hệ thống
+                    _systemLogService.Create(new SystemLog
+                    {
+                        Id = 0,
+                        User = User.Identity.Name,
+                        IsDelete = false,
+                        NgayTao = DateTime.Now,
+                        NoiDung = "Cập nhật dự án: " + duAnViewModel.Id
+                    });
+                    // lưu vào db
                     _duAnService.Save();
+                    // trả về response
                     return request.CreateResponse(HttpStatusCode.OK, duAnViewModel);
                 }
+                // Exception
                 catch (Exception ex)
                 {
                     return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
                 }
             }
+            // lỗi validate dự liệu
             return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
         }
 
@@ -185,18 +243,41 @@ namespace BM_Solution.Web.Controllers
         [Route("delete")]
         public HttpResponseMessage Delete(HttpRequestMessage request, string id)
         {
-            var appRole = AppRoleManager.FindById(id);
-            AppRoleManager.Delete(appRole);
+            // xóa dự án theo id
+            _duAnService.Delete(id);
+            // lưu lại hệ thống
+            _systemLogService.Create(new SystemLog
+            {
+                Id = 0,
+                User = User.Identity.Name,
+                IsDelete = false,
+                NgayTao = DateTime.Now,
+                NoiDung = "Xóa dự án: " + id
+            });
+            // lưu vào db
+            _duAnService.Save();
+            // trả về response
             return request.CreateResponse(HttpStatusCode.OK, id);
         }
-
 
         [HttpDelete]
         [Route("ketthuc")]
         public HttpResponseMessage KetThuc(HttpRequestMessage request, string id)
         {
+            // kết thúc dự án
             _duAnService.KetThucDuAn(id);
+            // ghi lại hệ thống
+            _systemLogService.Create(new SystemLog
+            {
+                Id = 0,
+                User = User.Identity.Name,
+                IsDelete = false,
+                NgayTao = DateTime.Now,
+                NoiDung = "Kết thúc dự án: " + id
+            });
+            // lưu vào db
             _duAnService.Save();
+            // trả về response
             return request.CreateResponse(HttpStatusCode.OK, id);
         }
 
@@ -207,24 +288,74 @@ namespace BM_Solution.Web.Controllers
         {
             return CreateHttpResponse(request, () =>
             {
-                HttpResponseMessage response = null;
+                HttpResponseMessage response;
+                // validate dầu vào
                 if (!ModelState.IsValid)
                 {
                     response = request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
                 }
                 else
                 {
+                    // lấy ra dánh sách id dự án
                     var listId = new JavaScriptSerializer().Deserialize<List<string>>(checkedList);
+                    // lặp qa dánh sách
                     foreach (var item in listId)
                     {
+                        // xóa dự án theo id
                         _duAnService.Delete(item);
+                        // ghi lại hệ thống
+                        _systemLogService.Create(new SystemLog
+                        {
+                            Id = 0,
+                            User = User.Identity.Name,
+                            IsDelete = false,
+                            NgayTao = DateTime.Now,
+                            NoiDung = "Xóa dự án: " + item
+                        });
                     }
+                    // lưu vào db
                     _duAnService.Save();
-
+                    // trả về response
                     response = request.CreateResponse(HttpStatusCode.OK, listId.Count);
                 }
-
+                // trả về response
                 return response;
+            });
+        }
+
+        [Route("gettotal")]
+        [HttpGet]
+        public HttpResponseMessage GetTotal(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                // lấy dánh sách role user đăng nhập
+                var roles = ((ClaimsIdentity)User.Identity).Claims
+                    .Where(c => c.Type == ClaimTypes.Role)
+                    .Select(c => c.Value);
+                // get id user đăng nhập
+                var userId = User.Identity.GetUserId();
+                // tổng tiền
+                long sum = 0;
+                var enumerable = roles as string[] ?? roles.ToArray();
+                foreach (var item in _chiTietThuChiService.DuAnThamGia(userId, enumerable))
+                {
+                    sum += item.TienChi;
+                }
+                // new toltal model
+                var model = new TotalViewMoodel
+                {
+                    // tổng user
+                    User = AppUserManager.Users.Count().ToString(),
+                    // tổng dự án
+                    DuAn = _duAnService.Count().ToString(),
+                    // tổng dự án tham gia
+                    DuAnThamGia = _duAnService.Count(userId, enumerable).ToString(),
+                    // tổng tiền
+                    TongTien = sum.ToString()
+                };
+                // trả về response
+                return request.CreateResponse(HttpStatusCode.OK, model);
             });
         }
     }

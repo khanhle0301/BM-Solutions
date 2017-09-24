@@ -4,6 +4,7 @@ using BM_Solution.Model.Models;
 using BM_Solutions.Common.Exceptions;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using BM_Solutions.Common.Enums;
 
 namespace BM_Solutions.Service
@@ -13,6 +14,7 @@ namespace BM_Solutions.Service
         DuAn Add(DuAn duAn);
 
         DuAn Update(DuAn duAn);
+
         void Delete(string id);
 
         IEnumerable<DuAn> GetAll();
@@ -24,6 +26,10 @@ namespace BM_Solutions.Service
         void KetThucDuAn(string id);
 
         IEnumerable<DuAn> GetByUserId(string userId, string keyword, IEnumerable<string> role);
+
+        int Count(string userId, IEnumerable<string> role);
+
+        int Count();
 
         void Save();
     }
@@ -44,6 +50,16 @@ namespace BM_Solutions.Service
             if (_duAnRepository.CheckContains(x => x.Id == duAn.Id))
                 throw new NameDuplicatedException("Mã dự án đã tồn tại");
             return _duAnRepository.Add(duAn);
+        }
+
+        public int Count()
+        {
+            return _duAnRepository.GetAll().Count();
+        }
+
+        public int Count(string userId, IEnumerable<string> role)
+        {
+            return _duAnRepository.Count(userId, role);
         }
 
         public void Delete(string id)

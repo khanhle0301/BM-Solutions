@@ -268,6 +268,7 @@
     <Compile Include="Controllers\ChiTietThuChiController.cs" />
     <Compile Include="Controllers\DuAnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SystemLogController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -279,13 +280,9 @@
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\ChiTietThuChiViewModel.cs" />
     <Compile Include="Models\DuAnViewModel.cs" />
-    <Compile Include="Models\System\ApplicationGroupViewModel.cs" />
     <Compile Include="Models\System\ApplicationRoleViewModel.cs" />
     <Compile Include="Models\System\ApplicationUserViewModel.cs" />
-    <Compile Include="Models\System\ExternalLoginListViewModel.cs" />
-    <Compile Include="Models\System\LoginViewModel.cs" />
-    <Compile Include="Models\System\PermissionViewModel.cs" />
-    <Compile Include="Models\System\RegisterViewModel.cs" />
+    <Compile Include="Models\TotalViewMoodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Providers\PermissionAttribute.cs" />
@@ -293,13 +290,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
-    <Content Include="app\components\app_roles\appRole.module.js" />
-    <Content Include="app\components\app_roles\appRoleAddController.js" />
-    <Content Include="app\components\app_roles\appRoleAddView.html" />
-    <Content Include="app\components\app_roles\appRoleEditController.js" />
-    <Content Include="app\components\app_roles\appRoleEditView.html" />
-    <Content Include="app\components\app_roles\appRoleListController.js" />
-    <Content Include="app\components\app_roles\appRoleListView.html" />
     <Content Include="app\components\app_users\appUserAddController.js" />
     <Content Include="app\components\app_users\appUserAddView.html" />
     <Content Include="app\components\app_users\appUserEditController.js" />
@@ -333,7 +323,6 @@
     <Content Include="app\shared\services\commonService.js" />
     <Content Include="app\shared\services\loginService.js" />
     <Content Include="app\shared\services\notificationService.js" />
-    <Content Include="app\shared\views\AddChiTiet.html" />
     <Content Include="app\shared\views\baseView.html" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Assets\css\custom.css" />
@@ -1652,15 +1641,10 @@
     <Content Include="Assets\vendors\validator\index.html" />
     <Content Include="Assets\vendors\validator\multifield.js" />
     <Content Include="Assets\vendors\validator\validator.js" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
     <Content Include="Areas\HelpPage\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\ResourceModel.cshtml" />
@@ -2202,12 +2186,6 @@
     <Content Include="Assets\vendors\bootstrap-datetimepicker\src\nuget\install.ps1" />
     <Content Include="Assets\vendors\bootstrap-datetimepicker\src\sass\bootstrap-datetimepicker-build.scss" />
     <Content Include="Assets\vendors\bootstrap-datetimepicker\src\sass\_bootstrap-datetimepicker.scss" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -2216,7 +2194,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -2225,11 +2202,7 @@
     <TypeScriptCompile Include="Assets\vendors\moment\moment.d.ts" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

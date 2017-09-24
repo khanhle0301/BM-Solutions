@@ -26,6 +26,7 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             appUser.FullName = appUserViewModel.FullName;
             appUser.Email = appUserViewModel.Email;
             appUser.UserName = appUserViewModel.UserName;
+            appUser.Status = appUserViewModel.Status;
         }
 
         public static void UpdateDuAn(this DuAn duAn, DuAnViewModel duAnViewModel)

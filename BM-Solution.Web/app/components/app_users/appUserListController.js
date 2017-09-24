@@ -9,7 +9,7 @@
         $scope.loading = true;
         $scope.data = [];
         $scope.page = 0;
-        $scope.pageCount = 0;
+        $scope.pagesCount = 0;
         $scope.search = search;
         $scope.deleteItem = deleteItem;
         $scope.selectAll = selectAll;

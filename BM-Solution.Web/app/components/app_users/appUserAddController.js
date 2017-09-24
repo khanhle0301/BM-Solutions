@@ -7,11 +7,9 @@
 
     function appUserAddController($scope, apiService, notificationService, $location, commonService, $filter) {
         $scope.user = {
-            UserName: 'abc12321',
-            Password: '123123aA!',
-            Email:"abcdasdasd@gmail.com",
             DuAns: [],
-            Roles:[]
+            Roles: [],
+            Status: true
         }
 
         $scope.addUser = addUser;
@@ -22,12 +20,12 @@
 
         function addSuccessed() {
             notificationService.displaySuccess($scope.user.FullName + ' đã được thêm mới.');
-            $location.url('/');
+            $location.url('app_users');
         }
 
         function addFailed(response) {
             if (response.status == "403") {
-                notificationService.displayError(response.statusText);
+                notificationService.displayError("Bạn không có quyền");
                 $location.url('/');
             } else {
                 notificationService.displayError(response.data.Message);

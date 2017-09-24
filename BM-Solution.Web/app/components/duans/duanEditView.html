@@ -8,6 +8,7 @@
             <div class="x_content">
                 <br />
                 <form id="demo-form2" class="form-horizontal form-label-left" role="form" novalidate name="frmEdit" ng-submit="editDuAn()">
+                    <!--mã-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmEdit.id.$invalid && !frmEdit.id.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -20,6 +21,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--tên dự án-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmEdit.ten.$invalid && !frmEdit.ten.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -32,6 +34,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--ngày tạo-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmEdit.ngaytao.$invalid && !frmEdit.ngaytao.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -47,6 +50,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--thời gian dự tính-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmEdit.thoigian.$invalid && !frmEdit.thoigian.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -62,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--lợi nhuận dự tính-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmEdit.loinhuandutinh.$invalid && !frmEdit.loinhuandutinh.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -74,6 +78,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--tiền chi dự tính-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmEdit.tienchidutinh.$invalid && !frmEdit.tienchidutinh.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -85,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--tiền chi thực tế-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -96,7 +101,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--tiền thu dự tính-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group" ng-class="{ 'has-error' : frmEdit.tienthudutinh.$invalid && !frmEdit.tienthudutinh.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -108,7 +113,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--tiền thu thực tế-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -119,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--lợi nhuận thực tế-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -130,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--trạng thái-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
@@ -150,29 +155,31 @@
                             </div>
                         </div>
                     </div>
-
+                    <!--ghi chú-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
                         <div class="form-group">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
-                                Ghi chú <span class="required">*</span>
+                                Ghi chú
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
                                 <textarea type="text" name="ghichu" ng-model="duan.GhiChu" class="form-control col-md-7 col-xs-12" ng-disabled="isEdit"></textarea>
                             </div>
                         </div>
                     </div>
+                    <!--nội dung-->
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-12 col-xs-12">Nội dung</label>
                         <div class="col-md-10 col-sm-12 col-xs-12">
                             <textarea name="noidung" ui-tinymce="tinymceOptions" ng-model="duan.NoiDung" class="form-control" ng-disabled="isEdit"></textarea>
                         </div>
                     </div>
+                    <!--thành viên-->
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-12 col-xs-12">
                             Thành viên
                         </label>
                         <div class="col-md-10 col-sm-12 col-xs-12">
-                            <tags-input ng-disabled="!isSys" ng-model="duan.AppUsers"
+                            <tags-input ng-disabled="!isSys || isEdit" ng-model="duan.AppUsers"
                                         placeholder="Thêm thành viên"
                                         display-property="UserName"
                                         replace-spaces-with-dashes="false"
@@ -193,13 +200,15 @@
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                             <a href="/#/" class="btn btn-default" type="button" ng-show="isEdit">Quay lại</a>
                             <button type="button" class="btn btn-default" ng-show="!isEdit" ng-click="cancel()">Hủy</button>
-                            <button type="button" class="btn btn-primary" ng-click="edit()" ng-show="isEdit">Sửa</button>
+                            <button ng-if="duan.TrangThai!=4" type="button" class="btn btn-primary" ng-click="edit()" ng-show="isEdit">Sửa</button>
+                            <button ng-if="duan.TrangThai==4" type="button" class="btn btn-danger" ng-click="xoa()">Xóa</button>
                             <button type="submit" class="btn btn-success" ng-disabled="frmEdit.$invalid" ng-show="!isEdit">Lưu</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        <!--teamplate-->
         <script type="text/ng-template" id="tag-template">
             <div class="tag-template">
                 <div class="left-panel">
@@ -211,7 +220,7 @@
                 </div>
             </div>
         </script>
-
+        <!--auto template-->
         <script type="text/ng-template" id="autocomplete-template">
             <div class="autocomplete-template">
                 <div class="left-panel">
@@ -223,6 +232,7 @@
             </div>
         </script>
     </div>
+    <!--Nhật ký giao dịch-->
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="page-title">
@@ -244,8 +254,8 @@
                         </div>
                         <div class="col-md-7 col-sm-6 col-xs-12 form-group">
                             <button class="btn btn-success" ng-click="search()" type="button">Tìm</button>
-                            <button class="btn btn-danger" type="button" ng-if="isSys">Xóa</button>
-                            <button class="btn btn-primary" type="button" ng-if="duan.TrangThai!=4" ng-click="openModel()">Thêm</button>
+                            <button class="btn btn-danger" type="button" ng-click="deleteMultiple()" id="btnDelete" disabled ng-if="isSys">Xóa</button>
+                            <button class="btn btn-primary" type="button" ng-if="duan.TrangThai!=4" ng-click="openModel()">Thêm giao dịch</button>
                         </div>
                     </div>
                 </div>
@@ -257,6 +267,7 @@
                         <thead>
                             <tr>
                                 <th ng-if="isSys"><input name="all" type="checkbox" ng-click="selectAll()" /></th>
+                                <th hidden>Id</th>
                                 <th>Thời gian</th>
                                 <th>Dự án</th>
                                 <th>Thành viên</th>
@@ -267,6 +278,7 @@
                         <tbody>
                             <tr ng-repeat="item in data">
                                 <td ng-if="isSys"><input type="checkbox" ng-model="item.checked" name="all" /></td>
+                                <td hidden>{{item.Id}}</td>
                                 <td>{{item.NgayTao | date : 'dd/MM/yyyy'}}</td>
                                 <td>{{item.DuAnId}}</td>
                                 <td>{{item.AppUser.UserName}}</td>
@@ -275,6 +287,7 @@
                             </tr>
                             <tr ng-if="isSys">
                                 <td>Tổng: </td>
+                                <td hidden></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -307,14 +320,13 @@
     </div>
 </div>
 
-
-
+<!--popup thu chi-->
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
      aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title pull-left">Quản lý thu chi</h4>
+                <h4 class="modal-title pull-left">Thêm thu chi</h4>
                 <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -322,21 +334,22 @@
             <div class="modal-body">
                 <form id="addChitiet" class="form-horizontal form-label-left input_mask" role="form" novalidate name="frmAddChiTiet" ng-submit="addChiTiet()">
                     <div class="form-group row">
+                        <!--thời gian-->
                         <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.ngaytaochitiet.$invalid && !frmAddChiTiet.ngaytaochitiet.$pristine }">
                             <label>Thời gian</label>
                             <div class="col-md-11 xdisplay_inputx form-group has-feedback">
-                                <input name="ngaytaochitiet" type="text" required class="form-control" ng-click="openchitiet()" uib-datepicker-popup="dd/MM/yyyy" ng-model="ngaytaoct" is-open="popupchitiet.opened"
+                                <input readonly name="ngaytaochitiet" type="text" required class="form-control" ng-click="openchitiet()" uib-datepicker-popup="dd/MM/yyyy" ng-model="ngaytaoct" is-open="popupchitiet.opened"
                                        placeholder="dd/MM/yyyy" datepicker-options="dateOptions" close-text="Close"
                                        ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d)|([2-9]\d{3})$/" />
-                                <!--<span ng-show="frmAddChiTiet.ngaytaochitiet.$error.required" class="has-error">Vui lòng chọn ngày.</span>
-                                <span ng-show="frmAddChiTiet.ngaytaochitiet.$error.pattern" class="has-error">Định dạng ngày không đúng.</span>-->
                             </div>
                         </div>
+                        <!--tiền chi-->
                         <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.tienchichitiet.$invalid && !frmAddChiTiet.tienchichitiet.$pristine }">
                             <label>Tiền chi</label>
                             <input type="number" name="tienchichitiet" min="0" ng-model="chitiet.TienChi" required class="form-control">
                             <span ng-show="frmAddChiTiet.tienchichitiet.$invalid" class="has-error">Phải nhập tiền chi</span>
                         </div>
+                        <!--tiề thu-->
                         <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.tienthuchitiet.$invalid && !frmAddChiTiet.tienthuchitiet.$pristine }">
                             <label>Tiền Thu</label>
                             <input type="number" name="tienthuchitiet" min="0" ng-model="chitiet.TienThu" required class="form-control">
