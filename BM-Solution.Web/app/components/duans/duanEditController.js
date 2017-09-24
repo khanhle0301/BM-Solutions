@@ -36,6 +36,11 @@
         }
         // open model
         $scope.openModel = function () {
+            $scope.chitiet = {
+                IsDelete: false,
+                DuAnId: $stateParams.id
+            };
+            $scope.moreImages = [];
             $('#myModal').modal('show');
         }
 
@@ -147,6 +152,8 @@
                 startDate: moment().subtract(1, "days"),
                 endDate: moment()
             };
+
+            $scope.images = [];
         };
         $scope.nhatky();
 
@@ -183,6 +190,8 @@
             for (var i = 0; i < $scope.data.length; i++) {
                 tongthu += ($scope.data[i].TienThu);
                 tongchi += ($scope.data[i].TienChi);
+                var img = JSON.parse($scope.data[i].MoreImages);
+                $scope.images.push(img);
             }
             $scope.TongThu = tongthu;
             $scope.TongChi = tongchi;
@@ -195,6 +204,7 @@
         // thêm chi tiết
         $scope.addChiTiet = addChiTiet;
         function addChiTiet() {
+            $scope.chitiet.MoreImages = JSON.stringify($scope.moreImages);
             $scope.chitiet.NgayTao = $scope.ngaytaoct;
             apiService.post('api/chitietthuchi/add', $scope.chitiet, addChiTietSuccessed, addChiTietFailed);
         }
@@ -261,6 +271,30 @@
                     });
                 });
         }
+
+        // upload image
+        $scope.moreImages = [];
+
+        $scope.ChooseMoreImage = function () {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                $scope.$apply(function () {
+                    $scope.moreImages.push(fileUrl);
+                })
+
+            }
+            finder.popup();
+        }
+
+        $scope.deleteItem = function (index) {
+            $scope.moreImages.splice(index, 1);
+        }
+
+        //show image
+
+        $scope.openLightboxModal = function (index) {
+            Lightbox.openModal($scope.images, index);
+        };
 
         // load chi tiết dự án
         loadDetail();

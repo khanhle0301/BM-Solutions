@@ -47,6 +47,27 @@ namespace BM_Solution.Web.Controllers
                 {
                     var query = _chiTietThuChiService.GetByDuAnId(duAnId, startDate, endDate);
                     var chiTietThuChis = query as ChiTietThuChi[] ?? query.ToArray();
+
+                    //List<ChiTietListViewModel> listChitiet = new List<ChiTietListViewModel>();
+                    //foreach (var item in chiTietThuChis)
+                    //{
+                    //    ChiTietListViewModel chitiet = new ChiTietListViewModel
+                    //    {
+                    //        Id = item.Id,
+                    //        UserId = item.UserId,
+                    //        DuAnId = item.DuAnId,
+                    //        NgayTao = item.NgayTao,
+                    //        TienChi = item.TienChi,
+                    //        TienThu = item.TienThu,
+                    //        IsDelete = item.IsDelete,
+                    //        MoreImages = (item.MoreImages == null) ? new List<string>() : new JavaScriptSerializer().Deserialize<List<string>>(item.MoreImages),
+                    //        AppUser = item.AppUser
+                    //    };
+                    //    listChitiet.Add(chitiet);
+                    //}
+
+
+
                     var totalRow = chiTietThuChis.Count();
                     var model = chiTietThuChis.OrderByDescending(x => x.NgayTao).Skip(page * pageSize).Take(pageSize);
                     IEnumerable<ChiTietThuChiViewModel> modelVm = Mapper.Map<IEnumerable<ChiTietThuChi>, IEnumerable<ChiTietThuChiViewModel>>(model);
@@ -67,21 +88,6 @@ namespace BM_Solution.Web.Controllers
             {
                 return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
-        }
-
-        [Route("getlistall")]
-        [HttpGet]
-        public HttpResponseMessage GetAll(HttpRequestMessage request)
-        {
-            return CreateHttpResponse(request, () =>
-            {
-                var model = AppRoleManager.Roles.ToList();
-                IEnumerable<ApplicationRoleViewModel> modelVm = Mapper.Map<IEnumerable<AppRole>, IEnumerable<ApplicationRoleViewModel>>(model);
-
-                var response = request.CreateResponse(HttpStatusCode.OK, modelVm);
-
-                return response;
-            });
         }
 
         [HttpPost]

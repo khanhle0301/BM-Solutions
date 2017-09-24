@@ -24,6 +24,9 @@ namespace BM_Solution.Model.Models
 
         public long TienThu { set; get; }
 
+        [Column(TypeName = "xml")]
+        public string MoreImages { set; get; }
+
         [ForeignKey("UserId")]
         public AppUser AppUser { get; set; }
 

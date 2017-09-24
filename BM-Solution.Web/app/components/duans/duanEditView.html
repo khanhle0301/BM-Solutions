@@ -267,32 +267,40 @@
                         <thead>
                             <tr>
                                 <th ng-if="isSys"><input name="all" type="checkbox" ng-click="selectAll()" /></th>
-                                <th hidden>Id</th>
                                 <th>Thời gian</th>
                                 <th>Dự án</th>
                                 <th>Thành viên</th>
                                 <th>Thu</th>
                                 <th>Chi</th>
+                                <th>Hình ảnh</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in data">
                                 <td ng-if="isSys"><input type="checkbox" ng-model="item.checked" name="all" /></td>
-                                <td hidden>{{item.Id}}</td>
                                 <td>{{item.NgayTao | date : 'dd/MM/yyyy'}}</td>
                                 <td>{{item.DuAnId}}</td>
                                 <td>{{item.AppUser.UserName}}</td>
                                 <td>{{item.TienChi | number}}</td>
                                 <td>{{item.TienThu | number}}</td>
+                                <td>
+                                    <ul class="list-inline">
+                                        <li ng-repeat="img in images track by $index">
+                                            <a ng-click="openLightboxModal($index)">
+                                                <img ng-src="{{img}}" class="img-thumbnail">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </td>
                             </tr>
                             <tr ng-if="isSys">
                                 <td>Tổng: </td>
-                                <td hidden></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>{{TongChi | number}}</td>
                                 <td>{{TongThu | number}}</td>
+                                <td></td>
                             </tr>
                             <tr ng-if="!isSys">
                                 <td>Tổng: </td>
@@ -300,14 +308,15 @@
                                 <td></td>
                                 <td>{{TongChi | number}}</td>
                                 <td>{{TongThu | number}}</td>
+                                <td></td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr ng-if="isSys">
-                                <td colspan="6"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                                <td colspan="7"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
                             </tr>
                             <tr ng-if="!isSys">
-                                <td colspan="5"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                                <td colspan="6"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -335,28 +344,42 @@
                 <form id="addChitiet" class="form-horizontal form-label-left input_mask" role="form" novalidate name="frmAddChiTiet" ng-submit="addChiTiet()">
                     <div class="form-group row">
                         <!--thời gian-->
-                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.ngaytaochitiet.$invalid && !frmAddChiTiet.ngaytaochitiet.$pristine }">
+                        <div class="col-md-4 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.ngaytaochitiet.$invalid && !frmAddChiTiet.ngaytaochitiet.$pristine }">
                             <label>Thời gian</label>
-                            <div class="col-md-11 xdisplay_inputx form-group has-feedback">
-                                <input readonly name="ngaytaochitiet" type="text" required class="form-control" ng-click="openchitiet()" uib-datepicker-popup="dd/MM/yyyy" ng-model="ngaytaoct" is-open="popupchitiet.opened"
-                                       placeholder="dd/MM/yyyy" datepicker-options="dateOptions" close-text="Close"
-                                       ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d)|([2-9]\d{3})$/" />
-                            </div>
+                            <input readonly name="ngaytaochitiet" type="text" required class="form-control" ng-click="openchitiet()" uib-datepicker-popup="dd/MM/yyyy" ng-model="ngaytaoct" is-open="popupchitiet.opened"
+                                   placeholder="dd/MM/yyyy" datepicker-options="dateOptions" close-text="Close"
+                                   ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d)|([2-9]\d{3})$/" />
+
                         </div>
                         <!--tiền chi-->
-                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.tienchichitiet.$invalid && !frmAddChiTiet.tienchichitiet.$pristine }">
+                        <div class="col-md-4 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.tienchichitiet.$invalid && !frmAddChiTiet.tienchichitiet.$pristine }">
                             <label>Tiền chi</label>
                             <input type="number" name="tienchichitiet" min="0" ng-model="chitiet.TienChi" required class="form-control">
                             <span ng-show="frmAddChiTiet.tienchichitiet.$invalid" class="has-error">Phải nhập tiền chi</span>
                         </div>
                         <!--tiề thu-->
-                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.tienthuchitiet.$invalid && !frmAddChiTiet.tienthuchitiet.$pristine }">
+                        <div class="col-md-4 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.tienthuchitiet.$invalid && !frmAddChiTiet.tienthuchitiet.$pristine }">
                             <label>Tiền Thu</label>
                             <input type="number" name="tienthuchitiet" min="0" ng-model="chitiet.TienThu" required class="form-control">
                             <span ng-show="frmAddChiTiet.tienthuchitiet.$invalid" class="has-error">Phải nhập tiền thu</span>
                         </div>
-                        <div class="col-md-3 col-sm-6 col-xs-12">
-                            <button type="submit" ng-disabled="frmAddChiTiet.$invalid" class="btn btn-primary mt-24">Thêm</button>
+                    </div>
+                    <div class="form-group row">
+                        <!--thời gian-->
+                        <div class="col-md-8 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmAddChiTiet.file.$invalid && !frmAddChiTiet.file.$pristine }">
+                            <label>Thêm ảnh</label>
+                            <ul class="list-inline">
+                                <li ng-repeat="img in moreImages track by $index">
+                                    <a ng-click="deleteItem($index)">
+                                        <span class="close" title="xóa">&times;</span>
+                                    </a>
+                                    <img ng-src="{{img}}" width="100" />
+                                </li>
+                            </ul>
+                            <button class="btn btn-default" type="button" ng-click="ChooseMoreImage()">Chọn ảnh</button>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <button type="submit" ng-disabled="frmAddChiTiet.$invalid" class="btn btn-primary  mt-24">Thêm</button>
                         </div>
                     </div>
                 </form>

@@ -22,6 +22,8 @@ namespace BM_Solution.Web.Models
 
         public long TienThu { set; get; }
 
+        public string MoreImages { set; get; }
+
         [ForeignKey("UserId")]
         public AppUser AppUser { get; set; }
 
