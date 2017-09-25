@@ -1,6 +1,7 @@
 ﻿using BM_Solution.Data.Infrastructure;
 using BM_Solution.Model.Models;
 using BM_Solutions.Common.Enums;
+using BM_Solutions.Common.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,6 +16,8 @@ namespace BM_Solution.Data.Repositories
         IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, string startDate, string endDate);
 
         IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role);
+
+        DateRange GetRange(string duAnId, IEnumerable<string> role = null);
     }
 
     public class ChiTietThuChiRepository : RepositoryBase<ChiTietThuChi>, IChiTietThuChiRepository
@@ -40,17 +43,34 @@ namespace BM_Solution.Data.Repositories
             try
             {
                 dtFrom = Convert.ToDateTime(startDate).AddDays(1);
-                dtTo = Convert.ToDateTime(endDate).AddDays(1);
+                dtTo = Convert.ToDateTime(endDate);
             }
             catch
             {
                 throw new Exception("Định dạng ngày không hợp lệ");
             }
             var query = from c in DbContext.ChiTietThuChi
-                        where (c.NgayTao >= dtFrom
-                               && c.NgayTao <= dtTo) && c.DuAnId == duaAnId && c.IsDelete == false
+                        where (DbFunctions.TruncateTime(c.NgayTao) >= DbFunctions.TruncateTime(dtFrom))
+                               && (DbFunctions.TruncateTime(c.NgayTao) <= DbFunctions.TruncateTime(dtTo))
+                               && (c.DuAnId == duaAnId && c.IsDelete == false)
                         select c;
             return query.Include("AppUser");
+        }
+
+        public DateRange GetRange(string duAnId, IEnumerable<string> role = null)
+        {
+
+            if (role != null)
+                return new DateRange
+                {
+                    MaxDate = DbContext.ChiTietThuChi.Where(x => x.IsDelete == false).Max(t => t.NgayTao),
+                    MinDate = DbContext.ChiTietThuChi.Where(x => x.IsDelete == false).Min(t => t.NgayTao)
+                };
+            return new DateRange
+            {
+                MaxDate = DbContext.ChiTietThuChi.Where(x => x.IsDelete == false && x.DuAnId == duAnId).Max(t => t.NgayTao),
+                MinDate = DbContext.ChiTietThuChi.Where(x => x.IsDelete == false && x.DuAnId == duAnId).Min(t => t.NgayTao)
+            };
         }
 
         public IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, string startDate, string endDate)

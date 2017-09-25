@@ -1,6 +1,7 @@
 ﻿using BM_Solution.Data.Infrastructure;
 using BM_Solution.Data.Repositories;
 using BM_Solution.Model.Models;
+using BM_Solutions.Common.ViewModel;
 using System;
 using System.Collections.Generic;
 
@@ -21,6 +22,9 @@ namespace BM_Solutions.Service
         IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, string startDate, string endDate);
 
         IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role);
+
+        DateRange GetRange(string duAnId, IEnumerable<string> role = null);
+
         void Save();
     }
 
@@ -64,6 +68,11 @@ namespace BM_Solutions.Service
         public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, string startDate, string endDate)
         {
             return _chiTietThuChiRepository.GetByDuAnId(duaAnId, startDate, endDate);
+        }
+
+        public DateRange GetRange(string duAnId, IEnumerable<string> role = null)
+        {
+            return _chiTietThuChiRepository.GetRange(duAnId, role);
         }
 
         public IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, string startDate, string endDate)

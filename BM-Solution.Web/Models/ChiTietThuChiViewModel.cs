@@ -1,4 +1,5 @@
 ﻿using BM_Solution.Model.Models;
+using BM_Solutions.Common.ViewModel;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

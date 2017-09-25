@@ -3,7 +3,6 @@ using BM_Solution.Model.Models;
 using BM_Solution.Web.Infrastructure.Core;
 using BM_Solution.Web.Infrastructure.Extensions;
 using BM_Solution.Web.Models;
-using BM_Solution.Web.Models.System;
 using BM_Solution.Web.Providers;
 using BM_Solutions.Service;
 using Microsoft.AspNet.Identity;
@@ -48,32 +47,28 @@ namespace BM_Solution.Web.Controllers
                     var query = _chiTietThuChiService.GetByDuAnId(duAnId, startDate, endDate);
                     var chiTietThuChis = query as ChiTietThuChi[] ?? query.ToArray();
 
-                    //List<ChiTietListViewModel> listChitiet = new List<ChiTietListViewModel>();
-                    //foreach (var item in chiTietThuChis)
-                    //{
-                    //    ChiTietListViewModel chitiet = new ChiTietListViewModel
-                    //    {
-                    //        Id = item.Id,
-                    //        UserId = item.UserId,
-                    //        DuAnId = item.DuAnId,
-                    //        NgayTao = item.NgayTao,
-                    //        TienChi = item.TienChi,
-                    //        TienThu = item.TienThu,
-                    //        IsDelete = item.IsDelete,
-                    //        MoreImages = (item.MoreImages == null) ? new List<string>() : new JavaScriptSerializer().Deserialize<List<string>>(item.MoreImages),
-                    //        AppUser = item.AppUser
-                    //    };
-                    //    listChitiet.Add(chitiet);
-                    //}
-
-
-
-                    var totalRow = chiTietThuChis.Count();
-                    var model = chiTietThuChis.OrderByDescending(x => x.NgayTao).Skip(page * pageSize).Take(pageSize);
-                    IEnumerable<ChiTietThuChiViewModel> modelVm = Mapper.Map<IEnumerable<ChiTietThuChi>, IEnumerable<ChiTietThuChiViewModel>>(model);
-                    PaginationSet<ChiTietThuChiViewModel> pagedSet = new PaginationSet<ChiTietThuChiViewModel>()
+                    List<ChiTietListViewModel> listChitiet = new List<ChiTietListViewModel>();
+                    foreach (var item in chiTietThuChis)
                     {
-                        Items = modelVm,
+                        ChiTietListViewModel chitiet = new ChiTietListViewModel
+                        {
+                            Id = item.Id,
+                            UserId = item.UserId,
+                            DuAnId = item.DuAnId,
+                            NgayTao = item.NgayTao,
+                            TienChi = item.TienChi,
+                            TienThu = item.TienThu,
+                            IsDelete = item.IsDelete,
+                            MoreImages = (item.MoreImages == null) ? new List<string>() : new JavaScriptSerializer().Deserialize<List<string>>(item.MoreImages),
+                            AppUser = item.AppUser
+                        };
+                        listChitiet.Add(chitiet);
+                    }
+                    var totalRow = listChitiet.Count();
+                    var model = listChitiet.OrderByDescending(x => x.NgayTao).Skip(page * pageSize).Take(pageSize);
+                    PaginationSet<ChiTietListViewModel> pagedSet = new PaginationSet<ChiTietListViewModel>()
+                    {
+                        Items = model,
                         Page = page,
                         TotalCount = totalRow,
                         TotalPages = (int)Math.Ceiling((decimal)totalRow / pageSize)
@@ -146,6 +141,18 @@ namespace BM_Solution.Web.Controllers
                     response = request.CreateResponse(HttpStatusCode.OK, listId.Count);
                 }
 
+                return response;
+            });
+        }
+
+        [Route("getrange")]
+        [HttpGet]
+        public HttpResponseMessage GetRange(HttpRequestMessage request, string duAnId)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _chiTietThuChiService.GetRange(duAnId, null);
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
                 return response;
             });
         }

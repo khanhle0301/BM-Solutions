@@ -2,10 +2,13 @@
     app.controller('duanEditController', duanEditController);
 
     duanEditController.$inject = ['apiService', '$scope', 'notificationService', '$state', '$location',
-        'commonService', '$stateParams', 'authData', '$ngBootbox', '$filter'];
+        'commonService', '$stateParams', 'authData', '$ngBootbox', '$filter', 'Lightbox'];
 
     function duanEditController(apiService, $scope, notificationService, $state, $location,
-        commonService, $stateParams, authData, $ngBootbox, $filter) {
+        commonService, $stateParams, authData, $ngBootbox, $filter, Lightbox) {
+
+        Lightbox.fullScreenMode = false;
+
         // khởi tạo scope chi tiết dự án
         $scope.init = function () {
             // role admin
@@ -147,33 +150,55 @@
                 IsDelete: false,
                 DuAnId: $stateParams.id
             };
-            // date
-            $scope.date = {
-                startDate: moment().subtract(1, "days"),
-                endDate: moment()
-            };
-
-            $scope.images = [];
         };
         $scope.nhatky();
+
+        // date
+        $scope.date = {};
 
         // openchitiet
         $scope.openchitiet = function () {
             $scope.popupchitiet.opened = true;
         };
 
+        // getrange
+        getRange = function () {
+            var config = {
+                params: {
+                    duAnId: $stateParams.id,
+                }
+            }
+            apiService.get('/api/chitietthuchi/getrange', config,
+                 function (result) {
+                     var _date = {
+                         startDate: moment(result.data.MinDate),
+                         endDate: moment(result.data.MaxDate)
+                     };
+
+                     $scope.date = _date;
+                     // load search
+                     $scope.search();
+                 },
+                 function () {
+                     console.log('Can not get range');
+                 });
+
+        };
+
         // search nhật ký thu chi
         $scope.search = search;
         function search(page) {
             page = page || 0;
-            var obj = JSON.parse(angular.toJson($scope.date));
+            //var obj = JSON.parse(angular.toJson($scope.date));
+            //var startDate = (obj.startDate == null) ? moment().subtract(1, "days").toJSON().slice(0, 10) : obj.startDate;
+            //var endDate = (obj.endDate == null) ? moment().toJSON().slice(0, 10) : obj.endDate;
             var config = {
                 params: {
                     duAnId: $stateParams.id,
                     page: page,
                     pageSize: 10,
-                    startDate: obj.startDate.substring(0, 10),
-                    endDate: obj.endDate.substring(0, 10)
+                    startDate: moment($scope.date.startDate).format('DD-MM-YYYY'),
+                    endDate: moment($scope.date.endDate).format('DD-MM-YYYY')
                 }
             }
             apiService.get('api/chitietthuchi/getbyduanid', config, dataLoadCompleted, dataLoadFailed);
@@ -190,8 +215,6 @@
             for (var i = 0; i < $scope.data.length; i++) {
                 tongthu += ($scope.data[i].TienThu);
                 tongchi += ($scope.data[i].TienChi);
-                var img = JSON.parse($scope.data[i].MoreImages);
-                $scope.images.push(img);
             }
             $scope.TongThu = tongthu;
             $scope.TongChi = tongchi;
@@ -291,16 +314,20 @@
         }
 
         //show image
-
-        $scope.openLightboxModal = function (index) {
+        $scope.images = [];
+        $scope.openLightboxModal = function (index, id) {
+            var listImage = $scope.data.find(function (item) {
+                return item.Id === id;
+            });
+            $scope.images = listImage.MoreImages;
             Lightbox.openModal($scope.images, index);
         };
 
+        //get range
+        getRange();
         // load chi tiết dự án
         loadDetail();
         // load user
         loadUser();
-        // load search
-        $scope.search();
     }
 })(angular.module('bm-solutions.duans'));
