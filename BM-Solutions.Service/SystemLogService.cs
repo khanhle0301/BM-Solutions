@@ -1,7 +1,9 @@
 ﻿using BM_Solution.Data.Infrastructure;
 using BM_Solution.Data.Repositories;
 using BM_Solution.Model.Models;
+using BM_Solutions.Common.ViewModel;
 using System.Collections.Generic;
+using System;
 
 namespace BM_Solutions.Service
 {
@@ -11,7 +13,9 @@ namespace BM_Solutions.Service
 
         void Delete(int id);
 
-        IEnumerable<SystemLog> NhatKyHeThong(string startDate, string endDate);
+        IEnumerable<SystemLog> NhatKyHeThong(DateTime startDate, DateTime endDate);
+
+        DateRange GetRange();
 
         void Save();
     }
@@ -38,7 +42,12 @@ namespace BM_Solutions.Service
             sys.IsDelete = true;
         }
 
-        public IEnumerable<SystemLog> NhatKyHeThong(string startDate, string endDate)
+        public DateRange GetRange()
+        {
+            return _systemLogRepository.GetRange();
+        }
+
+        public IEnumerable<SystemLog> NhatKyHeThong(DateTime startDate, DateTime endDate)
         {
             return _systemLogRepository.NhatKyHeThong(startDate, endDate);
         }

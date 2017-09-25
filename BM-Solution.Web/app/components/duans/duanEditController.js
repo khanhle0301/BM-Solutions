@@ -6,9 +6,6 @@
 
     function duanEditController(apiService, $scope, notificationService, $state, $location,
         commonService, $stateParams, authData, $ngBootbox, $filter, Lightbox) {
-
-        Lightbox.fullScreenMode = false;
-
         // khởi tạo scope chi tiết dự án
         $scope.init = function () {
             // role admin
@@ -168,7 +165,7 @@
                     duAnId: $stateParams.id,
                 }
             }
-            apiService.get('/api/chitietthuchi/getrange', config,
+            apiService.get('/api/chitietthuchi/getRangeByDuAnId', config,
                  function (result) {
                      var _date = {
                          startDate: moment(result.data.MinDate),
@@ -189,16 +186,13 @@
         $scope.search = search;
         function search(page) {
             page = page || 0;
-            //var obj = JSON.parse(angular.toJson($scope.date));
-            //var startDate = (obj.startDate == null) ? moment().subtract(1, "days").toJSON().slice(0, 10) : obj.startDate;
-            //var endDate = (obj.endDate == null) ? moment().toJSON().slice(0, 10) : obj.endDate;
             var config = {
                 params: {
                     duAnId: $stateParams.id,
                     page: page,
                     pageSize: 10,
-                    startDate: moment($scope.date.startDate).format('DD-MM-YYYY'),
-                    endDate: moment($scope.date.endDate).format('DD-MM-YYYY')
+                    startDate: new Date($scope.date.startDate),
+                    endDate: new Date($scope.date.endDate)
                 }
             }
             apiService.get('api/chitietthuchi/getbyduanid', config, dataLoadCompleted, dataLoadFailed);
@@ -234,9 +228,9 @@
         // thêm thành công
         function addChiTietSuccessed() {
             notificationService.displaySuccess('Thêm giao dịch thành công');
-            loadUser();
             loadDetail();
-            $scope.search();
+            //get range
+            getRange();
             $('#myModal').modal('hide');
         }
         // thêm thất bại

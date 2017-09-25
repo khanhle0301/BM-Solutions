@@ -27,7 +27,7 @@ namespace BM_Solution.Web.Controllers
         [HttpGet]
         [Permission(Role = "Admin")]
         public HttpResponseMessage GetListPaging(HttpRequestMessage request, int page, int pageSize,
-            string startDate, string endDate)
+            DateTime startDate, DateTime endDate)
         {
             try
             {
@@ -52,6 +52,18 @@ namespace BM_Solution.Web.Controllers
             {
                 return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
+        }
+
+        [Route("getRange")]
+        [HttpGet]
+        public HttpResponseMessage GetRange(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _systemLogService.GetRange();
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
+                return response;
+            });
         }
 
         [Route("deletemulti")]

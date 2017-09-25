@@ -18,10 +18,10 @@
                 success(result);
             }, function (error) {
                 console.log(error.status);
-                if (error.status === 401) {
+                if (error.status == 401) {
                     notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
                 }
-                else if (error.status === 403) {
+                else if (error.status == 403) {
                     notificationService.displayError('Bạn bị chặn truy cập.');
                 }
                 else if (failure != null) {
@@ -35,10 +35,10 @@
                 success(result);
             }, function (error) {
                 console.log(error.status);
-                if (error.status === 401) {
+                if (error.status == 401) {
                     notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
                 }
-                else if (error.status === 403) {
+                else if (error.status == 403) {
                     notificationService.displayError('Bạn bị chặn truy cập.');
                 }
                 else if (failure != null) {
@@ -52,13 +52,7 @@
                 success(result);
             }, function (error) {
                 console.log(error.status);
-                if (error.status === 401) {
-                    notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
-                }
-                else if (error.status === 403) {
-                    notificationService.displayError('Bạn bị chặn truy cập.');
-                }
-                else if (failure != null) {
+                if (failure != null) {
                     failure(error);
                 }
             });
@@ -69,13 +63,7 @@
                 success(result);
             }, function (error) {
                 console.log(error.status);
-                if (error.status === 401) {
-                    notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
-                }
-                else if (error.status === 403) {
-                    notificationService.displayError('Bạn bị chặn truy cập.');
-                }
-                else if (failure != null) {
+                if (failure != null) {
                     failure(error);
                 }
             });

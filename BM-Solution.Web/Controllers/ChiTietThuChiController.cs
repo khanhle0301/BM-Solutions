@@ -37,8 +37,8 @@ namespace BM_Solution.Web.Controllers
 
         [Route("getbyduanid")]
         [HttpGet]
-        public HttpResponseMessage GetByDuAnId(HttpRequestMessage request, string duAnId, string startDate,
-            string endDate, int page, int pageSize)
+        public HttpResponseMessage GetByDuAnId(HttpRequestMessage request, string duAnId, DateTime startDate,
+            DateTime endDate, int page, int pageSize)
         {
             try
             {
@@ -145,13 +145,25 @@ namespace BM_Solution.Web.Controllers
             });
         }
 
-        [Route("getrange")]
+        [Route("getRangeByDuAnId")]
         [HttpGet]
-        public HttpResponseMessage GetRange(HttpRequestMessage request, string duAnId)
+        public HttpResponseMessage GetRangeByDuAnId(HttpRequestMessage request, string duAnId)
         {
             return CreateHttpResponse(request, () =>
             {
-                var model = _chiTietThuChiService.GetRange(duAnId, null);
+                var model = _chiTietThuChiService.GetRangeByDuAnId(duAnId);
+                var response = request.CreateResponse(HttpStatusCode.OK, model);
+                return response;
+            });
+        }
+
+        [Route("getRange")]
+        [HttpGet]
+        public HttpResponseMessage GetRange(HttpRequestMessage request)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _chiTietThuChiService.GetRange();
                 var response = request.CreateResponse(HttpStatusCode.OK, model);
                 return response;
             });
@@ -159,7 +171,7 @@ namespace BM_Solution.Web.Controllers
 
         [Route("nhatkygiaodich")]
         [HttpGet]
-        public HttpResponseMessage NhatKyGiaoDich(HttpRequestMessage request, string startDate, string endDate,
+        public HttpResponseMessage NhatKyGiaoDich(HttpRequestMessage request, DateTime startDate, DateTime endDate,
             int page, int pageSize)
         {
             try

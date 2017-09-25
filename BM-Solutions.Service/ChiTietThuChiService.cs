@@ -17,13 +17,15 @@ namespace BM_Solutions.Service
 
         IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId);
 
-        IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, string startDate, string endDate);
+        IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, DateTime startDate, DateTime endDate);
 
-        IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, string startDate, string endDate);
+        IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, DateTime startDate, DateTime endDate);
 
         IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role);
 
-        DateRange GetRange(string duAnId, IEnumerable<string> role = null);
+        DateRange GetRangeByDuAnId(string duAnId);
+
+        DateRange GetRange();
 
         void Save();
     }
@@ -65,17 +67,22 @@ namespace BM_Solutions.Service
             return _chiTietThuChiRepository.GetMulti(x => x.DuAnId == duaAnId && x.IsDelete == false, new string[] { "AppUser" });
         }
 
-        public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, string startDate, string endDate)
+        public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, DateTime startDate, DateTime endDate)
         {
             return _chiTietThuChiRepository.GetByDuAnId(duaAnId, startDate, endDate);
         }
 
-        public DateRange GetRange(string duAnId, IEnumerable<string> role = null)
+        public DateRange GetRange()
         {
-            return _chiTietThuChiRepository.GetRange(duAnId, role);
+            return _chiTietThuChiRepository.GetRange();
         }
 
-        public IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, string startDate, string endDate)
+        public DateRange GetRangeByDuAnId(string duAnId)
+        {
+            return _chiTietThuChiRepository.GetRangeByDuAnId(duAnId);
+        }
+
+        public IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, DateTime startDate, DateTime endDate)
         {
             return _chiTietThuChiRepository.NhatKyGiaoDich(role, userId, startDate, endDate);
         }

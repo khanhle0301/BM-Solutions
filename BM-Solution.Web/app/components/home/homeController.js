@@ -117,7 +117,15 @@
 
         // load dữ liệu thất bại
         function dataLoadFailed(response) {
-            notificationService.displayError(response.data.Message);
+            if (response.status == 401) {
+                notificationService.displayError('Bạn hết phiên đăng nhập. Mời đăng nhập lại.');
+            }
+            else if (response.status == 403) {
+                notificationService.displayError('Bạn bị chặn truy cập.');
+            }
+            else {
+                notificationService.displayError(response.data.Message);
+            }
         }
 
         // load total
@@ -128,7 +136,7 @@
                     $scope.total = result.data;
                 },
                 function (result) {
-                    notificationService.displayError(result.data);
+                    console.log(result.status);
                 });
         }
 

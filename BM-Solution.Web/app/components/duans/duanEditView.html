@@ -142,10 +142,13 @@
                                 Trạng thái <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <button ng-click="ketthuc()" ng-if="duan.TrangThai==3"
-                                        type="button" class="btn btn-round btn-danger">
-                                    Có thể kết thúc
-                                </button>
+                                <div ng-if="duan.TrangThai==3">
+                                    <span class="badge bg-red">
+                                        Có thể kết thúc
+                                    </span>
+                                    <a href="javascript:;" ng-click="ketthuc()"><span class="green">(Nhấn vào đây để kết thúc)</span></a>
+                                </div>
+
                                 <label ng-if="duan.TrangThai!=3">
                                     <span ng-class="{'badge bg-green':duan.TrangThai==0,'badge bg-purple':duan.TrangThai==1,
                                               'badge bg-blue':duan.TrangThai==2,'badge bg-red':duan.TrangThai==3,'badge bg-gray':duan.TrangThai==4}">

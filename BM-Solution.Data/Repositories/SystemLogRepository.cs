@@ -1,14 +1,18 @@
 ﻿using BM_Solution.Data.Infrastructure;
 using BM_Solution.Model.Models;
+using BM_Solutions.Common.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace BM_Solution.Data.Repositories
 {
     public interface ISystemLogRepository : IRepository<SystemLog>
     {
-        IEnumerable<SystemLog> NhatKyHeThong(string startDate, string endDate);
+        IEnumerable<SystemLog> NhatKyHeThong(DateTime startDate, DateTime endDate);
+
+        DateRange GetRange();
     }
 
     public class SystemLogRepository : RepositoryBase<SystemLog>, ISystemLogRepository
@@ -17,24 +21,23 @@ namespace BM_Solution.Data.Repositories
         {
         }
 
-        public IEnumerable<SystemLog> NhatKyHeThong(string startDate, string endDate)
+        public IEnumerable<SystemLog> NhatKyHeThong(DateTime startDate, DateTime endDate)
         {
-            DateTime dtFrom;
-            DateTime dtTo;
-            try
-            {
-                dtFrom = Convert.ToDateTime(startDate).AddDays(1);
-                dtTo = Convert.ToDateTime(endDate).AddDays(1);
-            }
-            catch
-            {
-                throw new Exception("Định dạng ngày không hợp lệ");
-            }
             var query = from c in DbContext.SystemLogs
-                        where (c.NgayTao >= dtFrom
-                       && c.NgayTao <= dtTo) && c.IsDelete == false
+                        where (DbFunctions.TruncateTime(c.NgayTao) >= DbFunctions.TruncateTime(startDate))
+                               && (DbFunctions.TruncateTime(c.NgayTao) <= DbFunctions.TruncateTime(endDate))
+                               && (c.IsDelete == false)
                         select c;
             return query;
+        }
+
+        public DateRange GetRange()
+        {
+            return new DateRange
+            {
+                MaxDate = DbContext.SystemLogs.Where(x => x.IsDelete == false).Max(t => t.NgayTao),
+                MinDate = DbContext.SystemLogs.Where(x => x.IsDelete == false).Min(t => t.NgayTao)
+            };
         }
     }
 }

@@ -36,11 +36,10 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <input type="password" name="password" class="form-control col-md-7 col-xs-12"
-                                   required ng-maxlength="50" ng-model="user.Password"
-                                   ng-pattern="/(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/">
+                                   required ng-maxlength="50" ng-model="user.Password" ng-minlength="6">
                             <span ng-show="frmAdd.password.$error.required" class="has-error">Vui lòng nhập Mật khẩu.</span>
                             <span ng-show="frmAdd.password.$error.maxlength" class="has-error">Mật khẩu chỉ được 50 ký tự.</span>
-                            <span ng-show="frmAdd.password.$error.pattern" class="has-error">Mật khẩu ít nhất 6 ký tự gồm chữ hoa, chữ thường, chữ số, ký tự đặt biệt</span>
+                            <span ng-show="frmAdd.password.$error.minlength" class="has-error">Mật khẩu ít nhất 6 ký tự.</span>
                         </div>
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' : frmAdd.email.$invalid && !frmAdd.email.$pristine }">

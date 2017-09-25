@@ -11,15 +11,11 @@
         $scope.loading = true;
         $scope.data = [];
         $scope.page = 0;
-        $scope.pageCount = 0;
+        $scope.pagesCount = 0;
         $scope.search = search;
         $scope.selectAll = selectAll;
         $scope.deleteMultiple = deleteMultiple;
-        $scope.filter = '';
-        $scope.date = {
-            startDate: moment().subtract(1, "days"),
-            endDate: moment()
-        };
+        $scope.date = {};
 
         var roles = authData.authenticationData.roles;
         $scope.isSys = roles.includes('Admin');
@@ -71,16 +67,35 @@
             }
         }, true);
 
+
+        // getrange
+        function getRange() {
+            apiService.get('/api/chitietthuchi/getRange', null,
+                 function (result) {
+                     var _date = {
+                         startDate: moment(result.data.MinDate),
+                         endDate: moment(result.data.MaxDate)
+                     };
+
+                     $scope.date = _date;
+                     // load search
+                     $scope.search();
+                 },
+                 function () {
+                     console.log('Can not get range');
+                 });
+
+        };
+
         function search(page) {
             page = page || 0;
-            var obj = JSON.parse(angular.toJson($scope.date));
             $scope.loading = true;
             var config = {
                 params: {
                     page: page,
                     pageSize: 10,
-                    startDate: obj.startDate.substring(0, 10),
-                    endDate: obj.endDate.substring(0, 10)
+                    startDate: new Date($scope.date.startDate),
+                    endDate: new Date($scope.date.endDate)
                 }
             }
 
@@ -101,6 +116,6 @@
             notificationService.displayError(response.data.Message);
         }
 
-        $scope.search();
+        getRange();
     }
 })(angular.module('bm-solutions.lichsus'));
