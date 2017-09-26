@@ -92,7 +92,7 @@ namespace BM_Solution.Web.Controllers
             if (ModelState.IsValid)
             {
                 var newChiTietThuChi = new ChiTietThuChi();
-                newChiTietThuChi.UpdateApplicationChiTietThuChi(chiTietThuChiViewModel);
+                newChiTietThuChi.UpdateChiTietThuChi(chiTietThuChiViewModel);
                 newChiTietThuChi.UserId = User.Identity.GetUserId();
                 try
                 {

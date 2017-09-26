@@ -66,15 +66,15 @@
                             </div>
                         </div>
                     </div>
-                    <!--lợi nhuận dự tính-->
+                    <!--Tiền vốn ban đầu-->
                     <div class="col-md-6 col-sm-12 col-xs-12 form-group">
-                        <div class="form-group" ng-class="{ 'has-error' : frmAdd.loinhuandutinh.$invalid && !frmAdd.loinhuandutinh.$pristine }">
+                        <div class="form-group" ng-class="{ 'has-error' : frmAdd.tienvonbandau.$invalid && !frmAdd.tienvonbandau.$pristine }">
                             <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
-                                Lợi nhuận dự tính <span class="required">*</span>
+                                Tiền vốn ban đầu <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="number" min="0" name="loinhuandutinh" required ng-model="duan.LoiNhuanDuTinh" class="form-control col-md-7 col-xs-12">
-                                <span ng-show="frmAdd.loinhuandutinh.$error.required" class="has-error">Vui lòng nhập lợi nhuận dự tính.</span>
+                                <input ui-number-mask="0" type="text" min="0" name="tienvonbandau" required ng-model="duan.TienVonBanDau" class="form-control col-md-7 col-xs-12">
+                                <span ng-show="frmAdd.tienvonbandau.$error.required" class="has-error">Vui lòng nhập tiền vốn ban đầu.</span>
                             </div>
                         </div>
                     </div>
@@ -85,8 +85,20 @@
                                 Tiền chi dự tính <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="number" min="0" name="tienchidutinh" required ng-model="duan.TienChiDuTinh" class="form-control col-md-7 col-xs-12">
+                                <input ui-number-mask="0" type="text" min="0" name="tienchidutinh" required ng-model="duan.TienChiDuTinh" class="form-control col-md-7 col-xs-12">
                                 <span ng-show="frmAdd.tienchidutinh.$error.required" class="has-error">Vui lòng nhập tiền chi dự tính.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!--lợi nhuận dự tính-->
+                    <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                        <div class="form-group" ng-class="{ 'has-error' : frmAdd.loinhuandutinh.$invalid && !frmAdd.loinhuandutinh.$pristine }">
+                            <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
+                                Lợi nhuận dự tính <span class="required">*</span>
+                            </label>
+                            <div class="col-md-8 col-sm-12 col-xs-12">
+                                <input ui-number-mask="0" type="text" min="0" name="loinhuandutinh" required ng-model="duan.LoiNhuanDuTinh" class="form-control col-md-7 col-xs-12">
+                                <span ng-show="frmAdd.loinhuandutinh.$error.required" class="has-error">Vui lòng nhập lợi nhuận dự tính.</span>
                             </div>
                         </div>
                     </div>
@@ -97,20 +109,18 @@
                                 Tiền thu dự tính <span class="required">*</span>
                             </label>
                             <div class="col-md-8 col-sm-12 col-xs-12">
-                                <input type="number" min="0" name="tienthudutinh" required ng-model="duan.TienThuDuTinh" class="form-control col-md-7 col-xs-12">
+                                <input ui-number-mask="0" type="text" min="0" name="tienthudutinh" required ng-model="duan.TienThuDuTinh" class="form-control col-md-7 col-xs-12">
                                 <span ng-show="frmAdd.tienthudutinh.$error.required" class="has-error">Vui lòng nhập tiền thu dự tính.</span>
                             </div>
                         </div>
                     </div>
                     <!--ghi chú-->
-                    <div class="col-md-6 col-sm-12 col-xs-12 form-group">
-                        <div class="form-group">
-                            <label class="control-label col-md-4 col-sm-12 col-xs-12" for="first-name">
-                                Ghi chú
-                            </label>
-                            <div class="col-md-8 col-sm-12 col-xs-12">
-                                <textarea type="text" name="ghichu" ng-model="duan.GhiChu" class="form-control col-md-7 col-xs-12"></textarea>
-                            </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-12 col-xs-12">
+                            Ghi chú
+                        </label>
+                        <div class="col-md-10 col-sm-12 col-xs-12">
+                            <textarea type="text" name="ghichu" ng-model="duan.GhiChu" class="form-control col-md-7 col-xs-12"></textarea>
                         </div>
                     </div>
                     <!--nội dung-->
@@ -123,22 +133,50 @@
                     <!--thành viên tham gia-->
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-12 col-xs-12">
-                            Thành viên
+                            Thành viên tham gia
                         </label>
                         <div class="col-md-10 col-sm-12 col-xs-12">
-                            <tags-input ng-model="duan.AppUsers"
-                                        placeholder="Thêm thành viên"
-                                        display-property="UserName"
-                                        replace-spaces-with-dashes="false"
-                                        add-from-autocomplete-only="true"
-                                        template="tag-template">
-                                <auto-complete source="loadUsers($query)"
-                                               min-length="0"
-                                               load-on-focus="true"
-                                               load-on-empty="true"
-                                               max-results-to-show="32"
-                                               template="autocomplete-template"></auto-complete>
-                            </tags-input>
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <label>Thành viên</label>
+                                    <select class="form-control" ng-model="User">
+                                        <option value="0">Choose option</option>
+                                        <option value="1">Option one</option>
+                                        <option value="2">Option two</option>
+                                        <option value="3">Option three</option>
+                                        <option value="4">Option four</option>
+                                    </select>
+                                </div>
+                                <!--Vốn ban đầu-->
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <label>Tiền vốn ban đầu</label>
+                                    <input class="form-control" ng-model="TienVonBanDau" />
+                                </div>
+                                <!--button-->
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <button type="button" ng-click="add()" class="btn btn-primary  mt-24">Thêm</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                        <tr>
+                                            <th>Dự án</th>
+                                            <th>Thành viên</th>
+                                            <th>Tiền vốn ban đầu</th>
+                                            <th>#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in duan.TienVonBanDauViewModel">
+                                            <td>{{duan.Id}}</td>
+                                            <td>{{item.UserId}}</td>
+                                            <td>{{item.TongTien | number}}</td>
+                                            <td><a class="btn" ng-click="remove(item)">Delete</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="ln_solid"></div>
@@ -153,27 +191,4 @@
             </div>
         </div>
     </div>
-    <!--template-->
-    <script type="text/ng-template" id="tag-template">
-        <div class="tag-template">
-            <div class="left-panel">
-                <i class="fa fa-user"></i>
-            </div>
-            <div class="right-panel">
-                <span>{{$getDisplayText()}}</span>
-                <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-            </div>
-        </div>
-    </script>
-    <!--auto template-->
-    <script type="text/ng-template" id="autocomplete-template">
-        <div class="autocomplete-template">
-            <div class="left-panel">
-                <i class="fa fa-user"></i>
-            </div>
-            <div class="right-panel">
-                <span ng-bind-html="$highlight($getDisplayText())"></span>
-            </div>
-        </div>
-    </script>
 </div>

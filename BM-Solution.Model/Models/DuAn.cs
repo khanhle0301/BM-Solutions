@@ -18,7 +18,10 @@ namespace BM_Solution.Model.Models
         public string Ten { set; get; }
 
         public DateTime NgayTao { set; get; }
+
         public DateTime ThoiGianDuTinh { set; get; }
+
+        public long TienVonBanDau { set; get; }
 
         public long LoiNhuanDuTinh { set; get; }
 

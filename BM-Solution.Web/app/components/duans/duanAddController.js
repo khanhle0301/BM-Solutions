@@ -25,7 +25,8 @@
             // khởi tạo model dự án
             $scope.duan = {
                 IsDelete: false,
-                AppUsers: []
+                AppUsers: [],
+                TienVonBanDauViewModel: []
             }
         };
         $scope.init();
@@ -82,6 +83,22 @@
             } else {
                 notificationService.displayError(response.data.Message);
             }
+        }
+
+        $scope.add = function () {
+            $scope.TienVonBanDauViewModel = {
+                IsDelete: false,
+                UserId: $scope.User,
+                DuAnId: $scope.duan.Id,
+                TongTien: $scope.TienVonBanDau
+            };
+            $scope.duan.TienVonBanDauViewModel.push($scope.TienVonBanDauViewModel);
+            $scope.TienVonBanDauViewModel = {};
+        }
+
+        $scope.remove = function (item) {
+            var index = $scope.bdays.indexOf(item);
+            $scope.bdays.splice(index, 1);
         }
 
         // load user

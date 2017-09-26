@@ -35,6 +35,7 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             duAn.Ten = duAnViewModel.Ten;
             duAn.NgayTao = duAnViewModel.NgayTao;
             duAn.ThoiGianDuTinh = duAnViewModel.ThoiGianDuTinh;
+            duAn.TienVonBanDau = duAnViewModel.TienVonBanDau;
             duAn.LoiNhuanDuTinh = duAnViewModel.LoiNhuanDuTinh;
             duAn.TienChiDuTinh = duAnViewModel.TienChiDuTinh;
             duAn.TienChiThucTe = duAnViewModel.TienChiThucTe;
@@ -47,7 +48,7 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             duAn.IsDelete = duAnViewModel.IsDelete;
         }
 
-        public static void UpdateApplicationChiTietThuChi(this ChiTietThuChi chiTietThuChi, ChiTietThuChiViewModel chiTietThuChiViewModel)
+        public static void UpdateChiTietThuChi(this ChiTietThuChi chiTietThuChi, ChiTietThuChiViewModel chiTietThuChiViewModel)
         {
             chiTietThuChi.Id = chiTietThuChiViewModel.Id;
             chiTietThuChi.NgayTao = chiTietThuChiViewModel.NgayTao;
@@ -57,6 +58,15 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             chiTietThuChi.DuAnId = chiTietThuChiViewModel.DuAnId;
             chiTietThuChi.IsDelete = chiTietThuChiViewModel.IsDelete;
             chiTietThuChi.MoreImages = chiTietThuChiViewModel.MoreImages;
+        }
+
+        public static void UpdateTienVonBanDau(this TienVonBanDau tienVonBanDau, TienVonBanDauViewModel tienVonBanDauViewModel)
+        {
+            tienVonBanDau.Id = tienVonBanDauViewModel.Id;
+            tienVonBanDau.TongTien = tienVonBanDauViewModel.TongTien;
+            tienVonBanDau.UserId = tienVonBanDauViewModel.UserId;
+            tienVonBanDau.DuAnId = tienVonBanDauViewModel.DuAnId;
+            tienVonBanDau.IsDelete = tienVonBanDauViewModel.IsDelete;
         }
     }
 }

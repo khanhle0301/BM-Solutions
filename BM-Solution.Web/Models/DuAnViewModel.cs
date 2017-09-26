@@ -21,6 +21,8 @@ namespace BM_Solution.Web.Models
         [Required]
         public DateTime ThoiGianDuTinh { set; get; }
 
+        public long TienVonBanDau { set; get; }
+
         public long LoiNhuanDuTinh { set; get; }
 
         public long TienChiDuTinh { set; get; }
@@ -43,6 +45,8 @@ namespace BM_Solution.Web.Models
         public bool IsDelete { get; set; }
 
         public List<User> AppUsers { get; set; }
+
+        public IEnumerable<TienVonBanDauViewModel> TienVonBanDauViewModel { get; set; }
     }
 
     public class User

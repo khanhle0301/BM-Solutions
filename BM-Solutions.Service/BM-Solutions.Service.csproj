@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ChiTietThuChiService.cs" />
     <Compile Include="DuAnService.cs" />
+    <Compile Include="TienVonBanDauService.cs" />
     <Compile Include="SystemLogService.cs" />
     <Compile Include="ErrorService.cs" />
     <Compile Include="DuAnUserService.cs" />
