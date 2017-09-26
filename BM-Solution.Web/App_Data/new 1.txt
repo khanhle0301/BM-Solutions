@@ -1,0 +1,19 @@
+1.nhập số tiền(thêm dấu phải hoặc dấu chấm) ở nhập tiền 
+
+2.dự tính(trái). thực tế(phải) + số vốn(trang chủ + detail) nằm dưới ngày tạo trên lợi nhuận.
+
+3. lợi nhuận : tự động hiện.(tự tính)(tính theo %)
+
+4. dự án : số vốn ban đầu: số cốn từng người.(a+b)= 1 => a=0.5 , b=0,5 detail +hoa hồng(đc sữa).(table nhỏ nhỏ.)
+
+5. lợi nhuận thực tế,  lợi nhuận dự tính :% cho từng user.(tính sau đi)
+
+6. hiện thị số vốn của từng user .
+7. từ ngày xa nhất tới gần nhất..
+..thuê host...
+8. sửa : nhật kí giao dịch .
++ tống số vốn 
++ số vốn từng người
++ thêm thành viên : + vốn bỏ ra,, 
++ hiện thị theo dự án...
++ cho phép sửa nhật ký.
