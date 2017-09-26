@@ -5,6 +5,7 @@ using BM_Solution.Web.Infrastructure.Extensions;
 using BM_Solution.Web.Models.System;
 using BM_Solution.Web.Providers;
 using BM_Solutions.Service;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,6 +108,41 @@ namespace BM_Solution.Web.Controllers
                 }
                 modelVm.DuAns = listDuAns;
                 return request.CreateResponse(HttpStatusCode.OK, modelVm);
+            }
+        }
+
+        [Route("profile")]
+        [HttpGet]
+        public async Task<HttpResponseMessage> Profile(HttpRequestMessage request)
+        {
+            var userId = User.Identity.GetUserId();
+            var user = await AppUserManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return request.CreateErrorResponse(HttpStatusCode.NoContent, "Không có dữ liệu");
+            }
+            var modelVm = Mapper.Map<AppUser, AppUserViewModel>(user);
+            return request.CreateResponse(HttpStatusCode.OK, modelVm);
+        }
+
+        [HttpPut]
+        [Route("updateProfile")]
+        public async Task<HttpResponseMessage> UpdateProfile(HttpRequestMessage request, AppUserViewModel applicationUserViewModel)
+        {
+            var appUser = await AppUserManager.FindByIdAsync(applicationUserViewModel.Id);
+            try
+            {
+                appUser.UpdateAppUser(applicationUserViewModel, "update");
+                var result = await AppUserManager.UpdateAsync(appUser);
+                if (result.Succeeded)
+                {
+                    return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
+                }
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join(",", result.Errors));
+            }
+            catch (Exception ex)
+            {
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
             }
         }
 

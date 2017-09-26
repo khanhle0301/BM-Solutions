@@ -298,6 +298,8 @@
     <Content Include="app\app.js" />
     <Content Include="app\components\app_users\appUserAddController.js" />
     <Content Include="app\components\app_users\appUserAddView.html" />
+    <Content Include="app\components\app_users\appUserDetailController.js" />
+    <Content Include="app\components\app_users\appUserDetailView.html" />
     <Content Include="app\components\app_users\appUserEditController.js" />
     <Content Include="app\components\app_users\appUserEditView.html" />
     <Content Include="app\components\app_users\appUserListController.js" />

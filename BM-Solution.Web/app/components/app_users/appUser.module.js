@@ -24,6 +24,12 @@
                 templateUrl: "/app/components/app_users/appUserEditView.html",
                 controller: "appUserEditController",
                 parent: 'base'
+            })
+            .state('profile', {
+                url: "/profile",
+                parent: 'base',
+                templateUrl: "/app/components/app_users/appUserDetailView.html",
+                controller: "appUserDetailController"
             });
     }
 })();
