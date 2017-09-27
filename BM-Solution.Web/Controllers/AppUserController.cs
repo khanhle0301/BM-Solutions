@@ -168,7 +168,7 @@ namespace BM_Solution.Web.Controllers
                             var duAnUser = new DuAnUser
                             {
                                 UserId = newAppUser.Id,
-                                DuaAnId = item.Id
+                                DuAnId = item.Id
                             };
                             _duAnUserService.Add(duAnUser);
                         }
@@ -225,7 +225,7 @@ namespace BM_Solution.Web.Controllers
                             var duAnUser = new DuAnUser
                             {
                                 UserId = appUser.Id,
-                                DuaAnId = item.Id
+                                DuAnId = item.Id
                             };
                             _duAnUserService.Add(duAnUser);
                         }

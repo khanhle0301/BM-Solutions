@@ -59,14 +59,5 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             chiTietThuChi.IsDelete = chiTietThuChiViewModel.IsDelete;
             chiTietThuChi.MoreImages = chiTietThuChiViewModel.MoreImages;
         }
-
-        public static void UpdateTienVonBanDau(this TienVonBanDau tienVonBanDau, TienVonBanDauViewModel tienVonBanDauViewModel)
-        {
-            tienVonBanDau.Id = tienVonBanDauViewModel.Id;
-            tienVonBanDau.TongTien = tienVonBanDauViewModel.TongTien;
-            tienVonBanDau.UserId = tienVonBanDauViewModel.UserId;
-            tienVonBanDau.DuAnId = tienVonBanDauViewModel.DuAnId;
-            tienVonBanDau.IsDelete = tienVonBanDauViewModel.IsDelete;
-        }
     }
 }

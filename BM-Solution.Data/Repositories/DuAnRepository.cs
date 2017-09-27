@@ -24,7 +24,7 @@ namespace BM_Solution.Data.Repositories
             if (role.Contains(RoleEnum.Admin.ToString()))
                 return DbContext.DuAns.Count(x => x.IsDelete == false);
             var query = from d in DbContext.DuAns
-                        join p in DbContext.DuAnUsers on d.Id equals p.DuaAnId
+                        join p in DbContext.DuAnUsers on d.Id equals p.DuAnId
                         where p.UserId == userId && d.IsDelete == false
                         select d;
             return query.Count();
@@ -41,14 +41,14 @@ namespace BM_Solution.Data.Repositories
             if (!string.IsNullOrEmpty(keyword))
             {
                 query = from d in DbContext.DuAns
-                        join p in DbContext.DuAnUsers on d.Id equals p.DuaAnId
+                        join p in DbContext.DuAnUsers on d.Id equals p.DuAnId
                         where p.UserId == userId && d.Ten.Contains(keyword) || d.Id.Contains(keyword) && d.IsDelete == false
                         select d;
             }
             else
             {
                 query = from d in DbContext.DuAns
-                        join p in DbContext.DuAnUsers on d.Id equals p.DuaAnId
+                        join p in DbContext.DuAnUsers on d.Id equals p.DuAnId
                         where p.UserId == userId && d.IsDelete == false
                         select d;
             }

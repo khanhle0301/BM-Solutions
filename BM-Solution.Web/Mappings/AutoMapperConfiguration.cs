@@ -15,6 +15,7 @@ namespace BM_Solution.Web.Mappings
                 cfg.CreateMap<AppUser, AppUserViewModel>();
                 cfg.CreateMap<DuAn, DuAnViewModel>();
                 cfg.CreateMap<ChiTietThuChi, ChiTietThuChiViewModel>();
+                cfg.CreateMap<DuAnUser, DuAnUserViewModel>();
             });
         }
     }

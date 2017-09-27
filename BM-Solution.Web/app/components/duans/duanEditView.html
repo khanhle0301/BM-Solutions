@@ -179,22 +179,46 @@
                     <!--thành viên-->
                     <div class="form-group">
                         <label class="control-label col-md-2 col-sm-12 col-xs-12">
-                            Thành viên
+                            Thành viên tham gia
                         </label>
                         <div class="col-md-10 col-sm-12 col-xs-12">
-                            <tags-input ng-disabled="!isSys || isEdit" ng-model="duan.AppUsers"
-                                        placeholder="Thêm thành viên"
-                                        display-property="UserName"
-                                        replace-spaces-with-dashes="false"
-                                        add-from-autocomplete-only="true"
-                                        template="tag-template">
-                                <auto-complete source="loadUsers($query)"
-                                               min-length="0"
-                                               load-on-focus="true"
-                                               load-on-empty="true"
-                                               max-results-to-show="32"
-                                               template="autocomplete-template"></auto-complete>
-                            </tags-input>
+                            <div class="form-group row">
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <label>Thành viên</label>
+                                    <select name="parentId" required class="form-control" ng-model="User" ng-options="option.UserName as option.UserName for option in listUser">
+                                        <option value="">Chọn danh mục</option>
+                                    </select>
+                                </div>
+                                <!--Vốn ban đầu-->
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <label>Tiền vốn ban đầu</label>
+                                    <input class="form-control" required ui-number-mask="0" type="text" min="0" ng-model="TienVonBanDau" />
+                                </div>
+                                <!--button-->
+                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                    <button type="button" ng-click="add()" class="btn btn-primary  mt-24">Thêm</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                        <tr>
+                                            <th>Dự án</th>
+                                            <th>Thành viên</th>
+                                            <th>Tiền vốn ban đầu</th>
+                                            <th>#</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in duan.DuAnUserViewModels">
+                                            <td>{{item.DuAnId}}</td>
+                                            <td>{{item.AppUser.UserName}}</td>
+                                            <td>{{item.TienVonBanDau | number}}</td>
+                                            <td><a href="javascript:void(0);" title="Xóa" ng-click="remove(item)"><span class="badge bg-red">Xóa</span></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -211,29 +235,6 @@
                 </form>
             </div>
         </div>
-        <!--teamplate-->
-        <script type="text/ng-template" id="tag-template">
-            <div class="tag-template">
-                <div class="left-panel">
-                    <i class="fa fa-user"></i>
-                </div>
-                <div class="right-panel">
-                    <span>{{$getDisplayText()}}</span>
-                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                </div>
-            </div>
-        </script>
-        <!--auto template-->
-        <script type="text/ng-template" id="autocomplete-template">
-            <div class="autocomplete-template">
-                <div class="left-panel">
-                    <i class="fa fa-user"></i>
-                </div>
-                <div class="right-panel">
-                    <span ng-bind-html="$highlight($getDisplayText())"></span>
-                </div>
-            </div>
-        </script>
     </div>
     <!--Nhật ký giao dịch-->
     <div class="col-md-12 col-sm-12 col-xs-12">

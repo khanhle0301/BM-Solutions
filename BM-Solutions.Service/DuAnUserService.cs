@@ -15,6 +15,8 @@ namespace BM_Solutions.Service
 
         void DeleteAll(string duAnId, string userId);
 
+        IEnumerable<DuAnUser> GetDuAnUserByDuAnId(string duAnId);
+
         void SaveChange();
     }
 
@@ -36,7 +38,7 @@ namespace BM_Solutions.Service
 
         public void DeleteAll(string duAnId, string userId)
         {
-            _duAnUserRepository.DeleteMulti(x => x.DuaAnId == duAnId && x.UserId == userId);
+            _duAnUserRepository.DeleteMulti(x => x.DuAnId == duAnId && x.UserId == userId);
         }
 
         public List<string> GetUserByDuAnId(string duAnId)
@@ -52,6 +54,11 @@ namespace BM_Solutions.Service
         public List<string> GetDuAnByUserId(string userId)
         {
             return _duAnUserRepository.GetDuAnByUserId(userId);
+        }
+
+        public IEnumerable<DuAnUser> GetDuAnUserByDuAnId(string duAnId)
+        {
+            return _duAnUserRepository.GetMulti(x => x.IsDelete == false && x.DuAnId == duAnId, new string[] { "AppUser" });
         }
     }
 }

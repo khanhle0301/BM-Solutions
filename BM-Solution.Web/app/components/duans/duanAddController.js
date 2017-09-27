@@ -26,7 +26,7 @@
             $scope.duan = {
                 IsDelete: false,
                 AppUsers: [],
-                TienVonBanDauViewModel: []
+                DuAnUserViewModels: []
             }
         };
         $scope.init();
@@ -43,20 +43,12 @@
 
         // load danh sách người dùng
         function loadUser() {
-            apiService.get('api/appUser/getListString', null, function (result) {
+            apiService.get('api/appUser/getlistall', null, function (result) {
                 $scope.listUser = result.data;
             }, function () {
                 console.log('Cannot get list user');
             });
         }
-
-        // sự kiện chọn user
-        $scope.loadUsers = function ($query) {
-            var users = $scope.listUser;
-            return users.filter(function (user) {
-                return user.toLowerCase().indexOf($query.toLowerCase()) != -1;
-            });
-        };
 
         // thêm mới dự án
         $scope.addDuAn = addDuAn;
@@ -86,19 +78,33 @@
         }
 
         $scope.add = function () {
-            $scope.TienVonBanDauViewModel = {
+            $scope.DuAnUserViewModel = {
                 IsDelete: false,
                 UserId: $scope.User,
                 DuAnId: $scope.duan.Id,
-                TongTien: $scope.TienVonBanDau
+                TienVonBanDau: $scope.TienVonBanDau,
+                NgayTao: new Date()
             };
-            $scope.duan.TienVonBanDauViewModel.push($scope.TienVonBanDauViewModel);
-            $scope.TienVonBanDauViewModel = {};
+
+            if (typeof $scope.DuAnUserViewModel.UserId != "undefined"
+               && typeof $scope.DuAnUserViewModel.DuAnId != "undefined"
+                && typeof $scope.DuAnUserViewModel.TienVonBanDau != "undefined") {
+                var obj = $scope.duan.DuAnUserViewModels.find(function (item) {
+                    return item.UserId === $scope.DuAnUserViewModel.UserId;
+                });
+
+                if (typeof obj != "undefined")
+                    obj.TienVonBanDau += $scope.DuAnUserViewModel.TienVonBanDau;
+                else {
+                    $scope.duan.DuAnUserViewModels.push($scope.DuAnUserViewModel);
+                }
+                $scope.DuAnUserViewModel = {};
+            }
         }
 
         $scope.remove = function (item) {
-            var index = $scope.bdays.indexOf(item);
-            $scope.bdays.splice(index, 1);
+            var index = $scope.duan.DuAnUserViewModels.indexOf(item);
+            $scope.duan.DuAnUserViewModels.splice(index, 1);
         }
 
         // load user

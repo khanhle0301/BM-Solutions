@@ -65,13 +65,6 @@
                 console.log('Cannot get list user');
             });
         }
-        // load user
-        $scope.loadUsers = function ($query) {
-            var users = $scope.listUser;
-            return users.filter(function (user) {
-                return user.toLowerCase().indexOf($query.toLowerCase()) != -1;
-            });
-        };
 
         // kết thúc dự án
         $scope.ketthuc = ketthuc;

@@ -64,7 +64,6 @@
     <Compile Include="Models\ChiTietThuChi.cs" />
     <Compile Include="Models\DuAnUser.cs" />
     <Compile Include="Models\SystemLog.cs" />
-    <Compile Include="Models\TienVonBanDau.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

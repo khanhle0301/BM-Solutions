@@ -274,7 +274,6 @@
     <Compile Include="Controllers\DuAnController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SystemLogController.cs" />
-    <Compile Include="Controllers\TienVonBanDauController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -286,10 +285,10 @@
     <Compile Include="Mappings\AutoMapperConfiguration.cs" />
     <Compile Include="Models\ChiTietListViewModel.cs" />
     <Compile Include="Models\ChiTietThuChiViewModel.cs" />
+    <Compile Include="Models\DuAnUserViewModel.cs" />
     <Compile Include="Models\DuAnViewModel.cs" />
     <Compile Include="Models\System\ApplicationRoleViewModel.cs" />
     <Compile Include="Models\System\ApplicationUserViewModel.cs" />
-    <Compile Include="Models\TienVonBanDauViewModel.cs" />
     <Compile Include="Models\TotalViewMoodel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />

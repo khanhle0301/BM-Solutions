@@ -2,6 +2,7 @@
 using BM_Solution.Model.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace BM_Solution.Data.Repositories
 {
@@ -10,6 +11,7 @@ namespace BM_Solution.Data.Repositories
         List<string> GetUserByDuAnId(string duAnId);
 
         List<string> GetDuAnByUserId(string userId);
+
     }
 
     public class DuAnUserRepository : RepositoryBase<DuAnUser>, IDuAnUserRepository
@@ -23,7 +25,7 @@ namespace BM_Solution.Data.Repositories
             var query = from u in DbContext.Users
                         join p in DbContext.DuAnUsers on u.Id equals p.UserId
                         where p.UserId == userId
-                        select p.DuaAnId;
+                        select p.DuAnId;
             return query.ToList();
         }
 
@@ -31,7 +33,7 @@ namespace BM_Solution.Data.Repositories
         {
             var query = from u in DbContext.Users
                         join p in DbContext.DuAnUsers on u.Id equals p.UserId
-                        where p.DuaAnId == duAnId
+                        where p.DuAnId == duAnId
                         select u.UserName;
             return query.ToList();
         }

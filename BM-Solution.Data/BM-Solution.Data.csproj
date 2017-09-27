@@ -112,11 +112,18 @@
     <Compile Include="Migrations\201709261557506_SoVonBanDau.Designer.cs">
       <DependentUpon>201709261557506_SoVonBanDau.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709270623543_Edit_DuAnUser.cs" />
+    <Compile Include="Migrations\201709270623543_Edit_DuAnUser.Designer.cs">
+      <DependentUpon>201709270623543_Edit_DuAnUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709270743052_Edit_DuAnId.cs" />
+    <Compile Include="Migrations\201709270743052_Edit_DuAnId.Designer.cs">
+      <DependentUpon>201709270743052_Edit_DuAnId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ChiTietThuChiRepository.cs" />
     <Compile Include="Repositories\DuAnRepository.cs" />
-    <Compile Include="Repositories\TienVonBanDauRepository.cs" />
     <Compile Include="Repositories\SystemLogRepository.cs" />
     <Compile Include="Repositories\ErrorRepository.cs" />
     <Compile Include="Repositories\DuAnUserRepository.cs" />
@@ -172,6 +179,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709261557506_SoVonBanDau.resx">
       <DependentUpon>201709261557506_SoVonBanDau.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709270623543_Edit_DuAnUser.resx">
+      <DependentUpon>201709270623543_Edit_DuAnUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709270743052_Edit_DuAnId.resx">
+      <DependentUpon>201709270743052_Edit_DuAnId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

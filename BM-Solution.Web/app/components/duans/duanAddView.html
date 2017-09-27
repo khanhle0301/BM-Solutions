@@ -139,18 +139,14 @@
                             <div class="form-group row">
                                 <div class="col-md-4 col-sm-6 col-xs-12">
                                     <label>Thành viên</label>
-                                    <select class="form-control" ng-model="User">
-                                        <option value="0">Choose option</option>
-                                        <option value="1">Option one</option>
-                                        <option value="2">Option two</option>
-                                        <option value="3">Option three</option>
-                                        <option value="4">Option four</option>
+                                    <select name="parentId" required class="form-control" ng-model="User" ng-options="option.UserName as option.UserName for option in listUser">
+                                        <option value="">Chọn danh mục</option>
                                     </select>
                                 </div>
                                 <!--Vốn ban đầu-->
                                 <div class="col-md-4 col-sm-6 col-xs-12">
                                     <label>Tiền vốn ban đầu</label>
-                                    <input class="form-control" ng-model="TienVonBanDau" />
+                                    <input class="form-control" required ui-number-mask="0" type="text" min="0" ng-model="TienVonBanDau" />
                                 </div>
                                 <!--button-->
                                 <div class="col-md-4 col-sm-6 col-xs-12">
@@ -168,11 +164,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr ng-repeat="item in duan.TienVonBanDauViewModel">
+                                        <tr ng-repeat="item in duan.DuAnUserViewModels">
                                             <td>{{duan.Id}}</td>
                                             <td>{{item.UserId}}</td>
-                                            <td>{{item.TongTien | number}}</td>
-                                            <td><a class="btn" ng-click="remove(item)">Delete</a></td>
+                                            <td>{{item.TienVonBanDau | number}}</td>
+                                            <td><a href="javascript:void(0);" title="Xóa" ng-click="remove(item)"><span class="badge bg-red">Xóa</span></a></td>
                                         </tr>
                                     </tbody>
                                 </table>

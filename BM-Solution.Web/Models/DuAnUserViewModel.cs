@@ -1,14 +1,13 @@
 ﻿using BM_Solution.Model.Models;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BM_Solution.Web.Models
 {
-    public class TienVonBanDauViewModel
+    public class DuAnUserViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { set; get; }
+        public int Id { get; set; }
 
         [StringLength(128)]
         public string UserId { get; set; }
@@ -17,14 +16,16 @@ namespace BM_Solution.Web.Models
         [Column(TypeName = "varchar")]
         public string DuAnId { get; set; }
 
-        public long TongTien { set; get; }
+        public DateTime NgayTao { set; get; }
+
+        public long TienVonBanDau { set; get; }
+
+        public bool IsDelete { get; set; }
 
         [ForeignKey("UserId")]
         public AppUser AppUser { get; set; }
 
-        [ForeignKey("DuAnId")]
+        [ForeignKey("DuaAnId")]
         public DuAn DuAn { get; set; }
-
-        public bool IsDelete { get; set; }
     }
 }

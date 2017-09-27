@@ -44,13 +44,6 @@ namespace BM_Solution.Web.Models
         public StatusEnum TrangThai { set; get; }
         public bool IsDelete { get; set; }
 
-        public List<User> AppUsers { get; set; }
-
-        public IEnumerable<TienVonBanDauViewModel> TienVonBanDauViewModel { get; set; }
-    }
-
-    public class User
-    {
-        public string UserName { get; set; }
+        public IEnumerable<DuAnUserViewModel> DuAnUserViewModels { get; set; }
     }
 }

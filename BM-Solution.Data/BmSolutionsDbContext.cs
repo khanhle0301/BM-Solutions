@@ -12,7 +12,6 @@ namespace BM_Solution.Data
         }
 
         public DbSet<Error> Errors { set; get; }
-        public DbSet<TienVonBanDau> TienVonBanDaus { set; get; }
         public DbSet<SystemLog> SystemLogs { set; get; }
 
         public DbSet<DuAn> DuAns { set; get; }
