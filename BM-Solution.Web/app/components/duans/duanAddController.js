@@ -83,28 +83,56 @@
                 UserId: $scope.User,
                 DuAnId: $scope.duan.Id,
                 TienVonBanDau: $scope.TienVonBanDau,
+                PhanTramHoaHong: $scope.PhanTramHoaHong,
                 NgayTao: new Date()
             };
 
             if (typeof $scope.DuAnUserViewModel.UserId != "undefined"
-               && typeof $scope.DuAnUserViewModel.DuAnId != "undefined"
-                && typeof $scope.DuAnUserViewModel.TienVonBanDau != "undefined") {
+              && typeof $scope.DuAnUserViewModel.DuAnId != "undefined"
+               && typeof $scope.DuAnUserViewModel.TienVonBanDau != "undefined"
+                && typeof $scope.DuAnUserViewModel.PhanTramHoaHong != "undefined") {
                 var obj = $scope.duan.DuAnUserViewModels.find(function (item) {
                     return item.UserId === $scope.DuAnUserViewModel.UserId;
                 });
 
-                if (typeof obj != "undefined")
-                    obj.TienVonBanDau += $scope.DuAnUserViewModel.TienVonBanDau;
+                if (typeof obj != "undefined") {
+                    obj.TienVonBanDau = $scope.DuAnUserViewModel.TienVonBanDau;
+                    obj.PhanTramHoaHong = $scope.DuAnUserViewModel.PhanTramHoaHong;
+                }
+
                 else {
                     $scope.duan.DuAnUserViewModels.push($scope.DuAnUserViewModel);
                 }
-                $scope.DuAnUserViewModel = {};
             }
+            $scope.DuAnUserViewModel = {};
         }
 
         $scope.remove = function (item) {
             var index = $scope.duan.DuAnUserViewModels.indexOf(item);
             $scope.duan.DuAnUserViewModels.splice(index, 1);
+        }
+
+        // open model
+        $scope.popupEdit = function (item) {
+            $scope.capnhat = {
+                thanhvien: item.UserId,
+                vondautu: item.TienVonBanDau,
+                phantram: item.PhanTramHoaHong
+            };
+            $('#myModal_Edit').modal('show');
+        }
+
+        $scope.editThanhVien = function () {
+            var obj = $scope.duan.DuAnUserViewModels.find(function (item) {
+                return item.UserId === $scope.capnhat.thanhvien;
+            });
+
+            if (typeof obj != "undefined") {
+                obj.TienVonBanDau = $scope.capnhat.vondautu;
+                obj.PhanTramHoaHong = $scope.capnhat.phantram;
+            }
+
+            $('#myModal_Edit').modal('hide');
         }
 
         // load user

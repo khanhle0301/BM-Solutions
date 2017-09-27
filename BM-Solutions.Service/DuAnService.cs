@@ -13,7 +13,7 @@ namespace BM_Solutions.Service
     {
         DuAn Add(DuAn duAn);
 
-        DuAn Update(DuAn duAn);
+        void Update(DuAn duAn);
 
         void Delete(string id);
 
@@ -94,15 +94,9 @@ namespace BM_Solutions.Service
             _unitOfWork.Commit();
         }
 
-        public DuAn Update(DuAn duAn)
+        public void Update(DuAn duAn)
         {
-            var duAnEdit = _duAnRepository.GetSingleByCondition(x => x.Id == duAn.Id);
-            if (duAnEdit == null)
-                throw new Exception("Dự án không tồn tại");
-            duAnEdit.Ten = duAn.Ten;
-            duAnEdit.NoiDung = duAn.NoiDung;
-            duAnEdit.GhiChu = duAn.GhiChu;
-            return duAnEdit;
+            _duAnRepository.Update(duAn);
         }
 
         public void UpdateProfit(ChiTietThuChi chiTietThuChi)

@@ -2,6 +2,7 @@
 using BM_Solution.Model.Models;
 using BM_Solution.Web.Infrastructure.Core;
 using BM_Solution.Web.Infrastructure.Extensions;
+using BM_Solution.Web.Models;
 using BM_Solution.Web.Models.System;
 using BM_Solution.Web.Providers;
 using BM_Solutions.Service;
@@ -65,6 +66,21 @@ namespace BM_Solution.Web.Controllers
             return CreateHttpResponse(request, () =>
             {
                 var model = AppUserManager.Users.Where(x => x.Status);
+                IEnumerable<AppUserViewModel> modelVm =
+                    Mapper.Map<IEnumerable<AppUser>, IEnumerable<AppUserViewModel>>(model);
+                var response = request.CreateResponse(HttpStatusCode.OK, modelVm);
+                return response;
+            });
+        }
+
+        [Route("getByNotInDuAnId")]
+        [HttpGet]
+        [Permission(Role = "Admin")]
+        public HttpResponseMessage GetByNotInDuAnId(HttpRequestMessage request,string duAnId)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                var model = _duAnUserService.GetByNotInDuAnId(duAnId);
                 IEnumerable<AppUserViewModel> modelVm =
                     Mapper.Map<IEnumerable<AppUser>, IEnumerable<AppUserViewModel>>(model);
                 var response = request.CreateResponse(HttpStatusCode.OK, modelVm);

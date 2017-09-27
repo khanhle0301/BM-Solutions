@@ -20,6 +20,8 @@ namespace BM_Solution.Web.Models
 
         public long TienVonBanDau { set; get; }
 
+        public float PhanTramHoaHong { set; get; }
+
         public bool IsDelete { get; set; }
 
         [ForeignKey("UserId")]

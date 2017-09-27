@@ -1,7 +1,7 @@
 ﻿using BM_Solution.Model.Models;
+using BM_Solution.Web.Models;
 using BM_Solution.Web.Models.System;
 using System;
-using BM_Solution.Web.Models;
 
 namespace BM_Solution.Web.Infrastructure.Extensions
 {
@@ -58,6 +58,17 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             chiTietThuChi.DuAnId = chiTietThuChiViewModel.DuAnId;
             chiTietThuChi.IsDelete = chiTietThuChiViewModel.IsDelete;
             chiTietThuChi.MoreImages = chiTietThuChiViewModel.MoreImages;
+        }
+
+        public static void UpdateDuAnUser(this DuAnUser duAnUser, DuAnUserViewModel duAnUserViewModel)
+        {
+            duAnUser.Id = duAnUserViewModel.Id;
+            duAnUser.NgayTao = duAnUserViewModel.NgayTao;
+            duAnUser.TienVonBanDau = duAnUserViewModel.TienVonBanDau;
+            duAnUser.UserId = duAnUserViewModel.UserId;
+            duAnUser.DuAnId = duAnUserViewModel.DuAnId;
+            duAnUser.IsDelete = duAnUserViewModel.IsDelete;
+            duAnUser.PhanTramHoaHong = duAnUserViewModel.PhanTramHoaHong;
         }
     }
 }

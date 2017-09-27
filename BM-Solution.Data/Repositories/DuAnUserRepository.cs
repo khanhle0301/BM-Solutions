@@ -12,12 +12,27 @@ namespace BM_Solution.Data.Repositories
 
         List<string> GetDuAnByUserId(string userId);
 
+        IEnumerable<AppUser> GetByNotInDuAnId(string duAnId);
+
     }
 
     public class DuAnUserRepository : RepositoryBase<DuAnUser>, IDuAnUserRepository
     {
         public DuAnUserRepository(IDbFactory dbFactory) : base(dbFactory)
         {
+        }
+
+        public IEnumerable<AppUser> GetByNotInDuAnId(string duAnId)
+        {
+            var duAnUser = from p in DbContext.DuAnUsers
+                           where p.DuAnId == duAnId && p.IsDelete == false
+                           select p;
+
+            var query = from u in DbContext.Users
+                        where u.Status && !(from o in duAnUser
+                                            select o.UserId).Contains(u.Id)
+                        select u;
+            return query.ToList();
         }
 
         public List<string> GetDuAnByUserId(string userId)

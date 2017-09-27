@@ -120,6 +120,14 @@
     <Compile Include="Migrations\201709270743052_Edit_DuAnId.Designer.cs">
       <DependentUpon>201709270743052_Edit_DuAnId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709271212236_EditUser1.cs" />
+    <Compile Include="Migrations\201709271212236_EditUser1.Designer.cs">
+      <DependentUpon>201709271212236_EditUser1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709271429033_EditDuAnUser.cs" />
+    <Compile Include="Migrations\201709271429033_EditDuAnUser.Designer.cs">
+      <DependentUpon>201709271429033_EditDuAnUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ChiTietThuChiRepository.cs" />
@@ -185,6 +193,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709270743052_Edit_DuAnId.resx">
       <DependentUpon>201709270743052_Edit_DuAnId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709271212236_EditUser1.resx">
+      <DependentUpon>201709271212236_EditUser1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709271429033_EditDuAnUser.resx">
+      <DependentUpon>201709271429033_EditDuAnUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

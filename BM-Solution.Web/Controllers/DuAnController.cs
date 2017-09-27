@@ -136,6 +136,7 @@ namespace BM_Solution.Web.Controllers
                 {
                     // add dự án
                     _duAnService.Add(newDuAn);
+                    _duAnService.Save();
                     // lặp qua danh sách user
                     foreach (var item in duAnViewModel.DuAnUserViewModels)
                     {
@@ -146,7 +147,8 @@ namespace BM_Solution.Web.Controllers
                             DuAnId = duAnViewModel.Id,
                             TienVonBanDau = item.TienVonBanDau,
                             IsDelete = false,
-                            NgayTao = item.NgayTao
+                            NgayTao = item.NgayTao,
+                            PhanTramHoaHong = item.PhanTramHoaHong
                         };
                         // add dự án user
                         _duAnUserService.Add(duAnUser);
@@ -161,7 +163,7 @@ namespace BM_Solution.Web.Controllers
                         NoiDung = "Thêm dự án: " + newDuAn.Id
                     });
                     // lưu vào db
-                    _duAnService.Save();
+                    _duAnUserService.SaveChange();
                     // trả về response
                     return request.CreateResponse(HttpStatusCode.OK, duAnViewModel);
                 }
@@ -187,30 +189,8 @@ namespace BM_Solution.Web.Controllers
                 newDuAn.UpdateDuAn(duAnViewModel);
                 try
                 {
-                    // lấy dánh sách user nằm trong dự án
-                    var appUsers = _duAnUserService.GetUserByDuAnId(newDuAn.Id);
-                    // lặp qa danh sách
-                    foreach (var user in appUsers)
-                    {
-                        // xóa tất cả user nằm trong dự án
-                        _duAnUserService.DeleteAll(newDuAn.Id, AppUserManager.FindByName(user).Id);
-                    }
                     // cập nhật lại dự ắn
                     _duAnService.Update(newDuAn);
-                    // lặp qua danh sách user
-                    foreach (var item in duAnViewModel.DuAnUserViewModels)
-                    {
-                        // tạo mới dự án user
-                        var duAnUser = new DuAnUser
-                        {
-                            UserId = AppUserManager.FindByName(item.UserId).Id,
-                            DuAnId = newDuAn.Id,
-                            TienVonBanDau = item.TienVonBanDau,
-                            IsDelete = false
-                        };
-                        // add dự án user
-                        _duAnUserService.Add(duAnUser);
-                    }
                     // lưu lại hệ thống
                     _systemLogService.Create(new SystemLog
                     {

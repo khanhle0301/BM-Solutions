@@ -137,19 +137,24 @@
                         </label>
                         <div class="col-md-10 col-sm-12 col-xs-12">
                             <div class="form-group row">
-                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
                                     <label>Thành viên</label>
                                     <select name="parentId" required class="form-control" ng-model="User" ng-options="option.UserName as option.UserName for option in listUser">
-                                        <option value="">Chọn danh mục</option>
+                                        <option value="">Chọn thành viên</option>
                                     </select>
                                 </div>
                                 <!--Vốn ban đầu-->
-                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
                                     <label>Tiền vốn ban đầu</label>
                                     <input class="form-control" required ui-number-mask="0" type="text" min="0" ng-model="TienVonBanDau" />
                                 </div>
+                                <!--Phần trăm hoa hồng-->
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <label>Phần trăm hoa hồng</label>
+                                    <input class="form-control" required type="text" ui-percentage-mask="0" ng-model="PhanTramHoaHong" />
+                                </div>
                                 <!--button-->
-                                <div class="col-md-4 col-sm-6 col-xs-12">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
                                     <button type="button" ng-click="add()" class="btn btn-primary  mt-24">Thêm</button>
                                 </div>
                             </div>
@@ -157,18 +162,27 @@
                                 <table class="table table-striped jambo_table bulk_action">
                                     <thead>
                                         <tr>
-                                            <th>Dự án</th>
+                                            <th>#</th>
                                             <th>Thành viên</th>
                                             <th>Tiền vốn ban đầu</th>
+                                            <th>Phần trăm hoa hồng</th>
                                             <th>#</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="item in duan.DuAnUserViewModels">
-                                            <td>{{duan.Id}}</td>
+                                            <td>{{$index + 1}}</td>
                                             <td>{{item.UserId}}</td>
                                             <td>{{item.TienVonBanDau | number}}</td>
-                                            <td><a href="javascript:void(0);" title="Xóa" ng-click="remove(item)"><span class="badge bg-red">Xóa</span></a></td>
+                                            <td>{{(item.PhanTramHoaHong)*100}} %</td>
+                                            <td>
+                                                <a href="javascript:void(0);" title="Sửa" ng-click="popupEdit(item)">
+                                                    <span class="badge bg-primary">Sửa</span>
+                                                </a>
+                                                <a href="javascript:void(0);" title="Xóa" ng-click="remove(item)">
+                                                    <span class="badge bg-red">Xóa</span>
+                                                </a>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -184,6 +198,48 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal_Edit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+     aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title pull-left">Cập nhật thành viên tham gia</h4>
+                <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addChitiet" class="form-horizontal form-label-left input_mask" role="form" novalidate name="frmEditThanhVien" ng-submit="editThanhVien()">
+                    <div class="form-group row">
+                        <!--thời gian-->
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <label>Thành viên</label>
+                            <input disabled name="thanhvien" ng-model="capnhat.thanhvien" type="text" required class="form-control" />
+                        </div>
+                        <!--tiền chi-->
+                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmEditThanhVien.vondautu.$invalid && !frmEditThanhVien.vondautu.$pristine }">
+                            <label>Vốn đầu tư</label>
+                            <input required ui-number-mask="0" type="text" min="0" name="vondautu" ng-model="capnhat.vondautu" class="form-control">
+                            <span ng-show="frmEditThanhVien.vondautu.$invalid" class="has-error">Phải nhập vốn đầu tư</span>
+                        </div>
+                        <!--tiề thu-->
+                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmEditThanhVien.phamtram.$invalid && !frmEditThanhVien.phamtram.$pristine }">
+                            <label>Phần trăm hoa hồng</label>
+                            <input class="form-control" required type="text" name="phamtram" ui-percentage-mask="0" ng-model="capnhat.phantram" />
+                            <span ng-show="frmEditThanhVien.phamtram.$invalid" class="has-error">Phải nhập phần trăm hoa hồng</span>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6 col-xs-12" ng-class="{ 'has-error' : frmEditThanhVien.phamtram.$invalid && !frmEditThanhVien.phamtram.$pristine }">
+                            <button type="submit" ng-disabled="frmEditThanhVien.$invalid" class="btn btn-primary  mt-24">Cập nhật</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="ln_solid"></div>
             </div>
         </div>
     </div>

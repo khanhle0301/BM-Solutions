@@ -10,7 +10,7 @@ namespace BM_Solution.Model.Models
     [Table("AppUsers")]
     public class AppUser : IdentityUser
     {
-        [MaxLength(256)]
+        [MaxLength(100)]
         public string FullName { set; get; }
 
         public bool Status { get; set; }

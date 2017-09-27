@@ -21,19 +21,28 @@
             };
             // style
             $scope.style = 'hidden';
+
+            // set opened popup
+            $scope.popup1 = {
+                opened: false
+            };
+            // set opened popup
+            $scope.popup2 = {
+                opened: false
+            };
         };
         $scope.init();
 
-        // edit
-        $scope.edit = edit;
-        function edit() {
-            $scope.isEdit = false;
-        }
-        // cancel
-        $scope.cancel = cancel;
-        function cancel() {
-            $scope.isEdit = true;
-        }
+        // mở popup date
+        $scope.open1 = function () {
+            $scope.popup1.opened = true;
+        };
+
+        // mở popup date
+        $scope.open2 = function () {
+            $scope.popup2.opened = true;
+        };
+
         // open model
         $scope.openModel = function () {
             $scope.chitiet = {
@@ -57,9 +66,14 @@
                 });
         }
 
-        // load dánh sách user
+        // load danh sách người dùng
         function loadUser() {
-            apiService.get('api/appUser/getListString', null, function (result) {
+            var config = {
+                params: {
+                    duAnId: $stateParams.id
+                }
+            }
+            apiService.get('api/appUser/getByNotInDuAnId', config, function (result) {
                 $scope.listUser = result.data;
             }, function () {
                 console.log('Cannot get list user');
@@ -109,6 +123,10 @@
         // cập nhật dự án
         $scope.editDuAn = editDuAn;
         function editDuAn() {
+            // gán lại ngày tạo
+            $scope.duan.NgayTao = $scope.ngayTao;
+            // gán lại thời gian dự tính
+            $scope.duan.ThoiGianDuTinh = $scope.thoiGian;
             apiService.put('api/duan/update', $scope.duan, editSuccessed, editFailed);
         }
         // cập nhật dự án thành công
@@ -309,6 +327,90 @@
             $scope.images = listImage.MoreImages;
             Lightbox.openModal($scope.images, index);
         };
+
+        $scope.add = function () {
+            $scope.DuAnUserViewModel = {
+                IsDelete: false,
+                UserId: $scope.User,
+                DuAnId: $scope.duan.Id,
+                TienVonBanDau: $scope.TienVonBanDau,
+                PhanTramHoaHong: $scope.PhanTramHoaHong,
+                NgayTao: new Date()
+            };
+
+            if (typeof $scope.DuAnUserViewModel.UserId != "undefined"
+              && typeof $scope.DuAnUserViewModel.DuAnId != "undefined"
+               && typeof $scope.DuAnUserViewModel.TienVonBanDau != "undefined"
+                && typeof $scope.DuAnUserViewModel.PhanTramHoaHong != "undefined") {
+                apiService.post('api/duAnUser/add', $scope.DuAnUserViewModel,
+                    function (result) {
+                        notificationService.displaySuccess('Thêm thành công');
+                        // load chi tiết dự án
+                        loadDetail();
+                        // load user
+                        loadUser();
+                    }, function (error) {
+                        console.log('Thêm không thành công.');
+                    });
+            }
+            $scope.DuAnUserViewModel = {};
+        }
+
+        $scope.remove = function (item) {
+            $ngBootbox.confirm('Bạn có chắc muốn xóa?')
+                                .then(function () {
+                                    var config = {
+                                        params: {
+                                            duAnId: item.DuAnId,
+                                            userId: item.UserId
+                                        }
+                                    }
+                                    apiService.del('/api/duAnUser/delete', config, function () {
+                                        notificationService.displaySuccess('Đã xóa thành công.');
+                                        // load chi tiết dự án
+                                        loadDetail();
+                                        // load user
+                                        loadUser();
+                                    },
+                                        function () {
+                                            notificationService.displayError('Xóa không thành công.');
+                                        });
+                                });
+        }
+
+        // open model
+        $scope.popupEdit = function (item) {
+            $scope.capnhat = {
+                thanhvien: item.AppUser.UserName,
+                vondautu: item.TienVonBanDau,
+                phantram: item.PhanTramHoaHong
+            };
+            $('#myModal_Edit').modal('show');
+        }
+
+        $scope.editThanhVien = function () {
+            $scope.DuAnUserViewModel = {
+                IsDelete: false,
+                UserId: $scope.capnhat.thanhvien,
+                DuAnId: $scope.duan.Id,
+                TienVonBanDau: $scope.capnhat.vondautu,
+                PhanTramHoaHong: $scope.capnhat.phantram,
+                NgayTao: new Date()
+            };
+
+            apiService.put('api/duAnUser/update', $scope.DuAnUserViewModel,
+                    function (result) {
+                        notificationService.displaySuccess('Cập nhật thành công');
+                        // load chi tiết dự án
+                        loadDetail();
+                        // load user
+                        loadUser();
+                    }, function (error) {
+                        console.log('Cập nhật không thành công.');
+                    });
+
+            $('#myModal_Edit').modal('hide');
+        }
 
         //get range
         getRange();

@@ -272,6 +272,7 @@
     <Compile Include="Controllers\AppUserController.cs" />
     <Compile Include="Controllers\ChiTietThuChiController.cs" />
     <Compile Include="Controllers\DuAnController.cs" />
+    <Compile Include="Controllers\DuAnUserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SystemLogController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
