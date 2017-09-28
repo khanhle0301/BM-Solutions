@@ -17,6 +17,21 @@
         $scope.deleteMultiple = deleteMultiple;
         $scope.filter = '';
 
+        $scope.listDuan = [
+            { id: 0, text: 'Đang hoạt động' },
+            { id: 1, text: 'Đã có tiền' },
+            { id: 2, text: 'Đã có lợi nhuận' },
+            { id: 3, text: 'Có thể kết thúc' },
+            { id: 4, text: 'Đã kết thúc' }
+        ];
+
+        $scope.Duans = [0];
+
+        $scope.imChanged = function () {
+            // load
+            $scope.search();
+        }
+
         // cờ admin
         var roles = authData.authenticationData.roles;
         $scope.isSys = roles.includes('Admin');
@@ -97,7 +112,8 @@
                 params: {
                     page: page,
                     pageSize: 10,
-                    filter: $scope.filter
+                    filter: $scope.filter,
+                    status: JSON.stringify($scope.Duans)
                 }
             }
             apiService.get('/api/duan/getlistpaging', config, dataLoadCompleted, dataLoadFailed);
@@ -128,20 +144,7 @@
             }
         }
 
-        // load total
-        $scope.total = [];
-        function loadTotal() {
-            apiService.get('/api/duan/gettotal', null,
-                function (result) {
-                    $scope.total = result.data;
-                },
-                function (result) {
-                    console.log(result.status);
-                });
-        }
-
         // load
         $scope.search();
-        loadTotal();
     }
 })(angular.module('bm-solutions'));

@@ -117,6 +117,34 @@ namespace BM_Solution.Web.Controllers
             return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
         }
 
+        [Route("update")]
+        public HttpResponseMessage Put(HttpRequestMessage request, ChiTietThuChiViewModel chiTietThuChiViewModel)
+        {
+            return CreateHttpResponse(request, () =>
+            {
+                HttpResponseMessage response = null;
+                if (!ModelState.IsValid)
+                {
+                    request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                }
+                else
+                {
+                    var newChiTietThuChi = _chiTietThuChiService.GetById(chiTietThuChiViewModel.Id);
+                    _duAnService.UpdateProfitEdit(newChiTietThuChi);
+
+                    newChiTietThuChi.UpdateChiTietThuChi(chiTietThuChiViewModel);
+
+                    _chiTietThuChiService.Update(newChiTietThuChi);
+                    _duAnService.UpdateProfit(newChiTietThuChi);
+                    _chiTietThuChiService.Save();
+
+                    response = request.CreateResponse(HttpStatusCode.OK);
+
+                }
+                return response;
+            });
+        }
+
         [Route("deletemulti")]
         [Permission(Role = "Admin")]
         [HttpDelete]

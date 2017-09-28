@@ -21,11 +21,13 @@ namespace BM_Solutions.Service
 
         IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, DateTime startDate, DateTime endDate);
 
-        IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role);
-
         DateRange GetRangeByDuAnId(string duAnId);
 
         DateRange GetRange();
+
+        ChiTietThuChi GetById(int id);
+
+        void Update(ChiTietThuChi chiTietThuChi);
 
         void Save();
     }
@@ -52,11 +54,6 @@ namespace BM_Solutions.Service
             chiTiet.IsDelete = true;
         }
 
-        public IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role)
-        {
-            return _chiTietThuChiRepository.DuAnThamGia(userId, role);
-        }
-
         public IEnumerable<ChiTietThuChi> GetAll()
         {
             return _chiTietThuChiRepository.GetMulti(x => x.IsDelete == false);
@@ -70,6 +67,11 @@ namespace BM_Solutions.Service
         public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, DateTime startDate, DateTime endDate)
         {
             return _chiTietThuChiRepository.GetByDuAnId(duaAnId, startDate, endDate);
+        }
+
+        public ChiTietThuChi GetById(int id)
+        {
+            return _chiTietThuChiRepository.GetSingleById(id);
         }
 
         public DateRange GetRange()
@@ -90,6 +92,11 @@ namespace BM_Solutions.Service
         public void Save()
         {
             _unitOfWork.Commit();
+        }
+
+        public void Update(ChiTietThuChi chiTietThuChi)
+        {
+            _chiTietThuChiRepository.Update(chiTietThuChi);
         }
     }
 }

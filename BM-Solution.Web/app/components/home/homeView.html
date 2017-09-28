@@ -1,36 +1,19 @@
 ﻿<div class="">
-    <div class="row tile_count">
-        <div class="col-md-3 col-sm-4 col-xs-4 tile_stats_count">
-            <span class="count_top"><i class="fa fa-user"></i> Tổng thành viên</span>
-            <div class="count">{{total.User}}</div>
-            <span class="count_bottom">Thành viên.</span>
-        </div>
-        <div class="col-md-3 col-sm-4 col-xs-8 tile_stats_count">
-            <span class="count_top"><i class="fa fa-file-text"></i> Tổng dự án</span>
-            <div class="count">{{total.DuAn}}</div>
-            <span class="count_bottom">Dự án.</span>
-        </div>
-        <div class="col-md-2 col-sm-4 col-xs-4 tile_stats_count">
-            <span class="count_top"><i class="fa fa-file-text"></i> Số dự án tham gia</span>
-            <div class="count">{{total.DuAnThamGia}}</div>
-            <span class="count_bottom">Dự án.</span>
-        </div>
-        <div class="col-md-4 col-sm-4 col-xs-8 tile_stats_count">
-            <span class="count_top"><i class="fa fa-money"></i> Tổng tiền</span>
-            <div class="count green">{{total.TongTien | number}}</div>
-            <span class="count_bottom">VND.</span>
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="page-title">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-1">
                             <h3>Dự án</h3>
                         </div>
-                        <div class="col-md-8">
-                            <div class="col-md-6 col-sm-6 col-xs-12 form-group top_search">
+                        <div class="col-md-11">
+                            <div class="col-md-7 col-sm-6 col-xs-12 form-group">
+                                <label ng-repeat="duan in listDuan">
+                                    <input type="checkbox" checklist-change="imChanged()" checklist-model="Duans" checklist-value="duan.id"> {{duan.text}} &nbsp;
+                                </label>
+                            </div>
+                            <div class="col-md-3 col-sm-6 col-xs-12 form-group top_search">
                                 <div class="input-group">
                                     <input type="text" class="form-control" ng-model="filter" placeholder="Từ khóa...">
                                     <span class="input-group-btn">
@@ -38,7 +21,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div class="col-md-2 col-sm-6 col-xs-12 form-group">
                                 <button ng-if="isSys" class="btn btn-danger" type="button" ng-click="deleteMultiple()" id="btnDelete" disabled>Xóa</button>
                                 <button ng-if="isSys" class="btn btn-success" type="button" ui-sref="duan_add">Thêm</button>
                             </div>
@@ -54,6 +37,7 @@
                                     <th ng-if="isSys"><input name="all" type="checkbox" ng-click="selectAll()" /></th>
                                     <th>Dự án</th>
                                     <th>Ngày tạo</th>
+                                    <th>Vốn đầu tư</th>
                                     <th>Lợi nhuận dự tính</th>
                                     <th>Tiền chi dự tính</th>
                                     <th>Tiền thu dự tính</th>
@@ -68,6 +52,7 @@
                                     <td ng-if="isSys"><input type="checkbox" ng-model="item.checked" name="all" /></td>
                                     <td><a ui-sref="duan_edit({id:item.Id})">{{item.Id}}</a></td>
                                     <td><a ui-sref="duan_edit({id:item.Id})">{{item.NgayTao | date : 'dd/MM/yyyy'}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienVonBanDau | number}}</a></td>
                                     <td><a ui-sref="duan_edit({id:item.Id})">{{item.LoiNhuanDuTinh | number}}</a></td>
                                     <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienChiDuTinh | number}}</a></td>
                                     <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienThuDuTinh | number}}</a></td>
@@ -84,7 +69,7 @@
                             </tbody>
                             <tfoot>
                                 <tr ng-if="isSys">
-                                    <td colspan="10"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                                    <td colspan="11"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
                                 </tr>
                                 <tr ng-if="!isSys">
                                     <td colspan="9"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>

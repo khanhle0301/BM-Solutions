@@ -16,8 +16,6 @@ namespace BM_Solution.Data.Repositories
 
         IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, DateTime startDate, DateTime endDate);
 
-        IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role);
-
         DateRange GetRangeByDuAnId(string duAnId);
 
         DateRange GetRange();
@@ -27,16 +25,6 @@ namespace BM_Solution.Data.Repositories
     {
         public ChiTietThuChiRepository(IDbFactory dbFactory) : base(dbFactory)
         {
-        }
-
-        public IEnumerable<ChiTietThuChi> DuAnThamGia(string userId, IEnumerable<string> role)
-        {
-            if (role.Contains(RoleEnum.Admin.ToString()))
-                return DbContext.ChiTietThuChi.Where(x => x.IsDelete == false);
-            var query = from d in DbContext.ChiTietThuChi
-                        where d.UserId == userId && d.IsDelete == false
-                        select d;
-            return query;
         }
 
         public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, DateTime startDate, DateTime endDate)

@@ -47,7 +47,9 @@
         $scope.openModel = function () {
             $scope.chitiet = {
                 IsDelete: false,
-                DuAnId: $stateParams.id
+                DuAnId: $stateParams.id,
+                TienChi: 0,
+                TienThu: 0
             };
             $scope.moreImages = [];
             $('#myModal').modal('show');
@@ -153,6 +155,11 @@
             $scope.popupchitiet = {
                 opened: false
             };
+
+            $scope.popupchitietEdit = {
+                opened: false
+            };
+
             // chitiet
             $scope.chitiet = {
                 IsDelete: false,
@@ -163,6 +170,11 @@
 
         // date
         $scope.date = {};
+
+        // openchitietEdit
+        $scope.openChiTietEdit = function () {
+            $scope.popupchitietEdit.opened = true;
+        };
 
         // openchitiet
         $scope.openchitiet = function () {
@@ -318,6 +330,25 @@
             $scope.moreImages.splice(index, 1);
         }
 
+
+        // upload image
+        $scope.moreImagesEdit = [];
+
+        $scope.ChooseMoreImageEdit = function () {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                $scope.$apply(function () {
+                    $scope.moreImagesEdit.push(fileUrl);
+                })
+
+            }
+            finder.popup();
+        }
+
+        $scope.deleteItemEdit = function (index) {
+            $scope.moreImagesEdit.splice(index, 1);
+        }
+
         //show image
         $scope.images = [];
         $scope.openLightboxModal = function (index, id) {
@@ -410,6 +441,35 @@
                     });
 
             $('#myModal_Edit').modal('hide');
+        }
+
+        // cập nhật chi tiết thu chi
+
+        // open model
+        $scope.openModelEdit = function (item) {
+            $scope.chitietEdit = item;
+            $scope.ngayTaoEditChiTiet = new Date(item.NgayTao);
+            $scope.moreImagesEdit = item.MoreImages;
+            $('#myModalEdit').modal('show');
+        }
+
+
+        $scope.editChiTiet = function () {
+
+            $scope.chitietEdit.NgayTao = $scope.ngayTaoEditChiTiet;
+            $scope.chitietEdit.MoreImages = JSON.stringify($scope.moreImagesEdit);
+            apiService.put('api/chitietthuchi/update', $scope.chitietEdit,
+                    function (result) {
+                        notificationService.displaySuccess('Cập nhật thành công');
+                        //get range
+                        getRange();
+                        // load chi tiết dự án
+                        loadDetail();
+                    }, function (error) {
+                        console.log('Cập nhật không thành công.');
+                    });
+
+            $('#myModalEdit').modal('hide');
         }
 
         //get range

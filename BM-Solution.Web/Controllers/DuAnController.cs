@@ -4,6 +4,7 @@ using BM_Solution.Web.Infrastructure.Core;
 using BM_Solution.Web.Infrastructure.Extensions;
 using BM_Solution.Web.Models;
 using BM_Solution.Web.Providers;
+using BM_Solutions.Common.Enums;
 using BM_Solutions.Service;
 using Microsoft.AspNet.Identity;
 using System;
@@ -39,10 +40,12 @@ namespace BM_Solution.Web.Controllers
 
         [Route("getlistpaging")]
         [HttpGet]
-        public HttpResponseMessage GetListPaging(HttpRequestMessage request, int page, int pageSize, string filter = null)
+        public HttpResponseMessage GetListPaging(HttpRequestMessage request, int page, int pageSize,
+            string status, string filter = null)
         {
             return CreateHttpResponse(request, () =>
             {
+                var listStatus = new JavaScriptSerializer().Deserialize<List<StatusEnum>>(status);
                 // lấy danh sách role
                 var roles = ((ClaimsIdentity)User.Identity).Claims
                     .Where(c => c.Type == ClaimTypes.Role)
@@ -50,7 +53,7 @@ namespace BM_Solution.Web.Controllers
                 // lấy id user login
                 var userId = User.Identity.GetUserId();
                 // get dự án theo user
-                var query = _duAnService.GetByUserId(userId, filter, roles);
+                var query = _duAnService.GetByUserId(userId, filter, roles, listStatus);
                 var duAns = query as DuAn[] ?? query.ToArray();
                 // tổng dự án
                 var totalRow = duAns.Count();
@@ -297,42 +300,6 @@ namespace BM_Solution.Web.Controllers
                 }
                 // trả về response
                 return response;
-            });
-        }
-
-        [Route("gettotal")]
-        [HttpGet]
-        public HttpResponseMessage GetTotal(HttpRequestMessage request)
-        {
-            return CreateHttpResponse(request, () =>
-            {
-                // lấy dánh sách role user đăng nhập
-                var roles = ((ClaimsIdentity)User.Identity).Claims
-                    .Where(c => c.Type == ClaimTypes.Role)
-                    .Select(c => c.Value);
-                // get id user đăng nhập
-                var userId = User.Identity.GetUserId();
-                // tổng tiền
-                long sum = 0;
-                var enumerable = roles as string[] ?? roles.ToArray();
-                foreach (var item in _chiTietThuChiService.DuAnThamGia(userId, enumerable))
-                {
-                    sum += item.TienChi;
-                }
-                // new toltal model
-                var model = new TotalViewMoodel
-                {
-                    // tổng user
-                    User = AppUserManager.Users.Count().ToString(),
-                    // tổng dự án
-                    DuAn = _duAnService.Count().ToString(),
-                    // tổng dự án tham gia
-                    DuAnThamGia = _duAnService.Count(userId, enumerable).ToString(),
-                    // tổng tiền
-                    TongTien = sum.ToString()
-                };
-                // trả về response
-                return request.CreateResponse(HttpStatusCode.OK, model);
             });
         }
     }

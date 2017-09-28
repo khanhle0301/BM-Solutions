@@ -23,9 +23,11 @@ namespace BM_Solutions.Service
 
         void UpdateProfit(ChiTietThuChi chiTietThuChi);
 
+        void UpdateProfitEdit(ChiTietThuChi chiTietThuChi);
+
         void KetThucDuAn(string id);
 
-        IEnumerable<DuAn> GetByUserId(string userId, string keyword, IEnumerable<string> role);
+        IEnumerable<DuAn> GetByUserId(string userId, string keyword, IEnumerable<string> role, List<StatusEnum> listStatus);
 
         int Count(string userId, IEnumerable<string> role);
 
@@ -78,9 +80,9 @@ namespace BM_Solutions.Service
             return _duAnRepository.GetSingleByCondition(x => x.Id == id);
         }
 
-        public IEnumerable<DuAn> GetByUserId(string userId, string keyword, IEnumerable<string> role)
+        public IEnumerable<DuAn> GetByUserId(string userId, string keyword, IEnumerable<string> role, List<StatusEnum> listStatus)
         {
-            return _duAnRepository.GetByUserId(userId, keyword, role);
+            return _duAnRepository.GetByUserId(userId, keyword, role, listStatus);
         }
 
         public void KetThucDuAn(string id)
@@ -131,6 +133,14 @@ namespace BM_Solutions.Service
                     duAn.LoiNhuanThucTe = loiNhuan;
                 }
             }
+        }
+
+
+        public void UpdateProfitEdit(ChiTietThuChi chiTietThuChi)
+        {
+            var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == chiTietThuChi.DuAnId);
+            duAn.TienChiThucTe -= chiTietThuChi.TienChi;
+            duAn.TienThuThucTe -= chiTietThuChi.TienThu;
         }
     }
 }
