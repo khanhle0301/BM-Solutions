@@ -1,7 +1,4 @@
 ﻿using BM_Solution.Model.Models;
-using BM_Solution.Web.Infrastructure.Core;
-using BM_Solution.Web.Models.System;
-using BM_Solutions.Service;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -40,7 +37,7 @@ namespace BM_Solution.Web.Providers
                 context.Rejected();
                 return;
             }
-            if (user != null)
+            if (user != null && user.Status)
             {
                 var roles = userManager.GetRoles(user.Id);
                 ClaimsIdentity identity = await userManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ExternalBearer);

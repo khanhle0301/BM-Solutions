@@ -23,13 +23,6 @@ namespace BM_Solution.Web.Models.System
         public bool Status { get; set; }
 
         public List<RoleVm> Roles { get; set; }
-
-        public List<DuAnVm> DuAns { set; get; }
-    }
-
-    public class DuAnVm
-    {
-        public string Id { set; get; }
     }
 
     public class RoleVm

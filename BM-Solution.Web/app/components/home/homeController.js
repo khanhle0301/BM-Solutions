@@ -25,7 +25,7 @@
             { id: 4, text: 'Đã kết thúc' }
         ];
 
-        $scope.Duans = [0];
+        $scope.Duans = [0, 1, 2, 3, 4];
 
         $scope.imChanged = function () {
             // load

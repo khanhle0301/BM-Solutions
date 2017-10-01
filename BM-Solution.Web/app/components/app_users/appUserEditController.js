@@ -25,20 +25,7 @@
                 notificationService.displayError(response.data.Message);
             }
         }
-        function loadDuan() {
-            apiService.get('api/duan/getListString', null, function (result) {
-                $scope.listDuan = result.data;
-            }, function () {
-                console.log('Cannot get list du an');
-            });
-        }
-        $scope.loadDuans = function ($query) {
-            var duans = $scope.listDuan;
-            return duans.filter(function (duan) {
-                return duan.toLowerCase().indexOf($query.toLowerCase()) != -1;
-            });
-        };
-        loadDuan();
+
         function loadRole() {
             apiService.get('api/appRole/getliststring', null, function (result) {
                 $scope.listRole = result.data;

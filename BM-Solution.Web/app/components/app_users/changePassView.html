@@ -1,0 +1,56 @@
+﻿<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Đổi mật khẩu</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" role="form" novalidate name="frmEdit" ng-submit="changePass()">
+                    <div class="form-group" ng-class="{ 'has-error' : frmEdit.oldpassword.$invalid && !frmEdit.oldpassword.$pristine }">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                            Mật khẩu cũ <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="password" name="oldpassword" class="form-control col-md-7 col-xs-12"
+                                   required ng-maxlength="50" ng-model="model.OldPassword" ng-minlength="6">
+                            <span ng-show="frmEdit.oldpassword.$error.required" class="has-error">Vui lòng nhập mật khẩu cũ.</span>
+                            <span ng-show="frmEdit.oldpassword.$error.maxlength" class="has-error">Mật khẩu chỉ được 50 ký tự.</span>
+                            <span ng-show="frmEdit.oldpassword.$error.minlength" class="has-error">Mật khẩu ít nhất 6 ký tự.</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : frmEdit.newpassword.$invalid && !frmEdit.newpassword.$pristine }">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                            Mật khẩu mới <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="password" name="newpassword" id="newpassword" class="form-control col-md-7 col-xs-12"
+                                   required ng-maxlength="50" ng-model="model.NewPassword" ng-minlength="6">
+                            <span ng-show="frmEdit.newpassword.$error.required" class="has-error">Vui lòng nhập mật khẩu mới.</span>
+                            <span ng-show="frmEdit.newpassword.$error.maxlength" class="has-error">Mật khẩu chỉ được 50 ký tự.</span>
+                            <span ng-show="frmEdit.newpassword.$error.minlength" class="has-error">Mật khẩu ít nhất 6 ký tự.</span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : frmEdit.repassword.$invalid && !frmEdit.repassword.$pristine }">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                            Xác nhận mật khẩu <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input type="password" name="repassword" class="form-control col-md-7 col-xs-12"
+                                   ng-model="model.ConfirmPassword" required ng-maxlength="50" pw-check="newpassword">
+                            <span ng-show="frmEdit.repassword.$error.pwmatch" class="has-error">Xác nhận mật khẩu không đúng.</span>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button ui-sref="home" class="btn btn-default" type="button">Quay lại</button>
+                            <button type="submit" ng-disabled="frmEdit.$invalid" class="btn btn-success">Thực hiện</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

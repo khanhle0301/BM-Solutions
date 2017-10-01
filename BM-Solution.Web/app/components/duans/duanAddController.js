@@ -26,7 +26,11 @@
             $scope.duan = {
                 IsDelete: false,
                 AppUsers: [],
-                DuAnUserViewModels: []
+                DuAnUserViewModels: [],
+                TienVonBanDau: 0,
+                TienChiDuTinh: 0,
+                LoiNhuanDuTinh: 0,
+                TienThuDuTinh: 0
             }
         };
         $scope.init();

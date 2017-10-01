@@ -6,7 +6,6 @@
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
 
     function config($stateProvider, $urlRouterProvider) {
-
         $stateProvider.state('app_users', {
             url: "/app_users",
             templateUrl: "/app/components/app_users/appUserListView.html",
@@ -30,6 +29,18 @@
                 parent: 'base',
                 templateUrl: "/app/components/app_users/appUserDetailView.html",
                 controller: "appUserDetailController"
-            });
+            })
+            .state('change_pass', {
+                url: "/change_pass",
+                parent: 'base',
+                templateUrl: "/app/components/app_users/changePassView.html",
+                controller: "changePassController"
+            })
+             .state('reset_pass', {
+                 url: "/reset_pass/:id",
+                 templateUrl: "/app/components/app_users/resetPassView.html",
+                 controller: "resetPassController",
+                 parent: 'base'
+             });
     }
 })();

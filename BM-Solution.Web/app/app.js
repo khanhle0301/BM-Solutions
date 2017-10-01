@@ -45,13 +45,13 @@
                     return $q.reject(rejection);
                 },
                 response: function (response) {
-                    if (response.status == "401" || response.status == "403") {
+                    if (response.status == "401") {
                         $location.path('/login');
                     }
                     return response;
                 },
                 responseError: function (rejection) {
-                    if (rejection.status == "401" || rejection.status == "403") {
+                    if (rejection.status == "401") {
                         $location.path('/login');
                     }
                     return $q.reject(rejection);

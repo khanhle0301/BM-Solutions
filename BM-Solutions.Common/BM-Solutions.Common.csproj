@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,9 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigHelper.cs" />
     <Compile Include="Enums\RoleEnum.cs" />
     <Compile Include="Enums\StatusEnum.cs" />
     <Compile Include="Exceptions\NameDuplicatedException.cs" />
+    <Compile Include="MailHelper.cs" />
     <Compile Include="ViewModel\DateRange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

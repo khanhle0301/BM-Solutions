@@ -2,7 +2,6 @@
 using BM_Solution.Model.Models;
 using BM_Solution.Web.Infrastructure.Core;
 using BM_Solution.Web.Infrastructure.Extensions;
-using BM_Solution.Web.Models;
 using BM_Solution.Web.Models.System;
 using BM_Solution.Web.Providers;
 using BM_Solutions.Service;
@@ -76,7 +75,7 @@ namespace BM_Solution.Web.Controllers
         [Route("getByNotInDuAnId")]
         [HttpGet]
         [Permission(Role = "Admin")]
-        public HttpResponseMessage GetByNotInDuAnId(HttpRequestMessage request,string duAnId)
+        public HttpResponseMessage GetByNotInDuAnId(HttpRequestMessage request, string duAnId)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -115,14 +114,7 @@ namespace BM_Solution.Web.Controllers
                 }
                 var modelVm = Mapper.Map<AppUser, AppUserViewModel>(user);
                 modelVm.Roles = roleVms;
-                var duAns = _duAnUserService.GetDuAnByUserId(id);
-                List<DuAnVm> listDuAns = new List<DuAnVm>();
-                foreach (var item in duAns)
-                {
-                    var duAnVm = new DuAnVm { Id = item };
-                    listDuAns.Add(duAnVm);
-                }
-                modelVm.DuAns = listDuAns;
+
                 return request.CreateResponse(HttpStatusCode.OK, modelVm);
             }
         }
@@ -162,6 +154,55 @@ namespace BM_Solution.Web.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("changepass")]
+        public async Task<HttpResponseMessage> ChangePasss(HttpRequestMessage request, ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var result = await AppUserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
+                                    model.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        return request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join(",", result.Errors));
+                }
+                catch (Exception ex)
+                {
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                }
+            }
+            return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        [HttpPut]
+        [Route("resetpass")]
+        public async Task<HttpResponseMessage> ResetPasss(HttpRequestMessage request, ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await AppUserManager.RemovePasswordAsync(model.Id);
+
+                    var result = await AppUserManager.AddPasswordAsync(model.Id, model.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        return request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join(",", result.Errors));
+                }
+                catch (Exception ex)
+                {
+                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                }
+            }
+            return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
         [HttpPost]
         [Route("add")]
         [Permission(Role = "Admin")]
@@ -179,15 +220,7 @@ namespace BM_Solution.Web.Controllers
                         List<string> roles = new List<string>();
                         appUserViewModel.Roles.ForEach(a => roles.Add(a.Name));
                         await AppUserManager.AddToRolesAsync(newAppUser.Id, roles.ToArray());
-                        foreach (var item in appUserViewModel.DuAns)
-                        {
-                            var duAnUser = new DuAnUser
-                            {
-                                UserId = newAppUser.Id,
-                                DuAnId = item.Id
-                            };
-                            _duAnUserService.Add(duAnUser);
-                        }
+
                         _systemLogService.Create(new SystemLog
                         {
                             Id = 0,
@@ -213,57 +246,45 @@ namespace BM_Solution.Web.Controllers
         [Route("update")]
         public async Task<HttpResponseMessage> Update(HttpRequestMessage request, AppUserViewModel applicationUserViewModel)
         {
-            if (ModelState.IsValid)
+            var appUser = await AppUserManager.FindByIdAsync(applicationUserViewModel.Id);
+            try
             {
-                var appUser = await AppUserManager.FindByIdAsync(applicationUserViewModel.Id);
-                try
-                {
-                    appUser.UpdateAppUser(applicationUserViewModel, "update");
-                    var oldeRoles = await AppUserManager.GetRolesAsync(appUser.Id);
+                appUser.UpdateAppUser(applicationUserViewModel, "update");
+                var oldeRoles = await AppUserManager.GetRolesAsync(appUser.Id);
 
-                    foreach (var role in oldeRoles)
-                    {
-                        await AppUserManager.RemoveFromRoleAsync(appUser.Id, role);
-                    }
-                    var result = await AppUserManager.UpdateAsync(appUser);
-                    if (result.Succeeded)
-                    {
-                        var duAns = _duAnUserService.GetDuAnByUserId(appUser.Id);
-                        foreach (var duan in duAns)
-                        {
-                            _duAnUserService.DeleteAll(duan, appUser.Id);
-                        }
-                        List<string> roles = new List<string>();
-                        applicationUserViewModel.Roles.ForEach(a => roles.Add(a.Name));
-                        await AppUserManager.AddToRolesAsync(appUser.Id, roles.ToArray());
-                        foreach (var item in applicationUserViewModel.DuAns)
-                        {
-                            var duAnUser = new DuAnUser
-                            {
-                                UserId = appUser.Id,
-                                DuAnId = item.Id
-                            };
-                            _duAnUserService.Add(duAnUser);
-                        }
-                        _systemLogService.Create(new SystemLog
-                        {
-                            Id = 0,
-                            User = User.Identity.Name,
-                            IsDelete = false,
-                            NgayTao = DateTime.Now,
-                            NoiDung = "Cập nhật người dùng: " + appUser.UserName
-                        });
-                        _duAnUserService.SaveChange();
-                        return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
-                    }
-                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join(",", result.Errors));
-                }
-                catch (Exception ex)
+                foreach (var role in oldeRoles)
                 {
-                    return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+                    await AppUserManager.RemoveFromRoleAsync(appUser.Id, role);
                 }
+                var result = await AppUserManager.UpdateAsync(appUser);
+                if (result.Succeeded)
+                {
+                    var duAns = _duAnUserService.GetDuAnByUserId(appUser.Id);
+                    foreach (var duan in duAns)
+                    {
+                        _duAnUserService.DeleteAll(duan, appUser.Id);
+                    }
+                    List<string> roles = new List<string>();
+                    applicationUserViewModel.Roles.ForEach(a => roles.Add(a.Name));
+                    await AppUserManager.AddToRolesAsync(appUser.Id, roles.ToArray());
+
+                    _systemLogService.Create(new SystemLog
+                    {
+                        Id = 0,
+                        User = User.Identity.Name,
+                        IsDelete = false,
+                        NgayTao = DateTime.Now,
+                        NoiDung = "Cập nhật người dùng: " + appUser.UserName
+                    });
+                    _duAnUserService.SaveChange();
+                    return request.CreateResponse(HttpStatusCode.OK, applicationUserViewModel);
+                }
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, string.Join(",", result.Errors));
             }
-            return request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            catch (Exception ex)
+            {
+                return request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
+            }
         }
 
         [Route("getListString")]

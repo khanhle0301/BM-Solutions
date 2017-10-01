@@ -106,7 +106,12 @@
             $scope.loading = false;
         }
         function dataLoadFailed(response) {
-            notificationService.displayError(response.data.Message);
+            if (response.status == "403") {
+                notificationService.displayError("Bạn không có quyền truy cập");
+                $location.url('/');
+            } else {
+                notificationService.displayError(response.data.Message);
+            }
         }
 
         $scope.search();
