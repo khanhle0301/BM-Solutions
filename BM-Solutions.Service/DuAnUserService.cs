@@ -42,8 +42,8 @@ namespace BM_Solutions.Service
         public void Add(DuAnUser duAnUser)
         {
             _duAnUserRepository.Add(duAnUser);
-            var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == duAnUser.DuAnId);
-            duAn.TienVonBanDau += duAnUser.TienVonBanDau;
+            //var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == duAnUser.DuAnId);
+            //duAn.TienVonBanDau += duAnUser.TienVonBanDau;
         }
 
 
@@ -53,16 +53,17 @@ namespace BM_Solutions.Service
             _duAnUser.NgayTao = duAnUser.NgayTao;
             _duAnUser.TienVonBanDau = duAnUser.TienVonBanDau;
             _duAnUser.PhanTramHoaHong = duAnUser.PhanTramHoaHong;
-            var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == duAnUser.DuAnId);
-            duAn.TienVonBanDau += duAnUser.TienVonBanDau;
+            _duAnUser.PhanTramVon = duAnUser.PhanTramVon;
+            //var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == duAnUser.DuAnId);
+            //duAn.TienVonBanDau += duAnUser.TienVonBanDau;
         }
 
         public void DeleteAll(string duAnId, string userId)
         {
             var duAnUser = _duAnUserRepository.GetSingleByCondition(x => x.DuAnId == duAnId && x.UserId == userId);
             duAnUser.IsDelete = true;
-            var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == duAnUser.DuAnId);
-            duAn.TienVonBanDau -= duAnUser.TienVonBanDau;
+            //var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == duAnUser.DuAnId);
+            //duAn.TienVonBanDau -= duAnUser.TienVonBanDau;
         }
 
         public List<string> GetUserByDuAnId(string duAnId)

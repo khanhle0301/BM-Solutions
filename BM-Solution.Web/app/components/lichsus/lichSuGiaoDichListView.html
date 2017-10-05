@@ -51,22 +51,6 @@
                                 <td>{{item.TienChi | number}}</td>
                                 <td>{{item.TienThu | number}}</td>
                             </tr>
-                            <tr ng-if="isSys">
-                                <td>Tổng: </td>
-                                <td hidden></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>{{TongChi | number}}</td>
-                                <td>{{TongThu | number}}</td>
-                            </tr>
-                            <tr ng-if="!isSys">
-                                <td>Tổng: </td>
-                                <td></td>
-                                <td></td>
-                                <td>{{TongChi | number}}</td>
-                                <td>{{TongThu | number}}</td>
-                            </tr>
                             </tbody>
                             <tfoot>
                             <tr ng-if="isSys">

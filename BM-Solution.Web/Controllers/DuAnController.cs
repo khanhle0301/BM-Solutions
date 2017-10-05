@@ -151,7 +151,8 @@ namespace BM_Solution.Web.Controllers
                             TienVonBanDau = item.TienVonBanDau,
                             IsDelete = false,
                             NgayTao = item.NgayTao,
-                            PhanTramHoaHong = item.PhanTramHoaHong
+                            PhanTramHoaHong = item.PhanTramHoaHong,
+                            PhanTramVon = item.PhanTramVon
                         };
                         // add dự án user
                         _duAnUserService.Add(duAnUser);

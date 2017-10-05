@@ -22,6 +22,8 @@ namespace BM_Solution.Web.Models
 
         public float PhanTramHoaHong { set; get; }
 
+        public float PhanTramVon { set; get; }
+
         public bool IsDelete { get; set; }
 
         [ForeignKey("UserId")]

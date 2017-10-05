@@ -1,11 +1,10 @@
 ﻿using BM_Solution.Data.Infrastructure;
 using BM_Solution.Data.Repositories;
 using BM_Solution.Model.Models;
+using BM_Solutions.Common.Enums;
 using BM_Solutions.Common.Exceptions;
 using System.Collections.Generic;
-using System;
 using System.Linq;
-using BM_Solutions.Common.Enums;
 
 namespace BM_Solutions.Service
 {
@@ -99,6 +98,33 @@ namespace BM_Solutions.Service
         public void Update(DuAn duAn)
         {
             _duAnRepository.Update(duAn);
+            var loiNhuan = duAn.LoiNhuanThucTe;
+            if (loiNhuan <= 0)
+            {
+                if (duAn.TienThuThucTe > 0)
+                {
+                    duAn.TrangThai = StatusEnum.DaCoTien;
+                    duAn.LoiNhuanThucTe = 0;
+                }
+                else
+                {
+                    duAn.TrangThai = StatusEnum.DangHoatDong;
+                    duAn.LoiNhuanThucTe = 0;
+                }
+            }
+            else
+            {
+                if (loiNhuan > duAn.TienVonBanDau)
+                {
+                    duAn.TrangThai = StatusEnum.CoTheKetThuc;
+                    duAn.LoiNhuanThucTe = loiNhuan;
+                }
+                else
+                {
+                    duAn.TrangThai = StatusEnum.DaCoLoiNhuan;
+                    duAn.LoiNhuanThucTe = loiNhuan;
+                }
+            }
         }
 
         public void UpdateProfit(ChiTietThuChi chiTietThuChi)
@@ -122,7 +148,7 @@ namespace BM_Solutions.Service
             }
             else
             {
-                if (loiNhuan > duAn.LoiNhuanDuTinh)
+                if (loiNhuan > duAn.TienVonBanDau)
                 {
                     duAn.TrangThai = StatusEnum.CoTheKetThuc;
                     duAn.LoiNhuanThucTe = loiNhuan;
@@ -134,7 +160,6 @@ namespace BM_Solutions.Service
                 }
             }
         }
-
 
         public void UpdateProfitEdit(ChiTietThuChi chiTietThuChi)
         {

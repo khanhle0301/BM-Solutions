@@ -5,6 +5,14 @@
 
     function duanAddController(apiService, $scope, notificationService, $state, $location, commonService, $http, $filter) {
         // khởi tạo scope
+        $scope.addUser = {
+            type: '0',
+            PhanTramHoaHong: '0',
+            TienVonBanDau: '0',
+            TienVonBanDauVND: '0',
+            User: 'admin'
+        };
+
         $scope.init = function () {
             // ngày tạo
             $scope.ngayTao = new Date();
@@ -82,31 +90,38 @@
         }
 
         $scope.add = function () {
+
             $scope.DuAnUserViewModel = {
                 IsDelete: false,
-                UserId: $scope.User,
+                UserId: $scope.addUser.User,
                 DuAnId: $scope.duan.Id,
-                TienVonBanDau: $scope.TienVonBanDau,
-                PhanTramHoaHong: $scope.PhanTramHoaHong,
+                PhanTramHoaHong: $scope.addUser.PhanTramHoaHong,
                 NgayTao: new Date()
             };
 
-            if (typeof $scope.DuAnUserViewModel.UserId != "undefined"
-              && typeof $scope.DuAnUserViewModel.DuAnId != "undefined"
-               && typeof $scope.DuAnUserViewModel.TienVonBanDau != "undefined"
-                && typeof $scope.DuAnUserViewModel.PhanTramHoaHong != "undefined") {
-                var obj = $scope.duan.DuAnUserViewModels.find(function (item) {
-                    return item.UserId === $scope.DuAnUserViewModel.UserId;
-                });
+            var phantramVon = 0;
+            var vondautu = 0;
+            if ($scope.addUser.type == '0') {
+                phantramVon = $scope.addUser.TienVonBanDau;
+                vondautu = parseInt(($scope.addUser.TienVonBanDau) * ($scope.duan.TienVonBanDau));
+            }
+            else {
+                phantramVon = ($scope.addUser.TienVonBanDauVND / $scope.duan.TienVonBanDau);
+                vondautu = $scope.addUser.TienVonBanDauVND;
+            }
+            $scope.DuAnUserViewModel.TienVonBanDau = vondautu;
+            $scope.DuAnUserViewModel.PhanTramVon = phantramVon;
 
-                if (typeof obj != "undefined") {
-                    obj.TienVonBanDau = $scope.DuAnUserViewModel.TienVonBanDau;
-                    obj.PhanTramHoaHong = $scope.DuAnUserViewModel.PhanTramHoaHong;
-                }
+            var obj = $scope.duan.DuAnUserViewModels.find(function (item) {
+                return item.UserId === $scope.DuAnUserViewModel.UserId;
+            });
 
-                else {
-                    $scope.duan.DuAnUserViewModels.push($scope.DuAnUserViewModel);
-                }
+            if (typeof obj != "undefined") {
+                notificationService.displayError("Thành viên đã tồn tại");
+            }
+
+            else {
+                $scope.duan.DuAnUserViewModels.push($scope.DuAnUserViewModel);
             }
             $scope.DuAnUserViewModel = {};
         }
@@ -117,27 +132,27 @@
         }
 
         // open model
-        $scope.popupEdit = function (item) {
-            $scope.capnhat = {
-                thanhvien: item.UserId,
-                vondautu: item.TienVonBanDau,
-                phantram: item.PhanTramHoaHong
-            };
-            $('#myModal_Edit').modal('show');
-        }
+        //$scope.popupEdit = function (item) {
+        //    $scope.capnhat = {
+        //        thanhvien: item.UserId,
+        //        vondautu: item.TienVonBanDau,
+        //        phantram: item.PhanTramHoaHong
+        //    };
+        //    $('#myModal_Edit').modal('show');
+        //}
 
-        $scope.editThanhVien = function () {
-            var obj = $scope.duan.DuAnUserViewModels.find(function (item) {
-                return item.UserId === $scope.capnhat.thanhvien;
-            });
+        //$scope.editThanhVien = function () {
+        //    var obj = $scope.duan.DuAnUserViewModels.find(function (item) {
+        //        return item.UserId === $scope.capnhat.thanhvien;
+        //    });
 
-            if (typeof obj != "undefined") {
-                obj.TienVonBanDau = $scope.capnhat.vondautu;
-                obj.PhanTramHoaHong = $scope.capnhat.phantram;
-            }
+        //    if (typeof obj != "undefined") {
+        //        obj.TienVonBanDau = $scope.capnhat.vondautu;
+        //        obj.PhanTramHoaHong = $scope.capnhat.phantram;
+        //    }
 
-            $('#myModal_Edit').modal('hide');
-        }
+        //    $('#myModal_Edit').modal('hide');
+        //}
 
         // load user
         loadUser();

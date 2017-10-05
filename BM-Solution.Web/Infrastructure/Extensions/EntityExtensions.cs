@@ -69,6 +69,7 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             duAnUser.DuAnId = duAnUserViewModel.DuAnId;
             duAnUser.IsDelete = duAnUserViewModel.IsDelete;
             duAnUser.PhanTramHoaHong = duAnUserViewModel.PhanTramHoaHong;
+            duAnUser.PhanTramVon = duAnUserViewModel.PhanTramVon;
         }
     }
 }

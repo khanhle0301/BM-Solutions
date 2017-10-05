@@ -6,6 +6,14 @@
 
     function duanEditController(apiService, $scope, notificationService, $state, $location,
         commonService, $stateParams, authData, $ngBootbox, $filter, Lightbox) {
+        // khởi tạo scope
+        $scope.addUser = {
+            type: '0',
+            PhanTramHoaHong: '0',
+            TienVonBanDau: '0',
+            TienVonBanDauVND: '0'
+        };
+
         // khởi tạo scope chi tiết dự án
         $scope.init = function () {
             // role admin
@@ -360,19 +368,29 @@
         };
 
         $scope.add = function () {
+
             $scope.DuAnUserViewModel = {
                 IsDelete: false,
-                UserId: $scope.User,
+                UserId: $scope.addUser.User,
                 DuAnId: $scope.duan.Id,
-                TienVonBanDau: $scope.TienVonBanDau,
-                PhanTramHoaHong: $scope.PhanTramHoaHong,
+                PhanTramHoaHong: $scope.addUser.PhanTramHoaHong,
                 NgayTao: new Date()
             };
 
-            if (typeof $scope.DuAnUserViewModel.UserId != "undefined"
-              && typeof $scope.DuAnUserViewModel.DuAnId != "undefined"
-               && typeof $scope.DuAnUserViewModel.TienVonBanDau != "undefined"
-                && typeof $scope.DuAnUserViewModel.PhanTramHoaHong != "undefined") {
+            var phantramVon = 0;
+            var vondautu = 0;
+            if ($scope.addUser.type == '0') {
+                phantramVon = $scope.addUser.TienVonBanDau;
+                vondautu = parseInt(($scope.addUser.TienVonBanDau) * ($scope.duan.TienVonBanDau));
+            }
+            else {
+                phantramVon = ($scope.addUser.TienVonBanDauVND / $scope.duan.TienVonBanDau);
+                vondautu = $scope.addUser.TienVonBanDauVND;
+            }
+            $scope.DuAnUserViewModel.TienVonBanDau = vondautu;
+            $scope.DuAnUserViewModel.PhanTramVon = phantramVon;
+
+            if (typeof $scope.addUser.User != "undefined") {
                 apiService.post('api/duAnUser/add', $scope.DuAnUserViewModel,
                     function (result) {
                         notificationService.displaySuccess('Thêm thành công');
@@ -383,6 +401,9 @@
                     }, function (error) {
                         console.log('Thêm không thành công.');
                     });
+            }
+            else {
+                notificationService.displayError('Vui lòng chọn thành viên.');
             }
             $scope.DuAnUserViewModel = {};
         }
@@ -425,6 +446,7 @@
                 UserId: $scope.capnhat.thanhvien,
                 DuAnId: $scope.duan.Id,
                 TienVonBanDau: $scope.capnhat.vondautu,
+                PhanTramVon: ($scope.capnhat.vondautu / $scope.duan.TienVonBanDau),
                 PhanTramHoaHong: $scope.capnhat.phantram,
                 NgayTao: new Date()
             };

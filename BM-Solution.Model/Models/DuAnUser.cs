@@ -22,6 +22,8 @@ namespace BM_Solution.Model.Models
 
         public long TienVonBanDau { set; get; }
 
+        public float PhanTramVon { set; get; }
+
         public float PhanTramHoaHong { set; get; }
 
         public bool IsDelete { get; set; }

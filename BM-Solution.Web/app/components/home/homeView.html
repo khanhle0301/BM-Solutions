@@ -65,47 +65,47 @@
                     <div class="table-responsive">
                         <table class="table table-striped jambo_table bulk_action">
                             <thead>
-                            <tr>
-                                <th ng-if="isSys"><input name="all" type="checkbox" ng-click="selectAll()"/></th>
-                                <th>Dự án</th>
-                                <th>Ngày tạo</th>
-                                <th>Vốn đầu tư</th>
-                                <th>Lợi nhuận dự tính</th>
-                                <th>Tiền chi dự tính</th>
-                                <th>Tiền thu dự tính</th>
-                                <th>Tiền chi thực tế</th>
-                                <th>Tiền thu thực tế</th>
-                                <th>Lợi nhuận thực tế</th>
-                                <th>Trạng thái</th>
-                            </tr>
+                                <tr>
+                                    <th ng-if="isSys"><input name="all" type="checkbox" ng-click="selectAll()" /></th>
+                                    <th>Dự án</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Tổng Vốn đầu tư</th>
+                                    <th>Lợi nhuận dự tính</th>
+                                    <th>Tiền chi dự tính</th>
+                                    <th>Tiền thu dự tính</th>
+                                    <th>Tiền chi thực tế</th>
+                                    <th>Tiền thu thực tế</th>
+                                    <th>Lợi nhuận thực tế</th>
+                                    <th>Trạng thái</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="item in data">
-                                <td ng-if="isSys"><input type="checkbox" ng-model="item.checked" name="all"/></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.Id}}</a></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.NgayTao | date : 'dd/MM/yyyy'}}</a></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienVonBanDau | number}}</a></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.LoiNhuanDuTinh | number}}</a></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienChiDuTinh | number}}</a></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienThuDuTinh | number}}</a></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienChiThucTe | number}}</a></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienThuThucTe | number}}</a></td>
-                                <td><a ui-sref="duan_edit({id:item.Id})">{{item.LoiNhuanThucTe | number}}</a></td>
-                                <td>
-                                    <span ng-class="{'badge bg-green':item.TrangThai==0,'badge bg-purple':item.TrangThai==1,
+                                <tr ng-repeat="item in data">
+                                    <td ng-if="isSys"><input type="checkbox" ng-model="item.checked" name="all" /></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.Id}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.NgayTao | date : 'dd/MM/yyyy'}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienVonBanDau | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.LoiNhuanDuTinh | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienChiDuTinh | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienThuDuTinh | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienChiThucTe | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.TienThuThucTe | number}}</a></td>
+                                    <td><a ui-sref="duan_edit({id:item.Id})">{{item.LoiNhuanThucTe | number}}</a></td>
+                                    <td>
+                                        <span ng-class="{'badge bg-green':item.TrangThai==0,'badge bg-purple':item.TrangThai==1,
                                               'badge bg-blue':item.TrangThai==2,'badge bg-red':item.TrangThai==3,'badge bg-gray':item.TrangThai==4}">
-                                        {{item.TrangThai | statusFilter}}
-                                    </span>
-                                </td>
-                            </tr>
+                                            {{item.TrangThai | statusFilter}}
+                                        </span>
+                                    </td>
+                                </tr>
                             </tbody>
                             <tfoot>
-                            <tr ng-if="isSys">
-                                <td colspan="11"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
-                            </tr>
-                            <tr ng-if="!isSys">
-                                <td colspan="10"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
-                            </tr>
+                                <tr ng-if="isSys">
+                                    <td colspan="11"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                                </tr>
+                                <tr ng-if="!isSys">
+                                    <td colspan="10"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
+                                </tr>
                             </tfoot>
                         </table>
                         <div ng-if="loading">

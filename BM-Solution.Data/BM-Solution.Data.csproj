@@ -128,6 +128,10 @@
     <Compile Include="Migrations\201709271429033_EditDuAnUser.Designer.cs">
       <DependentUpon>201709271429033_EditDuAnUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710021035027_Update_DuAnUser.cs" />
+    <Compile Include="Migrations\201710021035027_Update_DuAnUser.Designer.cs">
+      <DependentUpon>201710021035027_Update_DuAnUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ChiTietThuChiRepository.cs" />
@@ -199,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709271429033_EditDuAnUser.resx">
       <DependentUpon>201709271429033_EditDuAnUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710021035027_Update_DuAnUser.resx">
+      <DependentUpon>201710021035027_Update_DuAnUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
