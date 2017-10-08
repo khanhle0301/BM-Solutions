@@ -26,7 +26,6 @@ namespace BM_Solution.Data.Repositories
             var query = from c in DbContext.SystemLogs
                         where (DbFunctions.TruncateTime(c.NgayTao) >= DbFunctions.TruncateTime(startDate))
                                && (DbFunctions.TruncateTime(c.NgayTao) <= DbFunctions.TruncateTime(endDate))
-                               && (c.IsDelete == false)
                         select c;
             return query;
         }
@@ -35,8 +34,8 @@ namespace BM_Solution.Data.Repositories
         {
             return new DateRange
             {
-                MaxDate = DbContext.SystemLogs.Where(x => x.IsDelete == false).Max(t => t.NgayTao),
-                MinDate = DbContext.SystemLogs.Where(x => x.IsDelete == false).Min(t => t.NgayTao)
+                MaxDate = DbContext.SystemLogs.Max(t => t.NgayTao),
+                MinDate = DbContext.SystemLogs.Min(t => t.NgayTao)
             };
         }
     }

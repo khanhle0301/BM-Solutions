@@ -162,7 +162,6 @@ namespace BM_Solution.Web.Controllers
                     {
                         Id = 0,
                         User = User.Identity.Name,
-                        IsDelete = false,
                         NgayTao = DateTime.Now,
                         NoiDung = "Thêm dự án: " + newDuAn.Id
                     });
@@ -200,7 +199,6 @@ namespace BM_Solution.Web.Controllers
                     {
                         Id = 0,
                         User = User.Identity.Name,
-                        IsDelete = false,
                         NgayTao = DateTime.Now,
                         NoiDung = "Cập nhật dự án: " + duAnViewModel.Id
                     });
@@ -231,7 +229,6 @@ namespace BM_Solution.Web.Controllers
             {
                 Id = 0,
                 User = User.Identity.Name,
-                IsDelete = false,
                 NgayTao = DateTime.Now,
                 NoiDung = "Xóa dự án: " + id
             });
@@ -252,7 +249,6 @@ namespace BM_Solution.Web.Controllers
             {
                 Id = 0,
                 User = User.Identity.Name,
-                IsDelete = false,
                 NgayTao = DateTime.Now,
                 NoiDung = "Kết thúc dự án: " + id
             });
@@ -289,7 +285,6 @@ namespace BM_Solution.Web.Controllers
                         {
                             Id = 0,
                             User = User.Identity.Name,
-                            IsDelete = false,
                             NgayTao = DateTime.Now,
                             NoiDung = "Xóa dự án: " + item
                         });

@@ -308,11 +308,14 @@
                 .then(function () {
                     var config = {
                         params: {
+                            duAnId: $stateParams.id,
                             checkedList: JSON.stringify(listId)
                         }
                     }
                     apiService.del('/api/chitietthuchi/deletemulti', config, function (result) {
                         notificationService.displaySuccess('Xóa thành công ' + result.data + ' bản ghi.');
+                        // load chi tiết dự án
+                        loadDetail();
                         search();
                     }, function () {
                         notificationService.displayError('Xóa không thành công');

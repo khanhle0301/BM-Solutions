@@ -305,7 +305,7 @@
                         </div>
                         <div class="col-md-7 col-sm-6 col-xs-12 form-group">
                             <button class="btn btn-success" ng-click="search()" type="button">Tìm</button>
-                            <button class="btn btn-danger" type="button" ng-click="deleteMultiple()" id="btnDelete" disabled ng-if="isSys">Xóa</button>
+                            <button class="btn btn-danger" type="button" ng-click="deleteMultiple()" id="btnDelete" disabled>Xóa</button>
                             <button class="btn btn-primary" type="button" ng-if="duan.TrangThai!=4" ng-click="openModel()">Thêm giao dịch</button>
                         </div>
                     </div>
@@ -317,7 +317,7 @@
                     <table class="table table-striped jambo_table bulk_action">
                         <thead>
                             <tr>
-                                <th ng-if="isSys"><input name="all" type="checkbox" ng-click="selectAll()" /></th>
+                                <th><input name="all" type="checkbox" ng-click="selectAll()" /></th>
                                 <th>Thời gian</th>
                                 <th>Dự án</th>
                                 <th>Thành viên</th>
@@ -328,12 +328,12 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in data">
-                                <td ng-if="isSys"><input type="checkbox" ng-model="item.checked" name="all" /></td>
+                                <td><input type="checkbox" ng-model="item.checked" name="all" /></td>
                                 <td><a href="javascript:void(0);" ng-click="openModelEdit(item)">{{item.NgayTao | date : 'dd/MM/yyyy'}}</a></td>
-                                <td>{{item.DuAnId}}</td>
-                                <td>{{item.AppUser.UserName}}</td>
-                                <td>{{item.TienChi | number}}</td>
-                                <td>{{item.TienThu | number}}</td>
+                                <td><a href="javascript:void(0);" ng-click="openModelEdit(item)">{{item.DuAnId}}</a></td>
+                                <td><a href="javascript:void(0);" ng-click="openModelEdit(item)">{{item.AppUser.UserName}}</a></td>
+                                <td><a href="javascript:void(0);" ng-click="openModelEdit(item)">{{item.TienChi | number}}</a></td>
+                                <td><a href="javascript:void(0);" ng-click="openModelEdit(item)">{{item.TienThu | number}}</a></td>
                                 <td>
                                     <ul class="list-inline">
                                         <li ng-repeat="img in item.MoreImages track by $index">
@@ -344,17 +344,9 @@
                                     </ul>
                                 </td>
                             </tr>
-                            <tr ng-if="isSys">
+                            <tr>
                                 <td>Tổng: </td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>{{TongChi | number}}</td>
-                                <td>{{TongThu | number}}</td>
-                                <td></td>
-                            </tr>
-                            <tr ng-if="!isSys">
-                                <td>Tổng: </td>
                                 <td></td>
                                 <td></td>
                                 <td>{{TongChi | number}}</td>
@@ -363,11 +355,8 @@
                             </tr>
                         </tbody>
                         <tfoot>
-                            <tr ng-if="isSys">
+                            <tr>
                                 <td colspan="7"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
-                            </tr>
-                            <tr ng-if="!isSys">
-                                <td colspan="6"><span class="pull-right">Trang: {{page+1}} - Tổng số bản ghi: {{totalCount}}</span></td>
                             </tr>
                         </tfoot>
                     </table>

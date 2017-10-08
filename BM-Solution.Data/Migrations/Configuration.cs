@@ -4,7 +4,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BM_Solution.Data.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
 
     internal sealed class Configuration : DbMigrationsConfiguration<BM_Solution.Data.BmSolutionsDbContext>
@@ -40,12 +39,12 @@ namespace BM_Solution.Data.Migrations
             var user = new AppUser()
             {
                 UserName = "admin",
-                Email = "tedu.international@gmail.com",
+                Email = "admin@gmail.com",
                 EmailConfirmed = true,
                 FullName = "Technology Education",
             };
 
-            manager.Create(user, "123123");
+            manager.Create(user, "123456");
         }
 
         private void CreateRole(BmSolutionsDbContext context)

@@ -50,18 +50,17 @@ namespace BM_Solutions.Service
 
         public void Delete(int id)
         {
-            var chiTiet = _chiTietThuChiRepository.GetSingleById(id);
-            chiTiet.IsDelete = true;
+            _chiTietThuChiRepository.Delete(id);
         }
 
         public IEnumerable<ChiTietThuChi> GetAll()
         {
-            return _chiTietThuChiRepository.GetMulti(x => x.IsDelete == false);
+            return _chiTietThuChiRepository.GetAll();
         }
 
         public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId)
         {
-            return _chiTietThuChiRepository.GetMulti(x => x.DuAnId == duaAnId && x.IsDelete == false, new string[] { "AppUser" });
+            return _chiTietThuChiRepository.GetMulti(x => x.DuAnId == duaAnId, new[] { "AppUser" });
         }
 
         public IEnumerable<ChiTietThuChi> GetByDuAnId(string duaAnId, DateTime startDate, DateTime endDate)

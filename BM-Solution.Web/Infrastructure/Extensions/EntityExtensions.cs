@@ -56,7 +56,6 @@ namespace BM_Solution.Web.Infrastructure.Extensions
             chiTietThuChi.TienThu = chiTietThuChiViewModel.TienThu;
             chiTietThuChi.UserId = chiTietThuChiViewModel.UserId;
             chiTietThuChi.DuAnId = chiTietThuChiViewModel.DuAnId;
-            chiTietThuChi.IsDelete = chiTietThuChiViewModel.IsDelete;
             chiTietThuChi.MoreImages = chiTietThuChiViewModel.MoreImages;
         }
 

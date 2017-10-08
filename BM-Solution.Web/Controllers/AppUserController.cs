@@ -225,7 +225,6 @@ namespace BM_Solution.Web.Controllers
                         {
                             Id = 0,
                             User = User.Identity.Name,
-                            IsDelete = false,
                             NgayTao = DateTime.Now,
                             NoiDung = "Thêm người dùng: " + appUserViewModel.UserName
                         });
@@ -272,7 +271,6 @@ namespace BM_Solution.Web.Controllers
                     {
                         Id = 0,
                         User = User.Identity.Name,
-                        IsDelete = false,
                         NgayTao = DateTime.Now,
                         NoiDung = "Cập nhật người dùng: " + appUser.UserName
                     });
@@ -325,7 +323,6 @@ namespace BM_Solution.Web.Controllers
                 {
                     Id = 0,
                     User = User.Identity.Name,
-                    IsDelete = false,
                     NgayTao = DateTime.Now,
                     NoiDung = "Xóa người dùng: " + appUser.UserName
                 });
@@ -358,7 +355,6 @@ namespace BM_Solution.Web.Controllers
                         {
                             Id = 0,
                             User = User.Identity.Name,
-                            IsDelete = false,
                             NgayTao = DateTime.Now,
                             NoiDung = "Xóa người dùng: " + appUser.UserName
                         });

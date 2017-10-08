@@ -32,7 +32,5 @@ namespace BM_Solution.Model.Models
 
         [ForeignKey("DuAnId")]
         public DuAn DuAn { get; set; }
-
-        public bool IsDelete { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using BM_Solutions.Common.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Globalization;
 using System.Linq;
 
 namespace BM_Solution.Data.Repositories
@@ -32,7 +31,7 @@ namespace BM_Solution.Data.Repositories
             var query = from c in DbContext.ChiTietThuChi
                         where (DbFunctions.TruncateTime(c.NgayTao) >= DbFunctions.TruncateTime(startDate))
                                && (DbFunctions.TruncateTime(c.NgayTao) <= DbFunctions.TruncateTime(endDate))
-                               && (c.DuAnId == duaAnId && c.IsDelete == false)
+                               && (c.DuAnId == duaAnId)
                         select c;
             return query.Include("AppUser");
         }
@@ -43,8 +42,8 @@ namespace BM_Solution.Data.Repositories
             {
                 return new DateRange
                 {
-                    MaxDate = DbContext.ChiTietThuChi.Where(x => x.IsDelete == false).Max(t => t.NgayTao),
-                    MinDate = DbContext.ChiTietThuChi.Where(x => x.IsDelete == false).Min(t => t.NgayTao)
+                    MaxDate = DbContext.ChiTietThuChi.Max(t => t.NgayTao),
+                    MinDate = DbContext.ChiTietThuChi.Min(t => t.NgayTao)
                 };
             }
             catch
@@ -63,8 +62,8 @@ namespace BM_Solution.Data.Repositories
             {
                 return new DateRange
                 {
-                    MaxDate = DbContext.ChiTietThuChi.Where(x => x.IsDelete == false && x.DuAnId == duAnId).Max(t => t.NgayTao),
-                    MinDate = DbContext.ChiTietThuChi.Where(x => x.IsDelete == false && x.DuAnId == duAnId).Min(t => t.NgayTao)
+                    MaxDate = DbContext.ChiTietThuChi.Where(x => x.DuAnId == duAnId).Max(t => t.NgayTao),
+                    MinDate = DbContext.ChiTietThuChi.Where(x => x.DuAnId == duAnId).Min(t => t.NgayTao)
                 };
             }
             catch
@@ -79,12 +78,22 @@ namespace BM_Solution.Data.Repositories
 
         public IEnumerable<ChiTietThuChi> NhatKyGiaoDich(IEnumerable<string> role, string userId, DateTime startDate, DateTime endDate)
         {
+            IQueryable<ChiTietThuChi> query;
+
             if (role.Contains(RoleEnum.Admin.ToString()))
-                return DbContext.ChiTietThuChi.Where(x => x.IsDelete == false).Include("AppUser");
-            var query = from c in DbContext.ChiTietThuChi
+            {
+                query = from c in DbContext.ChiTietThuChi
                         where (c.NgayTao >= startDate
-                               && c.NgayTao <= endDate) && c.IsDelete == false && c.UserId == userId
+                               && c.NgayTao <= endDate)
                         select c;
+            }
+            else
+            {
+                query = from c in DbContext.ChiTietThuChi
+                        where (c.NgayTao >= startDate
+                               && c.NgayTao <= endDate) && c.UserId == userId
+                        select c;
+            }
             return query.Include("AppUser");
         }
     }

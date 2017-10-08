@@ -58,7 +58,6 @@ namespace BM_Solution.Web.Controllers
                             NgayTao = item.NgayTao,
                             TienChi = item.TienChi,
                             TienThu = item.TienThu,
-                            IsDelete = item.IsDelete,
                             MoreImages = (item.MoreImages == null) ? new List<string>() : new JavaScriptSerializer().Deserialize<List<string>>(item.MoreImages),
                             AppUser = item.AppUser
                         };
@@ -102,9 +101,8 @@ namespace BM_Solution.Web.Controllers
                     {
                         Id = 0,
                         User = User.Identity.Name,
-                        IsDelete = false,
                         NgayTao = DateTime.Now,
-                        NoiDung = "Thêm giao dịch (tiền thu: " + newChiTietThuChi.TienThu + ", tiền chi " + newChiTietThuChi.TienChi
+                        NoiDung = "Thêm giao dịch (dự án: " + chiTietThuChiViewModel.Id + ", tiền thu: " + newChiTietThuChi.TienThu + ", tiền chi " + newChiTietThuChi.TienChi
                     });
                     _chiTietThuChiService.Save();
                     return request.CreateResponse(HttpStatusCode.OK, chiTietThuChiViewModel);
@@ -148,7 +146,7 @@ namespace BM_Solution.Web.Controllers
         [Route("deletemulti")]
         [Permission(Role = "Admin")]
         [HttpDelete]
-        public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string checkedList)
+        public HttpResponseMessage DeleteMulti(HttpRequestMessage request, string duAnId, string checkedList)
         {
             return CreateHttpResponse(request, () =>
             {
@@ -162,7 +160,7 @@ namespace BM_Solution.Web.Controllers
                     var listId = new JavaScriptSerializer().Deserialize<List<int>>(checkedList);
                     foreach (var item in listId)
                     {
-                        _chiTietThuChiService.Delete(item);
+                        _duAnService.UpdateProfitDelete(duAnId, item);
                     }
                     _duAnService.Save();
 

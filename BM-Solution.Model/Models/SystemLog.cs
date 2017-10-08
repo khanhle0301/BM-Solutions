@@ -19,7 +19,5 @@ namespace BM_Solution.Model.Models
 
         [StringLength(500)]
         public string NoiDung { set; get; }
-
-        public bool IsDelete { get; set; }
     }
 }

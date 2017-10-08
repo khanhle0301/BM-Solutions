@@ -32,6 +32,8 @@ namespace BM_Solutions.Service
 
         int Count();
 
+        void UpdateProfitDelete(string id, int ctId);
+
         void Save();
     }
 
@@ -39,9 +41,12 @@ namespace BM_Solutions.Service
     {
         private readonly IDuAnRepository _duAnRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IChiTietThuChiRepository _chiTietThuChiRepository;
 
-        public DuAnService(IDuAnRepository colorRepository, IUnitOfWork unitOfWork)
+        public DuAnService(IDuAnRepository colorRepository,
+            IChiTietThuChiRepository chiTietThuChiRepository, IUnitOfWork unitOfWork)
         {
+            _chiTietThuChiRepository = chiTietThuChiRepository;
             _duAnRepository = colorRepository;
             _unitOfWork = unitOfWork;
         }
@@ -159,6 +164,16 @@ namespace BM_Solutions.Service
                     duAn.LoiNhuanThucTe = loiNhuan;
                 }
             }
+        }
+
+        public void UpdateProfitDelete(string id, int ctId)
+        {
+            var chiTiet = _chiTietThuChiRepository.GetSingleById(ctId);
+            var duAn = _duAnRepository.GetSingleByCondition(x => x.Id == id);
+            duAn.TienChiThucTe -= chiTiet.TienChi;
+            duAn.TienThuThucTe -= chiTiet.TienThu;
+            duAn.LoiNhuanThucTe = duAn.TienThuThucTe - duAn.TienChiThucTe;
+            _chiTietThuChiRepository.Delete(ctId);
         }
 
         public void UpdateProfitEdit(ChiTietThuChi chiTietThuChi)

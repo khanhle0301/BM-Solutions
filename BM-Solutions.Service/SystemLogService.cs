@@ -2,8 +2,8 @@
 using BM_Solution.Data.Repositories;
 using BM_Solution.Model.Models;
 using BM_Solutions.Common.ViewModel;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace BM_Solutions.Service
 {
@@ -38,8 +38,7 @@ namespace BM_Solutions.Service
 
         public void Delete(int id)
         {
-            var sys = _systemLogRepository.GetSingleById(id);
-            sys.IsDelete = true;
+            _systemLogRepository.Delete(id);
         }
 
         public DateRange GetRange()
